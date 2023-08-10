@@ -18,7 +18,7 @@ public class OpenWebsite
 		WebDriver driver = null;
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
-			System.setProperty("webdriver.chrome.driver", "D:\\Doc\\chromedriver_win32\\chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", "/home/edx-root/Desktop/testing/chromedriver");
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--remote-allow-origins=*");
 			options.addArguments("--disable notifications");
@@ -28,7 +28,7 @@ public class OpenWebsite
 		}
 		else if(browserName.equalsIgnoreCase("firefox"))
 		{
-			System.setProperty("webdriver.gecko.driver","D:\\Doc\\GeckoDriver\\geckodriver-v0.32.2-win32\\geckodriver.exe");
+			System.setProperty("webdriver.gecko.driver","/home/edx-root/Desktop/testing/chromedriver");
 			driver = new FirefoxDriver(); 
 			driver.manage().window().maximize();
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));

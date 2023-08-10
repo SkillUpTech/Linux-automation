@@ -37,7 +37,7 @@ public class AboutCourseLocators
 	
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "D:\\DownloadFiles\\chromedriver_105.0.5195.52 version\\chromedriver_win32\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "/home/edx-root/Desktop/testing/chromedriver");
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
