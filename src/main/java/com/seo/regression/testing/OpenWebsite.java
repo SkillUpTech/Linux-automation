@@ -20,9 +20,12 @@ public class OpenWebsite
 		{
 			System.setProperty("webdriver.chrome.driver", "/home/edx-root/Desktop/testing/chromedriver");
 			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
+			//options.addArguments("--remote-allow-origins=*");
 			options.addArguments("--disable notifications");
+					options.addArguments("--disable-dev-shm-usage")
+;					options.addArguments("--no-sandbox");
 			driver = new ChromeDriver(options);
+			
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
 		}
@@ -86,6 +89,7 @@ public class OpenWebsite
 		String setURL;
 		setURL = setEnvironment(RegressionTesting.ENV_TO_USE);
 		driver.get(setURL);
+		System.out.println("chrome driver executed");
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		return setURL;
