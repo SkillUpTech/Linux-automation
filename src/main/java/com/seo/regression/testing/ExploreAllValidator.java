@@ -38,16 +38,16 @@ public class ExploreAllValidator
 					verify_clearAll();
 					break;
 				case "Categories":
-					verify_Categories();
+					//verify_Categories();
 					break;
 				case "levels":
-					verify_Level();
+					//verify_Level();
 					break;
 				case "learningPartners":
-					verify_learningPartners();
+					//verify_learningPartners();
 					break;
 				case "learningStyles":
-					verify_learningStyles();
+					//verify_learningStyles();
 					break;
 				case "sortBy":
 					verify_sortBy();

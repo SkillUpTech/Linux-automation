@@ -603,7 +603,7 @@ public class FooterSectionLocator
 				//clickBlog.get(i).click();
 				js.executeScript("arguments[0].click()", clickBlog.get(i));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				String parentWindow = driver.getWindowHandle();
 				Set<String> nextWindow = driver.getWindowHandles();
 				Iterator<String> iterator = nextWindow.iterator();

@@ -36,9 +36,6 @@ public class ExploreAllLocator
 			WebElement clickExploreAllIcon = driver.findElement(By.cssSelector("div[class*='Courses_circleBgContainer'] button[class='btn shadow-none LearningCatalog_exploreAllButton__KElSJ false']"));
 			wait.until(ExpectedConditions.visibilityOf(clickExploreAllIcon));
 			js.executeScript("arguments[0].click()", clickExploreAllIcon);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			Thread.sleep(1000);
 			String parentWindow = driver.getWindowHandle();
 			Set<String> window = driver.getWindowHandles();
 			for(String allwindows : window)
@@ -50,9 +47,6 @@ public class ExploreAllLocator
 					System.out.println("Explore all from home page");
 				}
 			}
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			Thread.sleep(1000);
 		}
 		catch(Exception e)
 		{
@@ -63,14 +57,8 @@ public class ExploreAllLocator
 		{
 			WebElement clickMegaMenu = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] a[id='navbarDropdown'] div[class*=' Header_category'] img[alt='icon']"));
 			clickMegaMenu.click();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			Thread.sleep(2000);
 			WebElement clickExploreAll = driver.findElement(By.cssSelector("ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='MainCatE'] li[class='exploreAll'] a"));
 			clickExploreAll.click();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			Thread.sleep(2000);
 			String parentWindow = driver.getWindowHandle();
 			Set<String> window = driver.getWindowHandles();
 			for(String allwindows : window)
@@ -79,15 +67,10 @@ public class ExploreAllLocator
 				if(driver.getCurrentUrl().contains("explore"))
 				{
 					driver.switchTo().window(allwindows);
-					System.out.println("Explore all from mega menu");
-					Thread.sleep(1000);
-					OpenWebsite.openSite(driver);
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+					System.out.println("Explore all from home page");
+					driver.get(OpenWebsite.setURL);
 				}
 			}
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			Thread.sleep(1000);
 		}
 		catch(Exception e)
 		{
@@ -106,28 +89,24 @@ public class ExploreAllLocator
 			
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0, 800)", "");
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			Thread.sleep(1000);
+			
+			
 			WebElement activeCategory = driver.findElement(By.cssSelector("div[class*='LearningCatalog_courseList'] button[class*='btn shadow-none LearningCatalog_activeButton']"));
 			String activeCategoryName = activeCategory.getText();
-			Thread.sleep(2000);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement clickExploreAllIcon = driver.findElement(By.cssSelector("div[class*='Courses_circleBgContainer'] button[class='btn shadow-none LearningCatalog_exploreAllButton__KElSJ false']"));
 			wait.until(ExpectedConditions.visibilityOf(clickExploreAllIcon));
 			js.executeScript("arguments[0].click()", clickExploreAllIcon);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));;
-			Thread.sleep(2000);
+			
 			String parentWindow = driver.getWindowHandle();
 			Set<String> allWindows = driver.getWindowHandles();
 			for(String windows : allWindows)
 			{
 				driver.switchTo().window(windows);
-				if(driver.getCurrentUrl().contains("/explore-our-catalog/"))
+				if(driver.getCurrentUrl().contains("/explore-our-catalog/?"))
 				{
 					driver.switchTo().window(windows);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-					Thread.sleep(2000);
 					System.out.println("Explore all catalog page");
 					WebElement baseLocatorForResult = driver.findElement(By.cssSelector("div[class*='CourseSection_courseResultContainer'] section[class*='CourseSection_topFilterSection']"));
 					WebElement locateSelectedCategory = baseLocatorForResult.findElement(By.cssSelector(" div[class*='CourseSection_resultsItemsBox'] p"));
@@ -138,7 +117,6 @@ public class ExploreAllLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						System.out.println("active category is same as in Explore All page");
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-						Thread.sleep(2000);
 						status = "pass";
 					}
 					else
@@ -178,8 +156,6 @@ public class ExploreAllLocator
 					{
 						Thread.sleep(1000);
 						clickNextPage.get(i).click();
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 						Thread.sleep(1000);
 						List<WebElement> listOfNextPageCourses = driver.findElements(By.cssSelector("section#scrollToTop div[class*='CourseSection_courseResultContainer'] div[class='CourseSection_courseResult__byBMX ps-3'] a"));
 						for(int k = 0; k < listOfNextPageCourses.size(); k++)
@@ -266,8 +242,6 @@ public class ExploreAllLocator
 				System.out.println("clear All icon is shown");
 				Thread.sleep(2000);
 				js.executeScript("arguments[0].click()", clickClearAll);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				Thread.sleep(2000);
 				WebElement baseLocatorForResult = driver.findElement(By.cssSelector("div[class*='CourseSection_courseResultContainer']"));
 				WebElement checkResult = baseLocatorForResult.findElement(By.cssSelector(" div[class*='CourseSection_topFilterResults'] p"));
@@ -285,7 +259,7 @@ public class ExploreAllLocator
 					status.add("result");
 				}
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-				Thread.sleep(1000);
+
 				WebElement alertContent = baseLocatorForResult.findElement(By.cssSelector(" div[class*='CourseSection_alertContent'] h3"));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				
@@ -359,8 +333,7 @@ public class ExploreAllLocator
 					
 					if(!category.isSelected())
 					{
-						//category.click();
-						jse3.executeScript("arguments[0].click()", category);
+						category.click();
 						Thread.sleep(1000);
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
@@ -376,9 +349,6 @@ public class ExploreAllLocator
 						int j;
 						for(j = 0; j < listOfCourses.size(); j++)
 						{
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-							wait.until(ExpectedConditions.visibilityOf(listOfCourses.get(j)));
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 							System.out.println("course name :   "+listOfCourses.get(j).getAttribute("href"));
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 							if(j == listOfCourses.size()-1)
@@ -411,7 +381,7 @@ public class ExploreAllLocator
 											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 										}
 										Thread.sleep(4000);
-										jse1.executeScript("arguments[0].click()", clickNextPage.get(l));
+										clickNextPage.get(l).click();
 										Thread.sleep(3000);
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 										System.out.println("next page : " +l);
@@ -452,19 +422,16 @@ public class ExploreAllLocator
 					WebElement baseLocator_ClearAll = driver.findElement(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
 					WebElement click_ClearAll = baseLocator_ClearAll.findElement(By.cssSelector(" div[class*='CourseSection_filterSection'] div[class*='flex CourseSection_filterTop'] button"));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+					
 					if(click_ClearAll.isDisplayed())
 					{
 						Thread.sleep(500);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 						wait.until(ExpectedConditions.elementToBeClickable(click_ClearAll));
 						Thread.sleep(1000);
-						JavascriptExecutor js = (JavascriptExecutor) driver;
-						//click_ClearAll.click();
-						js.executeScript("arguments[0].click()", click_ClearAll);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+
+						click_ClearAll.click();
+						
 						Thread.sleep(500);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 					}
@@ -492,25 +459,17 @@ public class ExploreAllLocator
 		try
 		{
 			try
-			{	
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				JavascriptExecutor jse3 =  (JavascriptExecutor) driver;
+			{	JavascriptExecutor jse3 =  (JavascriptExecutor) driver;
 				WebElement baseLocator = driver.findElement(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
 				Thread.sleep(2000);
 				jse3.executeScript("window.scrollBy(0, 700)", "");
 				Thread.sleep(2000);
 				WebElement clickLevels = baseLocator.findElement(By.cssSelector(" div[class='accordion']:nth-child(2) button"));
-				//clickLevels.click();
-				jse3.executeScript("arguments[0].click()", clickLevels);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+				clickLevels.click();
 				Thread.sleep(2000);
 				while(!clickLevels.isDisplayed())
 				{
 					clickLevels.click();
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				}
 				
 				List<WebElement> listOfLevels = baseLocator.findElements(By.cssSelector(" div[class='accordion']:nth-child(2) div[class*='CourseSection_checkbox'] input"));
@@ -636,7 +595,7 @@ public class ExploreAllLocator
 				jse3.executeScript("window.scrollBy(0, 700)", "");
 				Thread.sleep(2000);
 				WebElement clickLevels = baseLocator.findElement(By.cssSelector(" div[class='accordion']:nth-child(3) button"));
-				jse3.executeScript("arguments[0].click()", clickLevels);
+				clickLevels.click();
 				Thread.sleep(2000);
 				while(!clickLevels.isDisplayed())
 				{
@@ -730,7 +689,8 @@ public class ExploreAllLocator
 						wait.until(ExpectedConditions.elementToBeClickable(click_ClearAll));
 						Thread.sleep(1000);
 
-						jse3.executeScript("arguments[0].click()", click_ClearAll);
+						click_ClearAll.click();
+						
 						Thread.sleep(500);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 					}
@@ -767,7 +727,7 @@ public class ExploreAllLocator
 				jse3.executeScript("window.scrollBy(0, 700)", "");
 				Thread.sleep(2000);
 				WebElement clickLevels = baseLocator.findElement(By.cssSelector(" div[class='accordion']:nth-child(4) button"));
-				jse3.executeScript("arguments[0].click()", clickLevels);
+				clickLevels.click();
 				Thread.sleep(2000);
 				while(!clickLevels.isDisplayed())
 				{
@@ -861,7 +821,8 @@ public class ExploreAllLocator
 						wait.until(ExpectedConditions.elementToBeClickable(click_ClearAll));
 						Thread.sleep(1000);
 
-						jse2.executeScript("arguments[0].click()", click_ClearAll);
+						click_ClearAll.click();
+						
 						Thread.sleep(500);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 					}
@@ -906,13 +867,9 @@ public class ExploreAllLocator
 					break;
 				}
 			}
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			WebElement clickSortBy = driver.findElement(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='dropdown CourseSection_topFilterSorting'] button"));
 			
-			jse3.executeScript("arguments[0].click()", clickSortBy);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+			WebElement clickSortBy = driver.findElement(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='dropdown CourseSection_topFilterSorting'] button"));
+			clickSortBy.click();
 			try
 			{
 				WebElement selectHigh = driver.findElement(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='dropdown CourseSection_topFilterSorting'] ul[class*='dropdown-menu'] li[value='DESC']"));
@@ -920,9 +877,7 @@ public class ExploreAllLocator
 				List<WebElement> listOfCourses = driver.findElements(By.cssSelector("section#scrollToTop div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_courseResult'] a"));
 				for(int j = 0; j < listOfCourses.size(); j++)
 				{
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 					System.out.println("list of courses from high to low : "+listOfCourses.get(j).getAttribute("href"));
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 				}
 			}
 			catch(Exception e)
@@ -932,15 +887,13 @@ public class ExploreAllLocator
 			try
 			{
 				WebElement clickSortByIcon = driver.findElement(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='dropdown CourseSection_topFilterSorting'] button"));
-				jse3.executeScript("arguments[0].click()", clickSortByIcon);
+				clickSortByIcon.click();
 				WebElement selectHigh = driver.findElement(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='dropdown CourseSection_topFilterSorting'] ul[class*='dropdown-menu'] li[value='ASC']"));
-				jse3.executeScript("arguments[0].click()", selectHigh);
+				selectHigh.click();
 				List<WebElement> listOfCourses = driver.findElements(By.cssSelector("section#scrollToTop div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_courseResult'] a"));
 				for(int j = 0; j < listOfCourses.size(); j++)
 				{
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 					System.out.println("list of courses from low to high : "+listOfCourses.get(j).getAttribute("href"));
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 				}
 			}
 			catch(Exception e)

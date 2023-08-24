@@ -6,12 +6,8 @@ import java.time.Duration;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-
-import com.regression.utility.TestUtil;
+import com.seo.utility.TestUtil;
 
 public class OpenWebsite
 {
@@ -21,21 +17,17 @@ public class OpenWebsite
 		WebDriver driver = null;
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
-			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+			System.setProperty("webdriver.chrome.driver", "D:\\Doc\\chromedriver_v114\\chromedriver.exe");
 			ChromeOptions options = new ChromeOptions();
-			//options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--headless");
+			options.addArguments("--remote-allow-origins=*");
 			options.addArguments("--disable notifications");
-					options.addArguments("--disable-dev-shm-usage")
-;					options.addArguments("--no-sandbox");
 			driver = new ChromeDriver(options);
-			
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
 		}
 		else if(browserName.equalsIgnoreCase("firefox"))
 		{
-			System.setProperty("webdriver.gecko.driver","/usr/local/bin/geckodriver");
+			System.setProperty("webdriver.gecko.driver","D:\\Doc\\GeckoDriver\\geckodriver-v0.32.2-win32\\geckodriver.exe");
 			driver = new FirefoxDriver(); 
 			driver.manage().window().maximize();
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
@@ -93,7 +85,6 @@ public class OpenWebsite
 		String setURL;
 		setURL = setEnvironment(RegressionTesting.ENV_TO_USE);
 		driver.get(setURL);
-		System.out.println("chrome driver executed");
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		return setURL;

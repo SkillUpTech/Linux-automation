@@ -10,7 +10,7 @@ import javax.management.RuntimeErrorException;
 public class ConfigFileReader 
 {
 	private static Properties properties;
-	private static final String PROPERTY_FILE_PATH = "/home/edx-root/git/Linux-automation/config.properties";
+	private static final String PROPERTY_FILE_PATH = "D:\\AutomationTestingWorkspace\\sko-qa-automation\\src\\main\\java\\com\\seo\\utility\\config.properties";
 	static
 	{
 		BufferedReader reader;

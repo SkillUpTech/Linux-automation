@@ -13,10 +13,10 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.asserts.SoftAssert;
 
-import com.regression.utility.ProcessExcel;
-import com.regression.utility.Utils;
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.pompages.NewAboutCourseLocator;
+import com.seo.utility.ProcessExcel;
+import com.seo.utility.Utils;
 
 public class TestNewAboutCourse
 {

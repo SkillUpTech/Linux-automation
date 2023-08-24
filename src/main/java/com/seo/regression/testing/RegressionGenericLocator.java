@@ -28,7 +28,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.regression.utility.TestUtil;
+import com.seo.utility.TestUtil;
 
 public class RegressionGenericLocator {
 	WebDriver driver;

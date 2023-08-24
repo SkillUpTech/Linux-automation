@@ -16,8 +16,8 @@ import com.seo.dataProvider.ConfigFileReader;
 import com.seo.pompages.FrontEndAboutCourseLocator;
 import com.seo.pompages.FrontEndAboutPageLocator;
 import com.seo.pompages.NewAboutCourseLocator;
-import com.regression.utility.ProcessExcel;
-import com.regression.utility.Utils;
+import com.seo.utility.ProcessExcel;
+import com.seo.utility.Utils;
 
 public class TestFrontEndAboutCourse 
 {

@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 
 import org.openqa.selenium.WebDriver;
 
-import com.regression.utility.Utils;
 import com.seo.pompages.NewAboutCourseLocator;
+import com.seo.utility.Utils;
 
 public class NewAboutCourseValidator 
 {

@@ -64,11 +64,10 @@ public class SearchPageLocator
 				WebDriverWait wb = new WebDriverWait(driver, Duration.ofSeconds(30));
 				wb.until(ExpectedConditions.elementToBeClickable(searchBox)).click();
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 				searchBox.sendKeys(dataFromExcel.get(i));
 				//searchBox.clear();
-				Thread.sleep(2000);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+				Thread.sleep(1000);
 				if(driver.findElements(By.xpath("//ul[contains(@class,'Header_headSearch_')]/descendant::ul/li")).size()>0)
 				{
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
@@ -101,8 +100,7 @@ public class SearchPageLocator
 										WebElement getCourse = driver.findElement(By.cssSelector("div[class*='RegularCourseCard_courseHeading__1Ohrn'] p"));
 										if(getCourse.getText().equalsIgnoreCase(dataFromExcel.get(i)))
 										{
-											//getCourse.click();
-											js.executeScript("arguments[0].click()", getCourse);
+											getCourse.click();
 											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 											Thread.sleep(1000);
 											String parent1 = driver.getWindowHandle();
@@ -136,7 +134,6 @@ public class SearchPageLocator
 							}
 						}
 					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 				}
 				else
 				{

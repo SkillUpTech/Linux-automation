@@ -53,15 +53,18 @@ public class MicrosoftCourseValidation
 		}
 	}
 	
-	public void MicrosoftScourses(ArrayList<String> courses)
+	public void MicrosoftScourses(ArrayList<String> data)
 	{
-		ArrayList<String> getStatus = microsoftCourseLocator.verifyMicrosoftScourses(courses);
-		if(getStatus.size()>0)
+		ArrayList<String> getStatus = microsoftCourseLocator.verifyMicrosoftScourses(data);
+		for(int i = 0; i < getStatus.size(); i++)
 		{
-			for(int i = 0; i < getStatus.size(); i++)
+			if(data.contains(getStatus.get(i)))
 			{
 				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("MicrosoftPage").get(1).add(i+1, (getStatus.get(i) + " - failed"));
+				int position = data.indexOf(getStatus.get(i));
+				String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("MicrosoftPage").get(1).get(position);
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("MicrosoftPage").get(1).set(position, (cellValue + " - failed"));
+
 			}
 		}
 	}

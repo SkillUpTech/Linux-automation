@@ -16,8 +16,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.regression.utility.TestUtil;
 import com.seo.dataProvider.ConfigFileReader;
+import com.seo.utility.TestUtil;
 
 public class FrontEndAboutCourseLocator
 {
@@ -34,7 +34,7 @@ public class FrontEndAboutCourseLocator
 	
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "/home/edx-root/Desktop/testing/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "D:\\DownloadFiles\\chromedriver_107 version\\chromedriver_win32\\chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));

@@ -16,8 +16,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.regression.utility.TestUtil;
 import com.seo.dataProvider.ConfigFileReader;
+import com.seo.utility.TestUtil;
 
 public class AboutCourseEnrollmentLocators
 {
@@ -36,7 +36,7 @@ public class AboutCourseEnrollmentLocators
 
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "/home/edx-root/Desktop/testing/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "D:\\DownloadFiles\\chromedriver_105.0.5195.52 version\\chromedriver_win32\\chromedriver.exe");
 		ChromeOptions options = new ChromeOptions();
 		options.setExperimentalOption("excludeSwitches", new String[] { "enable-automation" });
 		driver = new ChromeDriver();

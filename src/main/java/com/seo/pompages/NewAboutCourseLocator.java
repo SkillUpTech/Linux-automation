@@ -26,9 +26,9 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.regression.utility.TestUtil;
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.regression.testing.OpenWebsite;
+import com.seo.utility.TestUtil;
 
 
 public class NewAboutCourseLocator
@@ -55,7 +55,7 @@ public class NewAboutCourseLocator
 	}
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "/home/edx-root/Desktop/testing/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "D:\\Doc\\chromedriver_113\\chromedriver.exe");
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
 		options.addArguments("--disable notifications");

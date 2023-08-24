@@ -39,9 +39,7 @@ public class ProcessLogin
 			{
 				String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
 				clickLogin.sendKeys(n);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			}
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			String parentWindow = driver.getWindowHandle();
 			Set<String> nextWindow = driver.getWindowHandles();
 			for(String window : nextWindow)
@@ -158,7 +156,7 @@ public class ProcessLogin
 						WebElement clickDropdownIcon = driver.findElement(By.cssSelector("li[class='Header_SigNUP__cUzCw'] img[alt='icon']"));
 						clickDropdownIcon.click();
 						Thread.sleep(2000);
-						WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Primary02_Blue'] li:nth-child(5) a"));
+						WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header_Primary02_Blue__bffoz show'] li:nth-child(5) a"));
 						JavascriptExecutor js = (JavascriptExecutor) driver;
 						js.executeScript("arguments[0].click()", clickSignOut);
 						Thread.sleep(2000);
@@ -178,10 +176,11 @@ public class ProcessLogin
 							loginStatus = "Success";
 							System.out.println("logged in successfully");
 							Thread.sleep(2000);
-							WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Primary02_Blue'] li:nth-child(5) a"));
+							WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header_Primary02_Blue__bffoz show'] li:nth-child(5) a"));
 							JavascriptExecutor js = (JavascriptExecutor) driver;
 							js.executeScript("arguments[0].click()", clickSignOut);
 							System.out.println("log out successfully");
+							//clickSignOut.click();
 							Thread.sleep(1000);
 							
 						}
@@ -208,7 +207,7 @@ public class ProcessLogin
 		wait.until(ExpectedConditions.elementToBeClickable(clickDropdown));
 		clickDropdown.click();
 		Thread.sleep(2000);
-		WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Primary02_Blue'] li:nth-child(5) a"));
+		WebElement clickSignOut = driver.findElement(By.cssSelector("li[class*='SigNUP'] ul[class*='dropdown-menu']:nth-child(2) li:nth-child(5) a"));
 		wait.until(ExpectedConditions.elementToBeClickable(clickSignOut));
 		clickSignOut.click();
 		System.out.println("logout successfully");

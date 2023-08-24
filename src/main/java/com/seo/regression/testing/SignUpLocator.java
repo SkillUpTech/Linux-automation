@@ -128,8 +128,6 @@ public class SignUpLocator
 		System.out.println("FullName validation started");
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 		Thread.sleep(1000);
 		String parentWindow = driver.getWindowHandle();
 		Set<String> allWindows = driver.getWindowHandles();
@@ -139,11 +137,7 @@ public class SignUpLocator
 			if(driver.getCurrentUrl().contains("register"))
 			{
 				System.out.println("sign up page");
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				this.signUpFunction(dataFromExcel);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				Thread.sleep(1000);
 			//	statusOfTestCase = this.checkValidationMessage();
 				System.out.println("Invalid FullName Validation process done");

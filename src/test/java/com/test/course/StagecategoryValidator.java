@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.pompages.StagecategoryLocator;
-import com.regression.utility.Utils;
+import com.seo.utility.Utils;
 
 public class StagecategoryValidator
 {

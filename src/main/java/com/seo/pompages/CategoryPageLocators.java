@@ -17,8 +17,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.regression.utility.TestUtil;
 import com.seo.dataProvider.ConfigFileReader;
+import com.seo.utility.TestUtil;
 
 public class CategoryPageLocators 
 {
@@ -32,7 +32,7 @@ public class CategoryPageLocators
 	}
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "/home/edx-root/Desktop/testing/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "D:\\Doc\\chromedriver_113\\chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
