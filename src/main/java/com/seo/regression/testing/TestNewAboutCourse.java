@@ -67,7 +67,7 @@ public class TestNewAboutCourse
 			endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 			duration = Utils.findDifference(startTime, endTime);
 			prepareConsolidatedSheet();
-			ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "result.xlsx");
+			ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "result.xlsx");
 		}
 	}
 
