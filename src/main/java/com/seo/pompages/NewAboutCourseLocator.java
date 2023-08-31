@@ -55,7 +55,7 @@ public class NewAboutCourseLocator
 	}
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "D:\\Doc\\chrome 116\\chromedriver-win64\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
 		options.addArguments("--disable notifications");
