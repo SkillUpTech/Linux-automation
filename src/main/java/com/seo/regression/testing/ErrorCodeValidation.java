@@ -51,8 +51,8 @@ public class ErrorCodeValidation
 			{
 				sheetStatus = "Fail";
 				int position = codeFromExcel.indexOf(checkURL.get(i));
-				String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("urlValidation").get(0).get(position);
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("urlValidation").get(0).set(position, (cellValue + " - failed"));
+				String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("URLValidation").get(0).get(position);
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("URLValidation").get(0).set(position, (cellValue + " - failed"));
 			}
 		}
 	}
