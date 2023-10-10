@@ -24,6 +24,7 @@ public class OpenWebsite
 			 * options.addArguments("--remote-allow-origins=*");
 			 * options.addArguments("--disable notifications");
 			 */
+			options.addArguments("--headless");
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
