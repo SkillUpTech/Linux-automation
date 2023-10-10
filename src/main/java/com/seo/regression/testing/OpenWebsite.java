@@ -13,20 +13,21 @@ import com.regression.utility.*;
 public class OpenWebsite
 {
 	static String setURL;
-	public static WebDriver openDriver(String browserName)
+	public static WebDriver openDriver(String browserName) throws InterruptedException
 	{
 		WebDriver driver = null;
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
 			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+			ChromeOptions options = new ChromeOptions();
 			/*
-			 * ChromeOptions options = new ChromeOptions();
 			 * options.addArguments("--remote-allow-origins=*");
 			 * options.addArguments("--disable notifications");
 			 */
-			driver = new ChromeDriver();
+			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+			Thread.sleep(5000);
 		}
 		else if(browserName.equalsIgnoreCase("firefox"))
 		{
