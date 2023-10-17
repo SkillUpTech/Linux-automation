@@ -39,7 +39,7 @@
         <div class="rounded-window">
           <div class="suite-header light-rounded-window-top">
             <a href="#" panel-name="suite-Testing_Google_Apps" class="navigator-link">
-              <span class="suite-name border-passed">Testing Google Apps</span>
+              <span class="suite-name border-skipped">Testing Google Apps</span>
             </a> <!-- navigator-link -->
           </div> <!-- suite-header light-rounded-window-top -->
           <div class="navigator-suite-content">
@@ -92,21 +92,21 @@
               <div class="suite-section-content">
                 <ul>
                   <li>
-                    <span class="method-stats">1 method,   1 passed</span>
+                    <span class="method-stats">1 method,  1 skipped,  </span>
                   </li>
                   <li>
-                    <span class="method-list-title passed">Passed methods</span>
-                    <span class="show-or-hide-methods passed">
-                      <a href="#" panel-name="suite-Testing_Google_Apps" class="hide-methods passed suite-Testing_Google_Apps"> (hide)</a> <!-- hide-methods passed suite-Testing_Google_Apps -->
-                      <a href="#" panel-name="suite-Testing_Google_Apps" class="show-methods passed suite-Testing_Google_Apps"> (show)</a> <!-- show-methods passed suite-Testing_Google_Apps -->
+                    <span class="method-list-title skipped">Skipped methods</span>
+                    <span class="show-or-hide-methods skipped">
+                      <a href="#" panel-name="suite-Testing_Google_Apps" class="hide-methods skipped suite-Testing_Google_Apps"> (hide)</a> <!-- hide-methods skipped suite-Testing_Google_Apps -->
+                      <a href="#" panel-name="suite-Testing_Google_Apps" class="show-methods skipped suite-Testing_Google_Apps"> (show)</a> <!-- show-methods skipped suite-Testing_Google_Apps -->
                     </span>
-                    <div class="method-list-content passed suite-Testing_Google_Apps">
+                    <div class="method-list-content skipped suite-Testing_Google_Apps">
                       <span>
-                        <img src="passed.png" width="3%"/>
+                        <img src="skipped.png" width="3%"/>
                         <a href="#" panel-name="suite-Testing_Google_Apps" title="com.seo.regression.testing.RegressionTesting" class="method navigator-link" hash-for-method="startTest">startTest</a> <!-- method navigator-link -->
                       </span>
                       <br/>
-                    </div> <!-- method-list-content passed suite-Testing_Google_Apps -->
+                    </div> <!-- method-list-content skipped suite-Testing_Google_Apps -->
                   </li>
                 </ul>
               </div> <!-- suite-section-content -->
@@ -118,9 +118,9 @@
     <div class="wrapper">
       <div class="main-panel-root">
         <div panel-name="suite-Testing_Google_Apps" class="panel Testing_Google_Apps">
-          <div class="suite-Testing_Google_Apps-class-passed">
+          <div class="suite-Testing_Google_Apps-class-skipped">
             <div class="main-panel-header rounded-window-top">
-              <img src="passed.png"/>
+              <img src="skipped.png"/>
               <span class="class-name">com.seo.regression.testing.RegressionTesting</span>
             </div> <!-- main-panel-header rounded-window-top -->
             <div class="main-panel-content rounded-window-bottom">
@@ -129,10 +129,35 @@
                   <a name="startTest">
                   </a> <!-- startTest -->
                   <span class="method-name">startTest</span>
+                  <div class="stack-trace">org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 500. Message: session not created: Chrome failed to start: exited normally.
+  (session not created: DevToolsActivePort file doesn&apos;t exist)
+  (The process started from chrome location /usr/local/bin/google-chrome is no longer running, so ChromeDriver is assuming that Chrome has crashed.) 
+Host info: host: &apos;sko-automation-testing&apos;, ip: &apos;10.0.0.8&apos;
+Build info: version: &apos;4.14.0&apos;, revision: &apos;e5a96349ce&apos;
+System info: os.name: &apos;Linux&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;5.15.0-1049-azure&apos;, java.version: &apos;17.0.4.1&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [null, newSession {capabilities=[Capabilities {browserName: chrome, goog:chromeOptions: {args: [--headless], extensions: []}}]}]
+	at org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:140)
+	at org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:96)
+	at org.openqa.selenium.remote.ProtocolHandshake.createSession(ProtocolHandshake.java:68)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:163)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:196)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:171)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:602)
+	at org.openqa.selenium.remote.RemoteWebDriver.startSession(RemoteWebDriver.java:236)
+	at org.openqa.selenium.remote.RemoteWebDriver.&lt;init&gt;(RemoteWebDriver.java:163)
+	at org.openqa.selenium.chromium.ChromiumDriver.&lt;init&gt;(ChromiumDriver.java:108)
+	at org.openqa.selenium.chrome.ChromeDriver.&lt;init&gt;(ChromeDriver.java:88)
+	at org.openqa.selenium.chrome.ChromeDriver.&lt;init&gt;(ChromeDriver.java:83)
+	at org.openqa.selenium.chrome.ChromeDriver.&lt;init&gt;(ChromeDriver.java:72)
+	at com.seo.regression.testing.OpenWebsite.openDriver(OpenWebsite.java:28)
+	at com.seo.regression.testing.RegressionTesting.setup(RegressionTesting.java:47)
+... Removed 24 stack frames
+</div> <!-- stack-trace -->
                 </div> <!-- method-content -->
               </div> <!-- method -->
             </div> <!-- main-panel-content rounded-window-bottom -->
-          </div> <!-- suite-Testing_Google_Apps-class-passed -->
+          </div> <!-- suite-Testing_Google_Apps-class-skipped -->
         </div> <!-- panel Testing_Google_Apps -->
         <div panel-name="test-xml-Testing_Google_Apps" class="panel">
           <div class="main-panel-header rounded-window-top">
@@ -191,12 +216,12 @@ data.addRows(1);
 data.setCell(0, 0, 0)
 data.setCell(0, 1, 'startTest')
 data.setCell(0, 2, 'com.seo.regression.testing.RegressionTesting')
-data.setCell(0, 3, 32879);
+data.setCell(0, 3, 0);
 window.suiteTableData['Testing_Google_Apps']= { tableData: data, tableDiv: 'times-div-Testing_Google_Apps'}
 return data;
 }
               </script>
-              <span class="suite-total-time">Total running time: 32 seconds</span>
+              <span class="suite-total-time">Total running time: 0 ms</span>
               <div id="times-div-Testing_Google_Apps">
               </div> <!-- times-div-Testing_Google_Apps -->
             </div> <!-- times-div -->
@@ -224,17 +249,11 @@ return data;
             <div class="chronological-class">
               <div class="chronological-class-name">com.seo.regression.testing.RegressionTesting</div> <!-- chronological-class-name -->
               <div class="configuration-test before">
+                <img src="failed.png">
+                </img>
                 <span class="method-name">setup(chrome)</span>
                 <span class="method-start">0 ms</span>
               </div> <!-- configuration-test before -->
-              <div class="test-method">
-                <span class="method-name">startTest</span>
-                <span class="method-start">10772 ms</span>
-              </div> <!-- test-method -->
-              <div class="configuration-method after">
-                <span class="method-name">afterMethod([TestResult name=startTest status=SUCCESS method=RegressionTesting.startTest()[pri:0, instance:com.s...)</span>
-                <span class="method-start">43665 ms</span>
-              </div> <!-- configuration-method after -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->
       </div> <!-- main-panel-root -->

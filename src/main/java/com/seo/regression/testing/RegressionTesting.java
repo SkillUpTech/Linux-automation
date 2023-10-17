@@ -30,21 +30,39 @@ public class RegressionTesting
 	NewAboutCourseValidator newAboutCourseValidator;
 	RegressionGenericValidator regressionGenericValidator;
 	public static String ENV_TO_USE = "";
-	
+	String getEnvironment="";
 	WebDriver driver;
 	
 	@BeforeTest
-	@Parameters("browser")
-	public void setup(String browserName) throws Exception
+	//@Parameters("browser")
+	@Parameters({"browser", "env"})
+	public void setup(String browser, String env) throws Exception
 	{
 		System.out.println("welcome");
-	    if (browserName.equalsIgnoreCase("firefox"))
+	    if (browser.equalsIgnoreCase("firefox"))
 	    {
-	    	driver = OpenWebsite.openDriver(browserName);
+	    	driver = OpenWebsite.openDriver(browser);
 	    }
-	    else if (browserName.equalsIgnoreCase("Chrome"))
+	    else if (browser.equalsIgnoreCase("Chrome"))
 	    {
-	    	driver = OpenWebsite.openDriver(browserName);
+	    	if(env.equalsIgnoreCase("stage"))
+		    {
+		    	getEnvironment = "stage";
+		    }
+	    	else if(env.equalsIgnoreCase("prod"))
+	    	{
+	    		getEnvironment = "prod";
+	    	}
+	    	
+	    	driver = OpenWebsite.openDriver(browser);
+	    }
+	    else if(env.equalsIgnoreCase("stage"))
+	    {
+	    	getEnvironment = "stage";
+	    }
+	    else if(env.equalsIgnoreCase("prod"))
+	    {
+	    	getEnvironment = "prod";
 	    }
 	    else
 	    {
@@ -72,8 +90,12 @@ public class RegressionTesting
 			EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = ProcessExcel.readExcelFileAsRows(excelPath);
 			
 			ArrayList<ArrayList<String>> master = data.get("Master");// Master sheet in excel
-			ArrayList<String> environment = master.get(1);// Environment row in excel
-			ENV_TO_USE = environment.get(1);//Use envToUse appropriately
+			//ArrayList<String> environment = master.get(1);// Environment row in excel
+			/*
+			 * if(environment.get(0).equalsIgnoreCase(getEnvironment)) { ENV_TO_USE =
+			 * environment.get(1);//Use envToUse appropriately }
+			 */
+			ENV_TO_USE = getEnvironment;
 			ArrayList<String> browser = master.get(1);
 			ArrayList<String> pages = master.get(0);// Pages row in excel
 			for(int j = 0; j < pages.size(); j++)// iterating the pages row
@@ -181,7 +203,7 @@ public class RegressionTesting
 			endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 			duration = Utils.findDifference(startTime, endTime);
 			prepareConsolidatedSheet();
-			ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing", "result.xlsx");
+			ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "result.xlsx");
 		}
 	}
 	
