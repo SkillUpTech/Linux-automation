@@ -47,22 +47,22 @@ public class RegressionTesting
 	    {
 	    	if(env.equalsIgnoreCase("stage"))
 		    {
-		    	getEnvironment = "stage";
+		    	getEnvironment = "stage-in";
 		    }
 	    	else if(env.equalsIgnoreCase("prod"))
 	    	{
-	    		getEnvironment = "prod";
+	    		getEnvironment = "prod-in";
 	    	}
 	    	
 	    	driver = OpenWebsite.openDriver(browser);
 	    }
 	    else if(env.equalsIgnoreCase("stage"))
 	    {
-	    	getEnvironment = "stage";
+	    	getEnvironment = "stage-in";
 	    }
 	    else if(env.equalsIgnoreCase("prod"))
 	    {
-	    	getEnvironment = "prod";
+	    	getEnvironment = "prod-in";
 	    }
 	    else
 	    {

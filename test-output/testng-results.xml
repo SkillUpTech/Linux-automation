@@ -2,16 +2,21 @@
 <testng-results ignored="0" total="1" passed="0" failed="0" skipped="1">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2023-10-11T13:25:56 UTC" name="Testing Google Apps" finished-at="2023-10-11T13:26:00 UTC" duration-ms="3959">
+  <suite started-at="2023-10-18T05:23:47 UTC" name="Testing Google Apps" finished-at="2023-10-18T05:23:51 UTC" duration-ms="4292">
     <groups>
     </groups>
-    <test started-at="2023-10-11T13:25:56 UTC" name="Regression" finished-at="2023-10-11T13:26:00 UTC" duration-ms="3959">
+    <test started-at="2023-10-18T05:23:47 UTC" name="stage" finished-at="2023-10-18T05:23:51 UTC" duration-ms="4292">
       <class name="com.seo.regression.testing.RegressionTesting">
-        <test-method is-config="true" signature="setup(java.lang.String)[pri:0, instance:com.seo.regression.testing.RegressionTesting@7f485fda]" started-at="2023-10-11T13:25:56 UTC" name="setup" finished-at="2023-10-11T13:26:00 UTC" duration-ms="3687" status="FAIL">
+        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:com.seo.regression.testing.RegressionTesting@7f485fda]" started-at="2023-10-18T05:23:47 UTC" name="setup" finished-at="2023-10-18T05:23:51 UTC" duration-ms="4037" status="FAIL">
           <params>
             <param index="0">
               <value>
                 <![CDATA[chrome]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[stage]]>
               </value>
             </param>
           </params>
@@ -49,7 +54,7 @@ at org.openqa.selenium.chrome.ChromeDriver.<init>(ChromeDriver.java:88)
 at org.openqa.selenium.chrome.ChromeDriver.<init>(ChromeDriver.java:83)
 at org.openqa.selenium.chrome.ChromeDriver.<init>(ChromeDriver.java:72)
 at com.seo.regression.testing.OpenWebsite.openDriver(OpenWebsite.java:28)
-at com.seo.regression.testing.RegressionTesting.setup(RegressionTesting.java:47)
+at com.seo.regression.testing.RegressionTesting.setup(RegressionTesting.java:57)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -80,7 +85,7 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setup -->
-        <test-method signature="startTest()[pri:0, instance:com.seo.regression.testing.RegressionTesting@7f485fda]" started-at="2023-10-11T13:26:00 UTC" name="startTest" finished-at="2023-10-11T13:26:00 UTC" duration-ms="0" status="SKIP">
+        <test-method signature="startTest()[pri:0, instance:com.seo.regression.testing.RegressionTesting@7f485fda]" started-at="2023-10-18T05:23:51 UTC" name="startTest" finished-at="2023-10-18T05:23:51 UTC" duration-ms="0" status="SKIP">
           <exception class="org.openqa.selenium.SessionNotCreatedException">
             <message>
               <![CDATA[Could not start a new session. Response code 500. Message: session not created: Chrome failed to start: exited normally.
@@ -115,7 +120,7 @@ at org.openqa.selenium.chrome.ChromeDriver.<init>(ChromeDriver.java:88)
 at org.openqa.selenium.chrome.ChromeDriver.<init>(ChromeDriver.java:83)
 at org.openqa.selenium.chrome.ChromeDriver.<init>(ChromeDriver.java:72)
 at com.seo.regression.testing.OpenWebsite.openDriver(OpenWebsite.java:28)
-at com.seo.regression.testing.RegressionTesting.setup(RegressionTesting.java:47)
+at com.seo.regression.testing.RegressionTesting.setup(RegressionTesting.java:57)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -146,11 +151,11 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
           <reporter-output>
           </reporter-output>
         </test-method> <!-- startTest -->
-        <test-method is-config="true" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:com.seo.regression.testing.RegressionTesting@7f485fda]" started-at="2023-10-11T13:26:00 UTC" name="afterMethod" finished-at="2023-10-11T13:26:00 UTC" duration-ms="0" status="SKIP">
+        <test-method is-config="true" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:com.seo.regression.testing.RegressionTesting@7f485fda]" started-at="2023-10-18T05:23:51 UTC" name="afterMethod" finished-at="2023-10-18T05:23:51 UTC" duration-ms="0" status="SKIP">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- afterMethod -->
       </class> <!-- com.seo.regression.testing.RegressionTesting -->
-    </test> <!-- Regression -->
+    </test> <!-- stage -->
   </suite> <!-- Testing Google Apps -->
 </testng-results>

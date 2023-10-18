@@ -8,12 +8,5 @@
 			<class name="com.seo.regression.testing.RegressionTesting"/>
 		</classes>
      </test>
-     <test name="prod">
-     <parameter name = "browser" value = "chrome"/>
-     <parameter name="env" value="prod">
-     <classes>
-     	<class name = "com.seo.regression.testing.RegressionTesting"/>
-     </classes>
-     </parameter>
-     </test>
+     
 </suite> <!-- Suite -->

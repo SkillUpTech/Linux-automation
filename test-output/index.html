@@ -151,7 +151,7 @@ Command: [null, newSession {capabilities=[Capabilities {browserName: chrome, goo
 	at org.openqa.selenium.chrome.ChromeDriver.&lt;init&gt;(ChromeDriver.java:83)
 	at org.openqa.selenium.chrome.ChromeDriver.&lt;init&gt;(ChromeDriver.java:72)
 	at com.seo.regression.testing.OpenWebsite.openDriver(OpenWebsite.java:28)
-	at com.seo.regression.testing.RegressionTesting.setup(RegressionTesting.java:47)
+	at com.seo.regression.testing.RegressionTesting.setup(RegressionTesting.java:57)
 ... Removed 24 stack frames
 </div> <!-- stack-trace -->
                 </div> <!-- method-content -->
@@ -168,13 +168,13 @@ Command: [null, newSession {capabilities=[Capabilities {browserName: chrome, goo
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;!DOCTYPE suite SYSTEM &quot;https://testng.org/testng-1.0.dtd&quot;&gt;
 &lt;suite name=&quot;Testing Google Apps&quot; guice-stage=&quot;DEVELOPMENT&quot;&gt;
-  &lt;test thread-count=&quot;5&quot; name=&quot;Regression&quot;&gt;
-    &lt;parameter name=&quot;hostName&quot; value=&quot;stage-in&quot;/&gt;
+  &lt;test thread-count=&quot;5&quot; name=&quot;stage&quot;&gt;
     &lt;parameter name=&quot;browser&quot; value=&quot;chrome&quot;/&gt;
+    &lt;parameter name=&quot;env&quot; value=&quot;stage&quot;/&gt;
     &lt;classes&gt;
       &lt;class name=&quot;com.seo.regression.testing.RegressionTesting&quot;/&gt;
     &lt;/classes&gt;
-  &lt;/test&gt; &lt;!-- Regression --&gt;
+  &lt;/test&gt; &lt;!-- stage --&gt;
 &lt;/suite&gt; &lt;!-- Testing Google Apps --&gt;
             </pre>
           </div> <!-- main-panel-content rounded-window-bottom -->
@@ -186,7 +186,7 @@ Command: [null, newSession {capabilities=[Capabilities {browserName: chrome, goo
           <div class="main-panel-content rounded-window-bottom">
             <ul>
               <li>
-                <span class="test-name">Regression (1 class)</span>
+                <span class="test-name">stage (1 class)</span>
               </li>
             </ul>
           </div> <!-- main-panel-content rounded-window-bottom -->
@@ -251,7 +251,7 @@ return data;
               <div class="configuration-test before">
                 <img src="failed.png">
                 </img>
-                <span class="method-name">setup(chrome)</span>
+                <span class="method-name">setup(chrome, stage)</span>
                 <span class="method-start">0 ms</span>
               </div> <!-- configuration-test before -->
           </div> <!-- main-panel-content rounded-window-bottom -->
