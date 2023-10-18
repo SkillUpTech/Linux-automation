@@ -139,7 +139,7 @@
 					<goal>copy-resources</goal>				
 					</goals>
 					<configuration>
-					<outputDirectory></outputDirectory>
+					<outputDirectory>/home/edx-root/eclipse-workspace/Linux-automation</outputDirectory>
 					<resources>
 					<resource>
 					<directory>${suiteFileNames}</directory>
