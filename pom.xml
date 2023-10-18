@@ -6,7 +6,6 @@
 	<groupId>com.skillup</groupId>
 	<artifactId>seo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
 	<name>seo</name>
 	<!-- FIXME change it to the project's website -->
 	<url>http://www.example.com</url>
@@ -15,6 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
+		<suiteFileNames>/home/edx-root/eclipse-workspace/Linux-automation/TestNG.xml</suiteFileNames>
 	</properties>
 
 	<dependencies>
@@ -125,11 +125,29 @@
 				<plugin>
 					<artifactId>maven-clean-plugin</artifactId>
 					<version>3.1.0</version>
+					
 				</plugin>
 				<!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
 				<plugin>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>3.0.2</version>
+					<executions>
+					<execution>
+					<id>copy-resources</id>
+					<phase>validate</phase>
+					<goals>
+					<goal>copy-resources</goal>				
+					</goals>
+					<configuration>
+					<outputDirectory></outputDirectory>
+					<resources>
+					<resource>
+					<directory>${suiteFileNames}</directory>
+					</resource>
+					</resources>
+					</configuration>
+					</execution>
+					</executions>
 				</plugin>
 				
 		<plugin>
@@ -139,7 +157,7 @@
         <inherited>true</inherited>
         <configuration>
           <suiteXmlFiles>
-            <suiteXmlFile>TestNG.xml</suiteXmlFile>
+            <suiteXmlFile>${suiteFileNames}</suiteXmlFile>
           </suiteXmlFiles>
         </configuration>
       </plugin>

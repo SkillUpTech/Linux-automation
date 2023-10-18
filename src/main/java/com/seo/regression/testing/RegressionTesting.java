@@ -35,8 +35,8 @@ public class RegressionTesting
 	
 	@BeforeTest
 	//@Parameters("browser")
-	@Parameters({"browser", "env"})
-	public void setup(String browser, String env) throws Exception
+	@Parameters({"browser", "environment"})
+	public void setup(String browser, String environment) throws Exception
 	{
 		System.out.println("welcome");
 	    if (browser.equalsIgnoreCase("firefox"))
@@ -94,7 +94,7 @@ public class RegressionTesting
 			
 			  if(environment.contains(getEnvironment))
 			  { 
-				  ENV_TO_USE = environment.get(1);//Use envToUse appropriately
+				  ENV_TO_USE = getEnvironment;//Use envToUse appropriately
 				  System.out.println("environment is : "+ENV_TO_USE);
 			  }
 			 
