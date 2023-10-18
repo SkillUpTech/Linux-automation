@@ -14,7 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
-		<suiteFileNames>src/main/resources/TestNG.xml</suiteFileNames>
+		 <suiteFilename>TestNG.xml</suiteFilename>
 		
 	</properties>
 
@@ -119,16 +119,7 @@
 	</dependencies>
 
 	<build>
-	<resources>
-	<resource>
-	<directory>src/main/resources</directory>
-	 <includes>
-                <include>TestNG.xml</include>
-            </includes>
-	<filtering>true</filtering>
-	</resource>
-	</resources>
-		<pluginManagement>
+	
 			<!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
 			<plugins>
 				<!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
@@ -139,6 +130,7 @@
 				</plugin>
 				<!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
 				<plugin>
+				 <groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>3.0.2</version>
 					<executions>
@@ -148,15 +140,17 @@
 					<goals>
 						<goal>copy-resources</goal>				
 					</goals>
-					<configuration>
-						<outputDirectory>/home/edx-root/eclipse-workspace/Linux-automation</outputDirectory>
-					<resources>
-					<resource>
-					<directory>${suiteFileNames}</directory>
-					<filtering>true</filtering>
-					</resource>
-					</resources>
-					</configuration>
+					 <configuration>
+          <outputDirectory>target</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>/src/main/resources</directory>
+                                    <includes>
+                                        <include>${suiteFilename}</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+        </configuration>
 					</execution>
 					</executions>
 				</plugin>
@@ -168,7 +162,7 @@
         <inherited>true</inherited>
         <configuration>
           <suiteXmlFiles>
-            <suiteXmlFile>${suiteFileNames}</suiteXmlFile>
+            <suiteXmlFile>TestNG.xml</suiteXmlFile>
           </suiteXmlFiles>
         </configuration>
       </plugin>
@@ -204,6 +198,5 @@
 				</plugin>
 
 			</plugins>
-		</pluginManagement>
 	</build>
 </project>
