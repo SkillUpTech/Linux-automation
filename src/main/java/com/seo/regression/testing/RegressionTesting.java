@@ -45,22 +45,22 @@ public class RegressionTesting
 	    }
 	    else if (browser.equalsIgnoreCase("Chrome"))
 	    {
-	    	if(env.equalsIgnoreCase("stage"))
+	    	if(environment.equalsIgnoreCase("stage"))
 		    {
 		    	getEnvironment = "stage-in";
 		    }
-	    	else if(env.equalsIgnoreCase("prod"))
+	    	else if(environment.equalsIgnoreCase("prod"))
 	    	{
 	    		getEnvironment = "prod-in";
 	    	}
 	    	
 	    	driver = OpenWebsite.openDriver(browser);
 	    }
-	    else if(env.equalsIgnoreCase("stage"))
+	    else if(environment.equalsIgnoreCase("stage"))
 	    {
 	    	getEnvironment = "stage-in";
 	    }
-	    else if(env.equalsIgnoreCase("prod"))
+	    else if(environment.equalsIgnoreCase("prod"))
 	    {
 	    	getEnvironment = "prod-in";
 	    }
