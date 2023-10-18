@@ -2,12 +2,12 @@
 <testng-results ignored="0" total="1" passed="0" failed="0" skipped="1">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2023-10-18T05:23:47 UTC" name="Testing Google Apps" finished-at="2023-10-18T05:23:51 UTC" duration-ms="4292">
+  <suite started-at="2023-10-18T06:23:26 UTC" name="Testing Google Apps" finished-at="2023-10-18T06:24:00 UTC" duration-ms="34210">
     <groups>
     </groups>
-    <test started-at="2023-10-18T05:23:47 UTC" name="stage" finished-at="2023-10-18T05:23:51 UTC" duration-ms="4292">
+    <test started-at="2023-10-18T06:23:26 UTC" name="stage" finished-at="2023-10-18T06:24:00 UTC" duration-ms="34210">
       <class name="com.seo.regression.testing.RegressionTesting">
-        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:com.seo.regression.testing.RegressionTesting@7f485fda]" started-at="2023-10-18T05:23:47 UTC" name="setup" finished-at="2023-10-18T05:23:51 UTC" duration-ms="4037" status="FAIL">
+        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:com.seo.regression.testing.RegressionTesting@d737b89]" started-at="2023-10-18T06:23:26 UTC" name="setup" finished-at="2023-10-18T06:24:00 UTC" duration-ms="33979" status="FAIL">
           <params>
             <param index="0">
               <value>
@@ -85,7 +85,7 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setup -->
-        <test-method signature="startTest()[pri:0, instance:com.seo.regression.testing.RegressionTesting@7f485fda]" started-at="2023-10-18T05:23:51 UTC" name="startTest" finished-at="2023-10-18T05:23:51 UTC" duration-ms="0" status="SKIP">
+        <test-method signature="startTest()[pri:0, instance:com.seo.regression.testing.RegressionTesting@d737b89]" started-at="2023-10-18T06:24:00 UTC" name="startTest" finished-at="2023-10-18T06:24:00 UTC" duration-ms="0" status="SKIP">
           <exception class="org.openqa.selenium.SessionNotCreatedException">
             <message>
               <![CDATA[Could not start a new session. Response code 500. Message: session not created: Chrome failed to start: exited normally.
@@ -151,7 +151,7 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
           <reporter-output>
           </reporter-output>
         </test-method> <!-- startTest -->
-        <test-method is-config="true" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:com.seo.regression.testing.RegressionTesting@7f485fda]" started-at="2023-10-18T05:23:51 UTC" name="afterMethod" finished-at="2023-10-18T05:23:51 UTC" duration-ms="0" status="SKIP">
+        <test-method is-config="true" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:com.seo.regression.testing.RegressionTesting@d737b89]" started-at="2023-10-18T06:24:00 UTC" name="afterMethod" finished-at="2023-10-18T06:24:00 UTC" duration-ms="0" status="SKIP">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- afterMethod -->
