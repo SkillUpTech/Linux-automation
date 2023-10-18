@@ -34,9 +34,8 @@ public class RegressionTesting
 	WebDriver driver;
 	
 	@BeforeTest
-	//@Parameters("browser")
-	@Parameters({"browser", "environment"})
-	public void setup(String browser, String environment) throws Exception
+	@Parameters("browser")
+	public void setup(String browser) throws Exception
 	{
 		System.out.println("welcome");
 	    if (browser.equalsIgnoreCase("firefox"))
@@ -45,24 +44,7 @@ public class RegressionTesting
 	    }
 	    else if (browser.equalsIgnoreCase("Chrome"))
 	    {
-	    	if(environment.equalsIgnoreCase("stage"))
-		    {
-		    	getEnvironment = "stage-in";
-		    }
-	    	else if(environment.equalsIgnoreCase("prod"))
-	    	{
-	    		getEnvironment = "prod-in";
-	    	}
-	    	
 	    	driver = OpenWebsite.openDriver(browser);
-	    }
-	    else if(environment.equalsIgnoreCase("stage"))
-	    {
-	    	getEnvironment = "stage-in";
-	    }
-	    else if(environment.equalsIgnoreCase("prod"))
-	    {
-	    	getEnvironment = "prod-in";
 	    }
 	    else
 	    {
@@ -90,12 +72,16 @@ public class RegressionTesting
 			EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = ProcessExcel.readExcelFileAsRows(excelPath);
 			
 			ArrayList<ArrayList<String>> master = data.get("Master");// Master sheet in excel
-			ArrayList<String> environment = master.get(1);// Environment row in excel
-			
-			  if(environment.contains(getEnvironment))
+			ArrayList<String> getEnvironment = master.get(1);// Environment row in excel
+			System.out.println("reading environment from jenkins");
+			System.out.println(System.getProperty("environment"));
+			  if(System.getProperty("environment").equalsIgnoreCase("stage"))
 			  { 
-				  ENV_TO_USE = getEnvironment;//Use envToUse appropriately
-				  System.out.println("environment is : "+ENV_TO_USE);
+				  ENV_TO_USE = "stage-in";//Use envToUse appropriately
+			  }
+			  else if(System.getProperty("environment").equalsIgnoreCase("prod"))
+			  {
+				  ENV_TO_USE = "prod-in";
 			  }
 			 
 			ArrayList<String> browser = master.get(1);

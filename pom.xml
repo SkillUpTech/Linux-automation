@@ -14,7 +14,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
-		 <suiteFilename>TestNG.xml</suiteFilename>
 		
 	</properties>
 
@@ -129,31 +128,7 @@
 					
 				</plugin>
 				<!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
-				<plugin>
-				 <groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.0.2</version>
-					<executions>
-						<execution>
-							<id>copy-resources</id>
-							<phase>validate</phase>
-					<goals>
-						<goal>copy-resources</goal>				
-					</goals>
-					 <configuration>
-          <outputDirectory>target</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>/src/main/resources</directory>
-                                    <includes>
-                                        <include>${suiteFilename}</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-        </configuration>
-					</execution>
-					</executions>
-				</plugin>
+			
 				
 		<plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -161,8 +136,11 @@
         <version>3.1.2</version>
         <inherited>true</inherited>
         <configuration>
+        <systemPropertyVariables>
+        <environment>${Denvironment}</environment>
+        </systemPropertyVariables>
           <suiteXmlFiles>
-            <suiteXmlFile>TestNG.xml</suiteXmlFile>
+            <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
           </suiteXmlFiles>
         </configuration>
       </plugin>
