@@ -92,7 +92,7 @@ public class RegressionTesting
 			ArrayList<ArrayList<String>> master = data.get("Master");// Master sheet in excel
 			ArrayList<String> environment = master.get(1);// Environment row in excel
 			
-			  if(environment.toString().contains(getEnvironment))
+			  if(environment.contains(getEnvironment))
 			  { 
 				  ENV_TO_USE = environment.get(1);//Use envToUse appropriately
 				  System.out.println("environment is : "+ENV_TO_USE);

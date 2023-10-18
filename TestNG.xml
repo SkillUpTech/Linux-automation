@@ -3,7 +3,7 @@
 <suite name="Testing Google Apps">
     <test name="stage">
 		<parameter name = "browser" value = "chrome"/>
-		<parameter name = "env" value = "${env}"/>
+		<parameter name = "env" value = "${environment}"/>
 		<classes>
 			<class name="com.seo.regression.testing.RegressionTesting"/>
 		</classes>
