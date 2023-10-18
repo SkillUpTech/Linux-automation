@@ -118,6 +118,12 @@
 	</dependencies>
 
 	<build>
+	<resources>
+	<resource>
+	<directory>/home/edx-root/eclipse-workspace/Linux-automation</directory>
+	<filtering>true</filtering>
+	</resource>
+	</resources>
 		<pluginManagement>
 			<!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
 			<plugins>
@@ -143,6 +149,7 @@
 					<resources>
 					<resource>
 					<directory>${suiteFileNames}</directory>
+					<filtering>true</filtering>
 					</resource>
 					</resources>
 					</configuration>
