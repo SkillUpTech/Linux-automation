@@ -15,6 +15,7 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<suiteFileNames>src/main/resources/TestNG.xml</suiteFileNames>
+		
 	</properties>
 
 	<dependencies>
@@ -120,7 +121,10 @@
 	<build>
 	<resources>
 	<resource>
-	<directory>/home/edx-root/eclipse-workspace/Linux-automation</directory>
+	<directory>src/main/resources</directory>
+	 <includes>
+                <include>TestNG.xml</include>
+            </includes>
 	<filtering>true</filtering>
 	</resource>
 	</resources>
