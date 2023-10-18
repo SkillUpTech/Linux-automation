@@ -95,6 +95,7 @@ public class RegressionTesting
 			  if(environment.toString().contains(getEnvironment))
 			  { 
 				  ENV_TO_USE = environment.get(1);//Use envToUse appropriately
+				  System.out.println("environment is : "+ENV_TO_USE);
 			  }
 			 
 			ArrayList<String> browser = master.get(1);
