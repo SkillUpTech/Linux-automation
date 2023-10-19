@@ -1,6 +1,7 @@
 
 package com.seo.regression.testing;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -73,6 +74,7 @@ public class RegressionTesting
 			
 			ArrayList<ArrayList<String>> master = data.get("Master");// Master sheet in excel
 			ArrayList<String> getEnvironment = master.get(1);// Environment row in excel
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 			System.out.println("reading environment from jenkins");
 			System.out.println(System.getProperty("environment"));
 			  if(System.getProperty("environment").equalsIgnoreCase("stage"))
