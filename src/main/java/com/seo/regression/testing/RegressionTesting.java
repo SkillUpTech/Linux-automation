@@ -81,7 +81,7 @@ public class RegressionTesting
 	
 	public void startTesting()
 	{
-		String excelPath = "D:\\Doc\\RegressionTesting.xlsx";
+		String excelPath = "/home/edx-root/Desktop/testing/TestData.xlsx";
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		try
@@ -233,11 +233,11 @@ public class RegressionTesting
 	        
 			if(driver.getCurrentUrl().contains("stage"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "stage_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "stage_result_" + formattedDateTime + ".xlsx");
 			}
 			else if(!"stage".contains(driver.getCurrentUrl()))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "prod_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "prod_result_" + formattedDateTime + ".xlsx");
 			}
 		}
 	}
