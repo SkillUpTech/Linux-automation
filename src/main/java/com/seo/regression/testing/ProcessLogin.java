@@ -24,6 +24,7 @@ public class ProcessLogin
 	public ProcessLogin(WebDriver driver) 
 	{
 		this.driver = driver;
+		
 	}
 	public String loginFunction(String userName, String passWord) throws InterruptedException
 	{
@@ -54,6 +55,7 @@ public class ProcessLogin
 					Thread.sleep(2000);
 					JavascriptExecutor js = (JavascriptExecutor)driver;
 					js.executeScript("window.scrollBy(0, 200)", "");
+					Thread.sleep(2000);
 					WebElement userNameElement = driver.findElement(By.cssSelector("input#email"));
 					userNameElement.clear();
 					userNameElement.sendKeys(userName);
@@ -158,7 +160,7 @@ public class ProcessLogin
 						WebElement clickDropdownIcon = driver.findElement(By.cssSelector("li[class='Header_SigNUP__cUzCw'] img[alt='icon']"));
 						clickDropdownIcon.click();
 						Thread.sleep(2000);
-						WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Primary02_Blue'] li:nth-child(5) a"));
+						WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header_Primary'] li:nth-child(5) a"));
 						JavascriptExecutor js = (JavascriptExecutor) driver;
 						js.executeScript("arguments[0].click()", clickSignOut);
 						Thread.sleep(2000);
@@ -168,7 +170,7 @@ public class ProcessLogin
 					{
 						Thread.sleep(1000);
 						driver.switchTo().window(windows);
-						WebElement clickDropDown = driver.findElement(By.cssSelector("li[class='SigNUP'] img[class='dPaRoW']"));
+						WebElement clickDropDown = driver.findElement(By.cssSelector("li[class*='SigNUP'] img[alt='icon']"));
 						clickDropDown.click();
 						Thread.sleep(1000);
 						WebElement checkLoggedName = driver.findElement(By.cssSelector("li[class*='SigNUP'] ul[class*='dropdown-menu'] li:nth-child(1) a"));
@@ -178,7 +180,7 @@ public class ProcessLogin
 							loginStatus = "Success";
 							System.out.println("logged in successfully");
 							Thread.sleep(2000);
-							WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Primary02_Blue'] li:nth-child(5) a"));
+							WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header_Primary'] li:nth-child(5) a"));
 							JavascriptExecutor js = (JavascriptExecutor) driver;
 							js.executeScript("arguments[0].click()", clickSignOut);
 							System.out.println("log out successfully");
@@ -204,11 +206,11 @@ public class ProcessLogin
 	{
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
 		Thread.sleep(2000);
-		WebElement clickDropdown = driver.findElement(By.cssSelector("li[class='SigNUP'] img[class='dPaRoW']"));
+		WebElement clickDropdown = driver.findElement(By.cssSelector("li[class*='SigNUP'] img[class='dPaRoW']"));
 		wait.until(ExpectedConditions.elementToBeClickable(clickDropdown));
 		clickDropdown.click();
 		Thread.sleep(2000);
-		WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Primary02_Blue'] li:nth-child(5) a"));
+		WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header_Primary'] li:nth-child(5) a"));
 		wait.until(ExpectedConditions.elementToBeClickable(clickSignOut));
 		clickSignOut.click();
 		System.out.println("logout successfully");

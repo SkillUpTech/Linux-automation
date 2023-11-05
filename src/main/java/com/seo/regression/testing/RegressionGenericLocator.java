@@ -47,7 +47,7 @@ public class RegressionGenericLocator {
 
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "D:\\Doc\\chrome 116\\chromedriver-win64\\chromedriver.exe");
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
 		options.addArguments("--disable notifications");
@@ -321,7 +321,7 @@ public class RegressionGenericLocator {
 					else 
 					{
 						WebElement closePopUp = driver
-								.findElement(By.xpath("(//button[@class='btn-close shadow-none'])[2]"));
+								.findElement(By.xpath("(//button[@class='btn-close shadow-none'])"));//(//button[@class='btn-close shadow-none'])[2]
 						closePopUp.click();
 						freeConsultationStatus.add("pass");
 					}
@@ -1142,35 +1142,40 @@ public class RegressionGenericLocator {
 				clickShareLink.click();
 			}
 			Thread.sleep(2000);
-			WebElement copyLink = driver
-					.findElement(By.cssSelector("button[class='btn shadow-none ShareCourse_copyButton___ztrR']"));
+			WebElement copyLink = driver.findElement(By.cssSelector("button[class*='btn shadow-none shareSocialMedia_copyButton']"));
 			String getLinkText = copyLink.getText();
 			copyLink.click();
 			List<WebElement> share = driver.findElements(By.cssSelector("a[class='ShareCourse_socialIcon__f7x_3']"));
 			for (int i = 0; i < share.size(); i++)
 			{
-				if (share.get(i).getAttribute("href").contains(shareFromExcel)) {
+				if(share.get(i).getAttribute("href").contains(shareFromExcel))
+				{
 					share.get(i).click();
 					String parentWindow = driver.getWindowHandle();
 					Set<String> allWindow = driver.getWindowHandles();
 					Iterator<String> itr = allWindow.iterator();
-					while (itr.hasNext()) {
+					while (itr.hasNext())
+					{
 						String childWindow = itr.next();
-						if (!parentWindow.equalsIgnoreCase(childWindow)) {
+						if(!parentWindow.equalsIgnoreCase(childWindow))
+						{
 							driver.switchTo().window(childWindow);
-							if (driver.getCurrentUrl().contains("twitter")) {
+							if (driver.getCurrentUrl().contains("twitter"))
+							{
 								driver.switchTo().window(childWindow);
 								System.out.println("twitter screen");
 								driver.close();
 								driver.switchTo().window(parentWindow);
 							}
-							if (driver.getCurrentUrl().equalsIgnoreCase("facebook")) {
+							if (driver.getCurrentUrl().equalsIgnoreCase("facebook"))
+							{
 								driver.switchTo().window(childWindow);
 								System.out.println("facebook screen");
 								driver.close();
 								driver.switchTo().window(parentWindow);
 							}
-							if (driver.getCurrentUrl().equalsIgnoreCase("linked")) {
+							if (driver.getCurrentUrl().equalsIgnoreCase("linked"))
+							{
 								driver.switchTo().window(childWindow);
 								System.out.println("linkedIn Screen");
 								driver.close();
@@ -1180,7 +1185,7 @@ public class RegressionGenericLocator {
 					}
 				}
 			}
-			driver.findElement(By.cssSelector("div#share-course button[class='btn-close shadow-none']")).click();
+			//driver.findElement(By.cssSelector("div#share-course button[class='btn-close shadow-none']")).click();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1262,9 +1267,11 @@ public class RegressionGenericLocator {
 		}
 	}
 
-	public ArrayList<String> subscribeLocator(ArrayList<String> subscribeFromExcel) {
+	public ArrayList<String> subscribeLocator(ArrayList<String> subscribeFromExcel)
+	{
 		ArrayList<String> checkSubscribeProcess = new ArrayList<String>();
-		try {
+		try
+		{
 			String getValue = subscribeFromExcel.get(1);
 			String splitDetails[] = getValue.split("-split-");
 			String key = splitDetails[0];
@@ -1292,8 +1299,10 @@ public class RegressionGenericLocator {
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 			js.executeScript("window.scrollBy(0,100)");
 			WebElement clickSubscribe = driver.findElement(By.xpath("(//button[contains(text(),'Subscribe')])[2]"));
-			if (clickSubscribe.isDisplayed()) {
-				try {
+			if (clickSubscribe.isDisplayed())
+			{
+				try 
+				{
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					js.executeScript("arguments[0].scrollIntoView()", clickSubscribe);
 					WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
@@ -1301,16 +1310,21 @@ public class RegressionGenericLocator {
 					// clickSubscribe.click();
 					((JavascriptExecutor) driver).executeScript("arguments[0].click();", clickSubscribe);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-				} catch (Exception e) {
+				} 
+				catch (Exception e)
+				{
 					e.printStackTrace();
 					checkSubscribeProcess.add("fail");
 				}
 				List<WebElement> checkValidationLocator = driver
 						.findElements(By.cssSelector("p[class='mt-2  NewsAndUpdates_inputMessage___Y1G_ mt-1']"));
-				if (checkValidationLocator.size() > 0) {
+				if (checkValidationLocator.size() > 0)
+				{
 					System.out.println("validation message shown");
 					checkSubscribeProcess.add("fail");
-				} else {
+				} 
+				else
+				{
 					checkSubscribeProcess.add("pass");
 				}
 			}

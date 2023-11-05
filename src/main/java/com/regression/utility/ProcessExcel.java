@@ -1,5 +1,6 @@
 package com.regression.utility;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,7 +25,12 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-
+/**
+ * Read and write excel
+ * Can read as rows or as table
+ * @author Hemamalini
+ *
+ */
 public class ProcessExcel 
 {
 	private static LinkedHashMap<String, List<HashMap<String, String>>> DATA_AS_TABLE = new LinkedHashMap<String, List<HashMap<String, String>>>();
@@ -40,7 +46,12 @@ public class ProcessExcel
 		return DATA_AS_ROWS;
 	}
 	
-	
+	/**
+	 * Read excel file as rows
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 */
 	public static LinkedHashMap<String, ArrayList<ArrayList<String>>> readExcelFileAsRows(String path) throws IOException
 	{
 		File file = new File(path);
@@ -147,7 +158,7 @@ public class ProcessExcel
 		 XSSFCellStyle cellStyle = workbook.createCellStyle();//new code
 		for(Entry<String, ArrayList<ArrayList<String>>> entry: data.entrySet())
 		{
-			String sheetName = entry.getKey();
+			String sheetName = entry.getKey();//sheet name
 			String sheetTabColor = "";
 			if(sheetName.indexOf(Utils.DELIMITTER) >= 0)
 			{

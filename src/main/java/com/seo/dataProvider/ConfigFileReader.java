@@ -5,10 +5,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+import javax.management.RuntimeErrorException;
+
 public class ConfigFileReader 
 {
 	private static Properties properties;
-	private static final String PROPERTY_FILE_PATH = "C:\\Users\\Skillup 200\\eclipse-workspace\\seo\\src\\main\\java\\com\\seo\\utility\\config.properties";
+	private static final String PROPERTY_FILE_PATH = "D:\\AutomationTestingWorkspace\\sko-qa-automation\\src\\main\\java\\com\\seo\\utility\\config.properties";
 	static
 	{
 		BufferedReader reader;
@@ -31,6 +33,11 @@ public class ConfigFileReader
 			e.printStackTrace();
 			throw new RuntimeException("Configuration.properties not found at " + PROPERTY_FILE_PATH);
 		}
+	}
+	
+	public static String getProperty(String property)
+	{
+		return properties.getProperty(property);
 	}
 	
 	public static String getchromeDriverPath()
@@ -78,6 +85,110 @@ public class ConfigFileReader
 		else
 		{
 			throw new RuntimeException("excelPath is not found in property file");
+		}
+	}
+	
+	public static String getAboutCourseURL()
+	{
+		String aboutCourseURL = properties.getProperty("aboutCourseURL");
+		if(aboutCourseURL != null)
+		{
+			return aboutCourseURL;
+		}
+		else
+		{
+			throw new RuntimeException("AboutCourse URL is not found in property file");
+		}
+	}
+	
+	public static String getSEOLoginURL()
+	{
+		String seoLoginURL = properties.getProperty("seoLoginURL");
+		if(seoLoginURL != null)
+		{
+			return seoLoginURL;
+		}
+		else
+		{
+			throw new RuntimeException("AboutCourse URL is not found in property file");
+		}
+	}
+	
+	public static String getUsername()
+	{
+		String username = properties.getProperty("username");
+		if(username != null)
+		{
+			return username;
+		}
+		else
+		{
+			throw new RuntimeException("username is not in property file");
+		}
+	}
+	
+	public static String getPassword()
+	{
+		String password = properties.getProperty("password");
+		if(password != null)
+		{
+			return password;
+		}
+		else
+		{
+			throw new RuntimeException("password is not in property file");
+		}
+	}
+	
+	public static String getPlan()
+	{
+		String plan = properties.getProperty("enrollPlan");
+		if(plan != null)
+		{
+			return plan;
+		}
+		else
+		{
+			throw new RuntimeException("enroll plan is not in property file");
+		}
+	}
+	
+	public static String getDevPaymentMode()
+	{
+		String devPaymentMode = properties.getProperty("devPaymentmode");
+		if(devPaymentMode != null)
+		{
+			return devPaymentMode;
+		}
+		else
+		{
+			throw new RuntimeException("devPaymentMode is not available in property file");
+		}
+	}
+	
+	public static String getNetBanking()
+	{
+		String nameOfNetBanking = properties.getProperty("nameOfNetBanking");
+		if(nameOfNetBanking != null)
+		{
+			return nameOfNetBanking;
+		}
+		else
+		{
+			throw new RuntimeException("nameOfNetBanking is not available in property file");
+		}
+	}
+	
+	public static String getPaymentMode()
+	{
+		String qaPaymentMode = properties.getProperty("qaPaymentMode");
+		if(qaPaymentMode != null)
+		{
+			return qaPaymentMode;
+		}
+		else
+		{
+			throw new RuntimeException("qaPaymentMode is not available in property file");
 		}
 	}
 }

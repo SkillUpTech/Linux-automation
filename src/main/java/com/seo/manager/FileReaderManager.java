@@ -1,7 +1,5 @@
 package com.seo.manager;
 
-import org.apache.log4j.Logger;
-
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.pompages.CourseDetailsPage;
 

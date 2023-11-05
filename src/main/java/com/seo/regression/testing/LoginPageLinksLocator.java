@@ -14,7 +14,7 @@ public class LoginPageLinksLocator {
 
 	String url ;
 	WebDriver driver;
-	OpenWebsite openWebsite;
+	//OpenWebsite openWebsite;
 	
 	@FindBy(css = "ul[class='list-unstyled navbar-nav nav Header_navButtons__3h4Rp']>li[class='Header_loginBtn__3Xv3A']>a")
 	private WebElement clickLoginIcon;

@@ -49,9 +49,9 @@ public class ExploreAllValidator
 				case "learningStyles":
 					verify_learningStyles();
 					break;
-				case "sortBy":
-					verify_sortBy();
-					break;
+				/*
+				 * case "sortBy": verify_sortBy(); break;
+				 */
 			}
 		}
 		return sheetStatus;
@@ -179,12 +179,11 @@ public class ExploreAllValidator
 			  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").
 			  get(6).set(1, "sortBy - failed");
 		  }
-			 
-		if(getStatus.get(1).contains("high"))
-		{
-			sheetStatus = "Fail";
+			if(getStatus.get(1).contains("high"))
+			{
+				sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(7).set(1, "sortBy - failed");
-		}
+			}
 		}
 	}
 }

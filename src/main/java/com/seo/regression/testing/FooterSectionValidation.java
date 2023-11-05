@@ -62,7 +62,7 @@ public class FooterSectionValidation
 					verifyTermsofService();
 					break;
 				case "blog":
-					verifyBlog();
+					verifyBlog(row);
 					break;
 				case "popularCategories":
 					verifyPopularCategories(row);
@@ -197,14 +197,22 @@ public class FooterSectionValidation
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(10).set(0, "termsOfservice - failed");
 		}
 	}
-	public void verifyBlog() throws InterruptedException
+	public void verifyBlog(ArrayList<String> checkURL) throws InterruptedException
 	{
 		String status = "failed";
-		String skillupLogoProcess = footerSectionLocator.verifyBlog();
-		if(skillupLogoProcess.equalsIgnoreCase(status))
+		if(!checkURL.contains("NA"))
 		{
-			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(11).set(0, "blog - failed");
+			String skillupLogoProcess = footerSectionLocator.verifyBlog();
+			if(skillupLogoProcess.equalsIgnoreCase(status))
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(11).set(0, "blog - failed");
+			}
+		}
+		else
+		{
+			//markProcessIgnored();
+			System.out.println("not executing");
 		}
 	}
 	public void verifyPopularCategories(ArrayList<String> data) throws InterruptedException
@@ -251,4 +259,6 @@ public class FooterSectionValidation
 			}
 		}
 	}
+
+
 }

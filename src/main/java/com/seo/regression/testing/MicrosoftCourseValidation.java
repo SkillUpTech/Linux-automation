@@ -33,7 +33,7 @@ public class MicrosoftCourseValidation
 					MicrosftPage();
 					break;
 				case "MicrosoftScourses":
-					MicrosoftScourses(row);
+					MicrosoftScourses();
 					break;
 			}
 		}
@@ -53,15 +53,15 @@ public class MicrosoftCourseValidation
 		}
 	}
 	
-	public void MicrosoftScourses(ArrayList<String> courses)
+	public void MicrosoftScourses()
 	{
-		ArrayList<String> getStatus = microsoftCourseLocator.verifyMicrosoftScourses(courses);
+		ArrayList<String> getStatus = microsoftCourseLocator.verifyMicrosoftScourses();
 		if(getStatus.size()>0)
 		{
 			for(int i = 0; i < getStatus.size(); i++)
 			{
 				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("MicrosoftPage").get(1).add(i+1, (getStatus.get(i) + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("MicrosoftPage").get(1).add(i+1, (getStatus.get(i) + "MicrosoftScourses - failed"));
 			}
 		}
 	}

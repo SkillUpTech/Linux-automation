@@ -19,7 +19,6 @@ public class SignUpLocator
 {
 	String url ;
 	WebDriver driver;
-	OpenWebsite openWebsite;
 	
 	public SignUpLocator(WebDriver driver)
 	{
@@ -126,6 +125,12 @@ public class SignUpLocator
 	public ArrayList<Integer> checkFullName(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		System.out.println("FullName validation started");
+		OpenWebsite.openSite(driver);
+		/*
+		 * WebElement signupClick = driver.findElement(By.
+		 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
+		 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
+		 */
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
@@ -141,11 +146,11 @@ public class SignUpLocator
 				System.out.println("sign up page");
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				this.signUpFunction(dataFromExcel);
+				//this.signUpFunction(dataFromExcel);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				Thread.sleep(1000);
-			//	statusOfTestCase = this.checkValidationMessage();
+			statusOfTestCase = this.checkValidationMessage();
 				System.out.println("Invalid FullName Validation process done");
 				Thread.sleep(1000);
 				driver.close();
@@ -155,10 +160,15 @@ public class SignUpLocator
 		Thread.sleep(1000);
 		return statusOfTestCase;
 	}
-	
 	public ArrayList<Integer> checkEmail(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		System.out.println(" Invalid Email validation started");
+		OpenWebsite.openSite(driver);
+		/*
+		 * WebElement signupClick = driver.findElement(By.
+		 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
+		 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
+		 */
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
 		String parentWindow = driver.getWindowHandle();
@@ -170,7 +180,7 @@ public class SignUpLocator
 			{
 				driver.switchTo().window(window);
 				System.out.println("sign up page");
-			//	this.signUpFunction(dataFromExcel);
+				//this.signUpFunction(dataFromExcel);
 				Thread.sleep(1000);
 				statusOfTestCase = this.checkValidationMessage();
 				Thread.sleep(1000);
@@ -186,6 +196,12 @@ public class SignUpLocator
 	public ArrayList<Integer> checkPassword(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		System.out.println("Invalid Password validation started");
+		OpenWebsite.openSite(driver);
+		/*
+		 * WebElement signupClick = driver.findElement(By.
+		 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
+		 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
+		 */
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
 		String parentWindow = driver.getWindowHandle();
@@ -212,6 +228,12 @@ public class SignUpLocator
 	public ArrayList<Integer> checkMobileNumber(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		System.out.println("Invalid mobile validation started");
+		OpenWebsite.openSite(driver);
+		/*
+		 * WebElement signupClick = driver.findElement(By.
+		 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
+		 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
+		 */
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
 		String parentWindow = driver.getWindowHandle();
@@ -241,6 +263,12 @@ public class SignUpLocator
 		try
 		{
 			System.out.println("sign up validation started with valid data");
+			OpenWebsite.openSite(driver);
+			/*
+			 * WebElement signupClick = driver.findElement(By.
+			 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
+			 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
+			 */
 			this.signUpPage();//click sign up icon
 			String parentWindow = driver.getWindowHandle();
 			Set<String> allWindows = driver.getWindowHandles();

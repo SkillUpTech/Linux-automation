@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Testing Google Apps">
     <test name="Regression">
-         <classes>
-             <class name="com.test.course.TestCourseDetails"/>
-          </classes>
+		<parameter name = "browser" value = "Chrome"/>
+		<parameter name = "env" value = "stage-in"/>
+		<classes>
+			<class name="com.seo.regression.testing.RegressionTesting"/>
+		</classes>
      </test> <!-- Test -->
 </suite> <!-- Suite -->

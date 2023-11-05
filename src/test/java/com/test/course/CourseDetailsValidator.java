@@ -1,15 +1,16 @@
+
 package com.test.course;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.pompages.CourseDetailsPage;
-import com.seo.utility.Utils;
+import com.regression.utility.Utils;
 
-public class CourseDetailsValidator {
+public class CourseDetailsValidator
+{
 	private String SHEET_NAME;
 	private ArrayList<ArrayList<String>> ROWS;
 	private int CURRENT_ROW = 0;
@@ -48,10 +49,16 @@ public class CourseDetailsValidator {
 	{
 		try
 		{
-			switch (process) 
+			switch (process.trim()) 
 			{
+				case "environment":
+					environment(row.get(1));
+					break;
 				case "currentURL":
 					launchUrlAndTestRedirection(row.get(1), row.get(2));
+					break;
+				case "canonical":
+					canonical(row.get(1));
 					break;
 				case "checkMetaTagContentByName":
 					checkMetaTagContentByName(row);
@@ -90,13 +97,25 @@ public class CourseDetailsValidator {
 			markProcessFailed();
 		}
 	}
-	
+	String getMetaHost;
+	private void environment(String environmentFromExcel)
+	{
+		try
+		{
+			String checkEnvironment = courseDetails.setEnvironment(environmentFromExcel);
+			getMetaHost = courseDetails.setMetaHost(environmentFromExcel);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 	private void launchUrlAndTestRedirection(String url, String redirectURLFromData) 
 	{
 		try
 		{
 			String redirectedURL = courseDetails.launchCourseURL(url);
-			if(!(ConfigFileReader.getURL()+redirectURLFromData).equals(redirectedURL))
+			if(!(ConfigFileReader.getURL()+redirectURLFromData.replaceAll("\\s", "").replaceAll("\u00A0", "").trim()).equals(redirectedURL.replaceAll("\\s", "").replaceAll("\u00A0", "").trim()))
 			{
 				markProcessFailed();
 			}
@@ -107,6 +126,26 @@ public class CourseDetailsValidator {
 		}
 	}
 	
+	private void canonical(String canonicalURL)
+	{
+		String getCanonicalStatus = "success";
+		try
+		{
+			String checkCanonicalURL = courseDetails.getCanonicalURL(canonicalURL);
+			if(checkCanonicalURL.equalsIgnoreCase("successInd"))
+			{
+				markProcessIgnored();
+			}
+			else if(!getCanonicalStatus.equalsIgnoreCase(checkCanonicalURL))
+			{
+				markProcessFailed();
+			}
+		}
+		catch(Exception e)
+		{
+			markProcessFailed();
+		}
+	}
 	private void checkMetaTagContentByName(ArrayList<String> tags) 
 	{
 		for(int i = 0; i < tags.size(); i++)
@@ -119,7 +158,7 @@ public class CourseDetailsValidator {
 			try
 			{
 				String content = courseDetails.getAttributeOfTag("meta[name='" + attributes.get("name") + "']", "content").trim();
-				if(!(content.replaceAll("\\s", "").replaceAll("\u00A0", "").trim()).equals(attributes.get("content").replaceAll("\\s", "").replaceAll("\u00A0", "").trim()))
+				if(!(content.replaceAll("\\s", "").replaceAll("\\P{InBasic_Latin}", "").replaceAll("\u00A0", "").trim()).equals(attributes.get("content").replaceAll("\\P{InBasic_Latin}", "").replaceAll("\\s", "").replaceAll("\u00A0", "").trim()))
 				{
 					markColumnFailed(i);
 				}
@@ -184,7 +223,7 @@ public class CourseDetailsValidator {
 				HashMap<String, String> attributes = extractAttributesFromString(tag);
 				String altText = courseDetails.getAttributeOfTag("img[src='" + attributes.get("src") + "']", "alt");
 				
-				if(!altText.equals(attributes.get("alt")))
+				if(!altText.replaceAll("\\s", "").replaceAll("\u00A0", "").trim().equals(attributes.get("alt").replaceAll("\\s", "").replaceAll("\u00A0", "").trim()))
 				{
 					markColumnFailed(i);
 				}
@@ -266,7 +305,7 @@ public class CourseDetailsValidator {
 			String answer = row.get(2).replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
 			if(faqFromValidator.containsKey(question.replaceAll("\\s", "").replaceAll("\u00A0", "")))
 			{
-				if(!(answer.trim()).equalsIgnoreCase(faqFromValidator.get(question)))
+				if(!(answer.trim()).equalsIgnoreCase(faqFromValidator.get(question).trim()))
 				{
 					markColumnFailed(1);
 				}
@@ -310,40 +349,46 @@ public class CourseDetailsValidator {
 		TestCourseDetails.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(SHEET_NAME).get(CURRENT_ROW).set(0, (process + " - failed"));
 	}
 	
+	private void markProcessIgnored()
+	{
+		String process = TestCourseDetails.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(SHEET_NAME).get(CURRENT_ROW).get(0);
+		TestCourseDetails.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(SHEET_NAME).get(CURRENT_ROW).set(0, (process + " - ignored"));
+	}
+	
 	private void collectSheetResult()
 	{
 		ArrayList<String> emptyRow = new ArrayList<>();
 		emptyRow.add("");
 		
 		ArrayList<String> sheetStatusRow = new ArrayList<>();
-		sheetStatusRow.add("Status" + Utils.STYLE_DELIMITTER + "bold" + 
-				Utils.STYLE_DELIMITTER + "backgroundlime" +
-				Utils.STYLE_DELIMITTER + "border");
+		sheetStatusRow.add("Status" + Utils.DELIMITTER + "bold" + 
+				Utils.DELIMITTER + "backgroundlime" +
+				Utils.DELIMITTER + "border");
 		sheetStatusRow.add(sheetStatus + 
-				Utils.STYLE_DELIMITTER + "backgroundLT" + 
-				Utils.STYLE_DELIMITTER + "color" + (sheetStatus.equalsIgnoreCase("Pass") ? "Green" : "Red") +
-				Utils.STYLE_DELIMITTER + "border");
+				Utils.DELIMITTER + "backgroundLT" + 
+				Utils.DELIMITTER + "color" + (sheetStatus.equalsIgnoreCase("Pass") ? "Green" : "Red") +
+				Utils.DELIMITTER + "border");
 		
 		ArrayList<String> startTimeRow = new ArrayList<>();
-		startTimeRow.add("Started Time" + Utils.STYLE_DELIMITTER + "bold" +
-				Utils.STYLE_DELIMITTER + "backgroundlime" +
-				Utils.STYLE_DELIMITTER + "border");
-		startTimeRow.add(startTime + Utils.STYLE_DELIMITTER + "backgroundLT" +
-				Utils.STYLE_DELIMITTER + "border");
+		startTimeRow.add("Started Time" + Utils.DELIMITTER + "bold" +
+				Utils.DELIMITTER + "backgroundlime" +
+				Utils.DELIMITTER + "border");
+		startTimeRow.add(startTime + Utils.DELIMITTER + "backgroundLT" +
+				Utils.DELIMITTER + "border");
 		
 		ArrayList<String> endTimeRow = new ArrayList<>();
-		endTimeRow.add("Ended Time" + Utils.STYLE_DELIMITTER + "bold" +
-				Utils.STYLE_DELIMITTER + "backgroundlime" +
-				Utils.STYLE_DELIMITTER + "border");
-		endTimeRow.add(endTime + Utils.STYLE_DELIMITTER + "backgroundLT" +
-				Utils.STYLE_DELIMITTER + "border");
+		endTimeRow.add("Ended Time" + Utils.DELIMITTER + "bold" +
+				Utils.DELIMITTER + "backgroundlime" +
+				Utils.DELIMITTER + "border");
+		endTimeRow.add(endTime + Utils.DELIMITTER + "backgroundLT" +
+				Utils.DELIMITTER + "border");
 		
 		ArrayList<String> durationRow = new ArrayList<>();
-		durationRow.add("Execution Time" + Utils.STYLE_DELIMITTER + "bold" + 
-				Utils.STYLE_DELIMITTER + "backgroundlime" +
-				Utils.STYLE_DELIMITTER + "border");
-		durationRow.add(duration + Utils.STYLE_DELIMITTER + "backgroundLT" +
-				Utils.STYLE_DELIMITTER + "border");
+		durationRow.add("Execution Time" + Utils.DELIMITTER + "bold" + 
+				Utils.DELIMITTER + "backgroundlime" +
+				Utils.DELIMITTER + "border");
+		durationRow.add(duration + Utils.DELIMITTER + "backgroundLT" +
+				Utils.DELIMITTER + "border");
 		
 		TestCourseDetails.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(SHEET_NAME).add(emptyRow);
 		TestCourseDetails.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(SHEET_NAME).add(sheetStatusRow);
@@ -351,7 +396,6 @@ public class CourseDetailsValidator {
 		TestCourseDetails.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(SHEET_NAME).add(endTimeRow);
 		TestCourseDetails.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(SHEET_NAME).add(durationRow);
 	}
-	
 	private HashMap<String, String> extractAttributesFromString(String str) 
 	{
 		HashMap<String, String> stringProps = new HashMap<String, String>();
@@ -363,38 +407,40 @@ public class CourseDetailsValidator {
 			// arr = [name="title", content="Blockchain Essentials | Learn Blockchain Essentials
 			// Course Online - SkillUp Online"];
 			boolean checkurl = false;
-			for (String keyValue : arr) 
+			for (String keyValue : arr)
 			{
-				// keyValue = "name="title""
-				String[] pair = keyValue.split("=");
-				// pari = [name, ""title""]
-				String value = null;
-				for(int j = 0; j < pair.length; j++)
+				int startIndex = keyValue.indexOf("\"");
+				int lastIndex = keyValue.lastIndexOf("\"");
+				String key = keyValue.substring(0, startIndex - 1);
+				String value = keyValue.substring(startIndex + 1, lastIndex);
+				
+				if(value.contains(":url") || value.contains(":image"))
 				{
-					
-					String attribute = pair[0]; //name
-					//value = pair[1].replaceAll("\"", "");
-					if(j == 1)
-					{
-						value = pair[j].replaceAll("\"", "");//title
-						if(value.contains("url") || value.contains("image"))
-						{
-							checkurl = true;
-						}
-						else
-						{
-							value = pair[j].replaceAll("\"", "");
-						}
-						if(checkurl == true && (!(value.contains("url") || value.contains("image"))))
-						{
-							value = ConfigFileReader.getMetaURL()+pair[j].replaceAll("\"", "");
-						}
-					}
-					stringProps.put(attribute, value);//(name,"title")
-				 }
-				// attribute = name
-				// pari[1] = ""title""
-				// pair[1].replaceAll("\"", "") = "title"
+					checkurl = true;
+				}
+				else
+				{
+					value = value.replaceAll("\"", "");
+				}
+				if(checkurl == true && (!(value.contains("og:url") || value.contains("og:image") || value.contains("twitter:url") || value.contains("twitter:image"))))
+				{
+					value = this.getMetaHost+value.replaceAll("\"", "");
+				}
+				stringProps.put(key, value);
+				/*
+				 * // keyValue = "name="title"" String[] pair = keyValue.split("="); // pari =
+				 * [name, ""title""] String value = null; for(int j = 0; j < pair.length; j++) {
+				 * String attribute = pair[0]; //name //value = pair[1].replaceAll("\"", "");
+				 * if(j == 1) { Thread.sleep(1000); value = pair[j];//title
+				 * if(value.contains("og:url") || value.contains("og:image") ||
+				 * value.contains("twitter:image") || value.contains("twitter:url")) { checkurl
+				 * = true; value = pair[j].replaceAll("\"", ""); } else { value =
+				 * pair[j].replaceAll("\"", ""); } if(checkurl == true &&
+				 * (!(value.contains("og:url") || value.contains("og:image") ||
+				 * value.contains("twitter:url") || value.contains("twitter:image")))) { value =
+				 * ConfigFileReader.getMetaURL()+pair[j].replaceAll("\"", ""); } }
+				 * stringProps.put(attribute, value);//(name,"title") }
+				 */
 			}	
 		}
 		catch(Exception e)

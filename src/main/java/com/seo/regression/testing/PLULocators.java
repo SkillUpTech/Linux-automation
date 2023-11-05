@@ -113,7 +113,8 @@ public class PLULocators
 					failedUrls.add(url);
 				}
 			}
-			Thread.sleep(3000);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+			//Thread.sleep(3000);
 			System.out.println("tech pgms card validation started");
 			ArrayList<String> statusOfPgmCard = new ArrayList<String>();
 			
@@ -165,9 +166,12 @@ public class PLULocators
 				
 				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN); //Keys.chord(Keys.CONTROL,Keys.RETURN)
 				launchPgm.sendKeys(selectLinkOpeninNewTab); 
+				
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				for(String winHandle : driver.getWindowHandles()){
+				
+				for(String winHandle : driver.getWindowHandles())
+				{
 				    driver.switchTo().window(winHandle);
 				}
 				JavascriptExecutor js2 = (JavascriptExecutor) driver;
@@ -194,7 +198,8 @@ public class PLULocators
 					testingStatus = false;
 				}
 				js2.executeScript("window.scrollBy(0,300)", "");
-				Thread.sleep(1000);
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+				//Thread.sleep(1000);
 				WebElement level1FromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='CourseDescription_levelSection__BiiUm']>[class*='uppercase CourseDescription_pluTheme']:nth-child(1)"));
 				if(getTextFromPLULevel.contains(level1FromProgram.getText()))
 				{
@@ -227,7 +232,8 @@ public class PLULocators
 					failCase.add("level 3 not same in "+programName+"");
 					testingStatus = false;
 				}
-				WebElement amountFromPgm = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='d-flex gap-2']:nth-child(3) div[class='CourseDescription_courseAboutTextSection__8_6ac'] p"));
+				WebElement amountFromPgm = driver.findElement(By.xpath("//section[@class='CourseDescription_mainSection__WrO9h']//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[@class='d-flex gap-2']//div[@class='CourseDescription_courseAboutTextSection__8_6ac']//h2[contains(text(),'Fee')]/following-sibling::p"));
+
 				if(!amountFromPgm.getText().equals("null"))
 				{
 					statusOfPgmCard.add("pass");
@@ -267,10 +273,12 @@ public class PLULocators
 					testingStatus = false;
 				}
 				driver.close();
-				Thread.sleep(1000);
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+				//Thread.sleep(1000);
 				driver.switchTo().window(parentwindow);
 				System.out.println("tech program card verification done for "+getPgmName);
-				Thread.sleep(1000);
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+				//Thread.sleep(1000);
 				if(testingStatus == false)
 				{
 					overallFail.addAll(failCase);
@@ -298,11 +306,11 @@ public class PLULocators
 			for(int i = 0; i < techProgram.size(); i++)
 			{
 				String url = techProgram.get(i).getAttribute("href");
-				System.out.println("tech program starts execution : "+url);
+				System.out.println("PLU course card starts execution : "+url);
 				String urlLinkStatus = this.checkURLStatus(url);
-				if(urlLinkStatus.equalsIgnoreCase("fail"))
+				if(urlLinkStatus.contains("fail"))
 				{
-					failedUrls.add(url);
+					failedUrls.add(url+urlLinkStatus);
 				}
 			}
 		
@@ -380,7 +388,7 @@ public class PLULocators
 			if(respCode > 200)
 			{
 				System.out.println("broken link"+addHosturl);
-				status = "fail";
+				status = "fail"+respCode;
 			}
 			else
 			{

@@ -1,5 +1,6 @@
 package com.seo.pompages;
 
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
@@ -17,14 +18,17 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.regression.utility.TestUtil;
 import com.seo.dataProvider.ConfigFileReader;
-import com.seo.utility.TestUtil;
 
 public class CourseDetailsPage 
 {
 	WebDriver driver;
 	WebDriverWait wait;
 	URL parentURL;
+	String setHostURL;
+	String setMetaHost;
 	
 	public WebDriver getDriver()
 	{
@@ -33,7 +37,7 @@ public class CourseDetailsPage
 
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "D:\\Selenium jar\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "D:\\DownloadFiles\\chromedriver_105.0.5195.52 version\\chromedriver_win32\\chromedriver.exe");
 		ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
         options.addArguments("disable-infobars");
@@ -46,13 +50,74 @@ public class CourseDetailsPage
 
 	}
 	
+	public String setEnvironment(String host)
+	{
+		if(host.equalsIgnoreCase("prod-in"))
+		{
+			setHostURL = "https://"+host+".skillup.online";
+		}
+		else if(host.equalsIgnoreCase("stage-in"))
+		{
+			setHostURL = "https://"+host+".skillup.online";
+		}
+		else if(host.equalsIgnoreCase("dev-in"))
+		{
+			setHostURL = "https://"+host+".skillup.online";
+		}
+		else if(host.equalsIgnoreCase("qa-in"))
+		{
+			setHostURL = "https://"+host+".skillup.online";
+		}
+		else if(host.equalsIgnoreCase("qa"))
+		{
+			setHostURL = "https://"+host+".skillup.online";
+		}
+		else if(host.equalsIgnoreCase("dev"))
+		{
+			setHostURL = "https://"+host+".skillup.online";
+		}
+		else if(host.equalsIgnoreCase("prod"))
+		{
+			setHostURL = "https://skillup.online";
+		}
+		return setHostURL;
+	}
+	
+	public String setMetaHost(String metaHost)
+	{
+		if(!metaHost.equalsIgnoreCase("prod"))
+		{
+			setMetaHost = "https://"+metaHost+".skillup.online";
+		}
+		else
+		{
+			setMetaHost = "https://skillup.online";
+		}
+		return setMetaHost;
+	}
+	
 	public String launchCourseURL(String url)
 	{
+		HttpURLConnection huc = null;
+		int respCode = 200;
+		String addHosturl = this.setHostURL+url;
 		try
 		{
-			String addHostURL = ConfigFileReader.getURL()+url;
-			//driver.get(addHostURL);
-			driver.get(addHostURL);
+			huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
+			huc.setRequestMethod("HEAD");
+			huc.connect();
+			respCode = huc.getResponseCode();
+			System.out.println(respCode);
+			if(respCode > 200)
+			{
+				System.out.println("broken link");
+				System.exit(0);
+			}
+			else
+			{
+				System.out.println("un broken link");
+				driver.get(addHosturl);
+			}
 		}
 		catch(Exception e)
 		{
@@ -61,13 +126,61 @@ public class CourseDetailsPage
 		return driver.getCurrentUrl();
 	}
 	
+	public String getCanonicalURL(String canonicalURL)
+	{
+		String checkVPNStatus = "Fail";
+		try
+		{
+			if(!driver.getCurrentUrl().contains("in."))
+			{
+				String addHost = this.setHostURL+canonicalURL;
+				WebElement canonicalLocator = driver.findElement(By.cssSelector("link[rel='canonical']"));
+				String getCanonicalURLText = canonicalLocator.getAttribute("href");
+				if(addHost.replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").equalsIgnoreCase(getCanonicalURLText.replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "")))
+				{
+					System.out.println(getCanonicalURLText);
+					checkVPNStatus = "success";
+				}
+				else
+				{
+					System.out.println("It is not CanonicalURL");
+				}
+			}
+			else
+			{
+				checkVPNStatus = "successInd";
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return checkVPNStatus;
+	}
+	
 	public String getAttributeOfTag(String selector, String attribute)
 	{
 		String attributeValue = null;
 		try
 		{
-			WebElement tag = driver.findElement(By.cssSelector(selector));
-			attributeValue = tag.getAttribute(attribute);
+			List<WebElement> tags = driver.findElements(By.cssSelector(selector));
+			if(tags.size() > 1)
+			{
+				for(WebElement element: tags)
+				{
+					String value = element.getAttribute(attribute).replaceAll("\\s", "").replaceAll("\u00A0", "").trim();
+					if(value != null && value != "")
+					{
+						attributeValue = value;
+						break;
+					}
+				}
+			}
+			else if(tags.size() == 1)
+			{
+				attributeValue = tags.get(0).getAttribute(attribute).replaceAll("\\s", "").replaceAll("\u00A0", "").trim();
+			}
+			
 			System.out.println(attributeValue);
 		}
 		catch(Exception e)
@@ -101,12 +214,12 @@ public class CourseDetailsPage
 		return tagToReturn;
 	}	
 	
-	public ArrayList<String> getAnswersForFAQQuestion(String questionFromExcel)
+	public ArrayList<String> getAnswersForFAQQuestion(String questionFromExcel) throws InterruptedException
 	{
 		ArrayList<String> ans = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor)driver;
-		js.executeScript("window.scrollBy(0, 2400)");
-		List<WebElement> listOfFAQ = driver.findElements(By.cssSelector("div[class='panel panel-default ibm-v2-accordion faq-accordion']"));
+		js.executeScript("window.scrollBy(0, 3000)");
+		List<WebElement> listOfFAQ = driver.findElements(By.cssSelector("div#faq:nth-child(1) div[class='panel panel-default ibm-v2-accordion faq-accordion']"));
 		if(listOfFAQ.size()>0)
 		{
 			for(int i = 0; i < listOfFAQ.size(); i++)
@@ -205,8 +318,8 @@ public class CourseDetailsPage
 				{
 					tableElement.click();
 					WebElement headingFromTableElement = driver.findElement(By.cssSelector("table.mdl-data-table tr:last-child td:last-child > div"));
-					String headingFromTable = headingFromTableElement.getText();
-					if(!headingFromTable.equalsIgnoreCase(heading))
+					String headingFromTable = headingFromTableElement.getText().replaceAll("\\s", "").replaceAll("[^\\p{ASCII}]", "").trim();
+					if(!headingFromTable.replaceAll("\\s", "").replaceAll("[^\\p{ASCII}]", "").trim().contains(heading.replaceAll("\\s", "").replaceAll("[^\\p{ASCII}]", "").trim()))
 					{
 						status = "Failed";
 					}
@@ -276,9 +389,6 @@ public class CourseDetailsPage
 		}
 		return faqFromValidator;
 		}
-		
-//		faqElement.click();
-		
 	
 	public String checkTableValidator(String tableValidatorURL, String tableHeading) throws MalformedURLException
 	{
