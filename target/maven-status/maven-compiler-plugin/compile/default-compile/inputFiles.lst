@@ -52,6 +52,7 @@
 /home/edx-root/git/Linux-automation/src/main/java/com/seo/regression/testing/BusinessPageValidation.java
 /home/edx-root/git/Linux-automation/src/main/java/com/seo/regression/testing/MicrosoftCourseValidation.java
 /home/edx-root/git/Linux-automation/src/main/java/com/seo/regression/testing/ErrorCodeLocator.java
+/home/edx-root/git/Linux-automation/src/main/java/com/seo/utility/Constants.java
 /home/edx-root/git/Linux-automation/src/main/java/com/seo/regression/testing/CheckLoginValidation.java
 /home/edx-root/git/Linux-automation/src/main/java/com/seo/regression/testing/SignupSocialAccValidator.java
 /home/edx-root/git/Linux-automation/src/main/java/com/seo/regression/testing/HomepageValidator.java
@@ -68,7 +69,6 @@
 /home/edx-root/git/Linux-automation/src/main/java/com/seo/regression/testing/ForgotPasswordValidation.java
 /home/edx-root/git/Linux-automation/src/main/java/com/seo/regression/testing/FooterSectionLocator.java
 /home/edx-root/git/Linux-automation/src/main/java/com/seo/regression/testing/NewAboutCourseValidator.java
-/home/edx-root/git/Linux-automation/src/main/java/com/skillup/sample/EndToEnd.java
 /home/edx-root/git/Linux-automation/src/main/java/com/seo/regression/testing/DashboardValidation.java
 /home/edx-root/git/Linux-automation/src/main/java/com/seo/regression/testing/OpenWebsite.java
 /home/edx-root/git/Linux-automation/src/main/java/com/seo/regression/testing/FluidEducationLocator.java

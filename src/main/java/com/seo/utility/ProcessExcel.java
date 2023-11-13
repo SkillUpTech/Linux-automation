@@ -12,16 +12,18 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.xssf.usermodel.IndexedColorMap;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 /**
  * Read and write excel
  * Can read as rows or as table
@@ -166,11 +168,11 @@ public class ProcessExcel
 			XSSFSheet sheet = workbook.createSheet(sheetName);
 			if(sheetTabColor.equalsIgnoreCase("green"))
 			{
-				sheet.setTabColor(3);
+				sheet.setTabColor(com.seo.utility.Constants.GREEN);
 			}
 			else if(sheetTabColor.equalsIgnoreCase("red"))
 			{
-				sheet.setTabColor(2);
+				sheet.setTabColor(Constants.RED);
 			}
 			for(int i = 0; i < rowsData.size(); i++)
 			{
@@ -257,7 +259,7 @@ public class ProcessExcel
 	public static Cell changeCellFontColor(XSSFWorkbook wb, Cell cell, String color) {
 		CellStyle style = cell.getCellStyle();
 		XSSFFont font = wb.createFont();
-		font.setColor(new XSSFColor(Color.decode(color)));
+		font.setColor(new XSSFColor((IndexedColorMap) Color.decode(color)));
 		style.setFont(font);
 		cell.setCellStyle(style);
 		return cell;
@@ -277,7 +279,7 @@ public class ProcessExcel
 		CellStyle style = cell.getCellStyle();
 		style.setFillForegroundColor(color.getIndex());
 		style.setFillBackgroundColor(color.getIndex());  
-        style.setFillPattern(CellStyle.BIG_SPOTS);
+        style.setFillPattern(FillPatternType.SPARSE_DOTS);
         cell.setCellStyle(style);
         return cell;
 	}
@@ -285,10 +287,10 @@ public class ProcessExcel
 	public static Cell setCellBorder(Cell cell)
 	{
 		CellStyle style = cell.getCellStyle();
-		style.setBorderBottom(CellStyle.BORDER_THIN);
-		style.setBorderTop(CellStyle.BORDER_THIN);
-		style.setBorderLeft(CellStyle.BORDER_THIN);
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
+		style.setBorderTop(BorderStyle.THIN);
+		style.setBorderLeft(BorderStyle.THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		cell.setCellStyle(style);
 		return cell;
 	}
@@ -297,7 +299,7 @@ public class ProcessExcel
 		CellStyle style = cell.getCellStyle();
 		style.setFillForegroundColor(IndexedColors.RED.getIndex());
 		style.setFillBackgroundColor(IndexedColors.RED.getIndex());  
-        style.setFillPattern(CellStyle.BIG_SPOTS);
+        style.setFillPattern(FillPatternType.SPARSE_DOTS);
         cell.setCellStyle(style);
 	}
 }
