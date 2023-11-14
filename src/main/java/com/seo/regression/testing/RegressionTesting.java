@@ -40,7 +40,7 @@ public class RegressionTesting
 	public void setup(String browserName, String environment) throws Exception
 	{
 		System.out.println("welcome");
-		System.out.println("Automation executing in "+System.getProperty("environment"+" environment"));
+		System.out.println("Automation executing in "+System.getProperty("environment")+" environment");
 	    if (browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
