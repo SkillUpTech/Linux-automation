@@ -37,9 +37,10 @@ public class RegressionTesting
 	
 	@BeforeTest
 	@Parameters({"browser","env"})
-	public void setup(String browserName, String env) throws Exception
+	public void setup(String browserName, String environment) throws Exception
 	{
 		System.out.println("welcome");
+		System.out.println("Automation executing in "+System.getProperty("environment"+" environment"));
 	    if (browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
@@ -47,19 +48,19 @@ public class RegressionTesting
 	    else if (browserName.equalsIgnoreCase("Chrome"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
-	    	if(env.equalsIgnoreCase("stage"))
-	    	{
-	    		getEnvironment = "stage";
-	    	}
-	    	else if(env.equalsIgnoreCase("stage-in"))
+	    	if(environment.equalsIgnoreCase("stage"))
 	    	{
 	    		getEnvironment = "stage-in";
 	    	}
-	    	else if(env.equalsIgnoreCase("prod-in"))
+	    	else if(environment.equalsIgnoreCase("stage-in"))
+	    	{
+	    		getEnvironment = "stage-in";
+	    	}
+	    	else if(environment.equalsIgnoreCase("prod-in"))
 	    	{
 	    		getEnvironment = "prod-in";
 	    	}
-	    	else if(env.equalsIgnoreCase("prod"))
+	    	else if(environment.equalsIgnoreCase("prod"))
 	    	{
 	    		getEnvironment = "prod-in";
 	    	}
