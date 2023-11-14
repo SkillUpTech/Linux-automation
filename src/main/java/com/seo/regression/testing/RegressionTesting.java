@@ -36,7 +36,7 @@ public class RegressionTesting
 	WebDriver driver;
 	
 	@BeforeTest
-	@Parameters({"browser","env"})
+	@Parameters({"browser","environment"})
 	public void setup(String browserName, String environment) throws Exception
 	{
 		System.out.println("welcome");
