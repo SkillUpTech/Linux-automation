@@ -20,7 +20,7 @@ public class OpenWebsite
 		{
 			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
 			ChromeOptions options = new ChromeOptions();
-			options.setBinary("/usr/bin/google-chrome-stable"); 
+			options.setBinary("/usr/bin/google-chrome"); 
 			options.addArguments("--remote-allow-origins=*");
 			options.addArguments("--disable notifications");
 			driver = new ChromeDriver(options);
