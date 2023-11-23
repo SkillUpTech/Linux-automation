@@ -25,20 +25,10 @@ public class OpenWebsite
 			 
 		    // Explicitly set the ChromeDriver port
 		    ChromeOptions options = new ChromeOptions();
-		    options.addArguments("--start-maximized");
-		    options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-		    options.addArguments("--disable-dev-shm-usage");
-		    options.addArguments("--ignore-ssl-errors=yes");
-		    options.addArguments("--ignore-certificate-errors");
 		    options.addArguments("no-sandbox");
 		    options.addArguments("--disable-extensions");
 		    options.addArguments("--headless");
-		    // Specify the port (default is 9515)
-		    options.addArguments("--remote-debugging-port=9515");
 		 
-		    driver = new ChromeDriver(options);
-		    driver.manage().window().maximize();
-		    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
