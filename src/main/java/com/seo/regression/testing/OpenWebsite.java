@@ -19,10 +19,19 @@ public class OpenWebsite
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
 			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--disable-dev-shm-usage");
-			options.addArguments("--ignore-ssl-errors=yes");
-			options.addArguments("--ignore-certificate-errors");
+			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+			 
+		    // Explicitly set the ChromeDriver port
+		    ChromeOptions options = new ChromeOptions();
+		    options.addArguments("--disable-dev-shm-usage");
+		    options.addArguments("--ignore-ssl-errors=yes");
+		    options.addArguments("--ignore-certificate-errors");
+		    // Specify the port (default is 9515)
+		    options.addArguments("--remote-debugging-port=9515");
+		 
+		    driver = new ChromeDriver(options);
+		    driver.manage().window().maximize();
+		    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
