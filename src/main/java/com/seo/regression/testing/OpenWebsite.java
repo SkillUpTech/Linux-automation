@@ -20,9 +20,9 @@ public class OpenWebsite
 		{
 			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
 			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable notifications");
-			options.setBinary("/usr/bin/google-chrome"); 
+			options.addArguments("--disable-dev-shm-usage");
+			options.addArguments("--ignore-ssl-errors=yes");
+			options.addArguments("--ignore-certificate-errors");
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
