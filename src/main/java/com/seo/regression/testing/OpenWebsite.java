@@ -2,6 +2,7 @@
 package com.seo.regression.testing;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
@@ -38,7 +39,7 @@ public class OpenWebsite
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-			driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
 		}
 		else if(browserName.equalsIgnoreCase("firefox"))
 		{
