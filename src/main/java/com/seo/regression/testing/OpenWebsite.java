@@ -3,6 +3,7 @@ package com.seo.regression.testing;
 
 import java.time.Duration;
 
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -23,6 +24,8 @@ public class OpenWebsite
 			 
 		    // Explicitly set the ChromeDriver port
 		    ChromeOptions options = new ChromeOptions();
+		    options.addArguments("--start-maximized");
+		    options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
 		    options.addArguments("--disable-dev-shm-usage");
 		    options.addArguments("--ignore-ssl-errors=yes");
 		    options.addArguments("--ignore-certificate-errors");
@@ -35,6 +38,7 @@ public class OpenWebsite
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+			driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
 		}
 		else if(browserName.equalsIgnoreCase("firefox"))
 		{
