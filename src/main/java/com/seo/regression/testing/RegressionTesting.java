@@ -94,12 +94,12 @@ public class RegressionTesting
 			EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = ProcessExcel.readExcelFileAsRows(excelPath);
 			
 			ArrayList<ArrayList<String>> master = data.get("Master");// Master sheet in excel
-			//ArrayList<String> environment = master.get(1);// Environment row in excel
-			/*if(master.get(1).toString().contains(getEnvironment))
-			{*/
+		ArrayList<String> environment = master.get(1);// Environment row in excel
+			if(master.get(1).toString().contains(getEnvironment))
+			{
 				ENV_TO_USE = getEnvironment;//environment.get(1);//Use envToUse appropriately
-				/* } */
-			//ENV_TO_USE = getEnvironment;
+			}
+			ENV_TO_USE = getEnvironment;
 			ArrayList<String> browser = master.get(1);
 			ArrayList<String> pages = master.get(0);// Pages row in excel
 			for(int j = 0; j < pages.size(); j++)// iterating the pages row
