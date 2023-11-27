@@ -1,6 +1,7 @@
 
 package com.seo.regression.testing;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -40,7 +41,9 @@ public class RegressionTesting
 	public void setup(String browserName, String environment) throws Exception
 	{
 		System.out.println("welcome");
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		System.out.println("Automation executing in "+System.getProperty("environment")+" environment");
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 	    if (browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
@@ -92,10 +95,10 @@ public class RegressionTesting
 			
 			ArrayList<ArrayList<String>> master = data.get("Master");// Master sheet in excel
 			//ArrayList<String> environment = master.get(1);// Environment row in excel
-			if(master.get(1).toString().contains(getEnvironment))
-			{
+			/*if(master.get(1).toString().contains(getEnvironment))
+			{*/
 				ENV_TO_USE = getEnvironment;//environment.get(1);//Use envToUse appropriately
-			}
+				/* } */
 			//ENV_TO_USE = getEnvironment;
 			ArrayList<String> browser = master.get(1);
 			ArrayList<String> pages = master.get(0);// Pages row in excel
@@ -232,7 +235,7 @@ public class RegressionTesting
 	        // Format the current date and time using the formatter
 	        String formattedDateTime = currentDateTime.format(formatter);
 	        
-			if(driver.getCurrentUrl().contains("stage-in"))
+			if(driver.getCurrentUrl().contains("stage"))
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "stage_result_" + formattedDateTime + ".xlsx");
 			}
