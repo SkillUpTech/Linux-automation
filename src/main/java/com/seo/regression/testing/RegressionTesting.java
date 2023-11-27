@@ -91,10 +91,10 @@ public class RegressionTesting
 			EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = ProcessExcel.readExcelFileAsRows(excelPath);
 			
 			ArrayList<ArrayList<String>> master = data.get("Master");// Master sheet in excel
-			ArrayList<String> environment = master.get(1);// Environment row in excel
+			//ArrayList<String> environment = master.get(1);// Environment row in excel
 			if(master.get(1).toString().contains(getEnvironment))
 			{
-				ENV_TO_USE = environment.get(1);//Use envToUse appropriately
+				ENV_TO_USE = getEnvironment;//environment.get(1);//Use envToUse appropriately
 			}
 			//ENV_TO_USE = getEnvironment;
 			ArrayList<String> browser = master.get(1);
@@ -232,7 +232,7 @@ public class RegressionTesting
 	        // Format the current date and time using the formatter
 	        String formattedDateTime = currentDateTime.format(formatter);
 	        
-			if(driver.getCurrentUrl().contains("stage"))
+			if(driver.getCurrentUrl().contains("stage-in"))
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "stage_result_" + formattedDateTime + ".xlsx");
 			}
