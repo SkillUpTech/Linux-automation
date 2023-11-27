@@ -41,12 +41,12 @@ public class RegressionTesting
 	public void setup(String browserName, String environment) throws Exception
 	{
 		System.out.println("welcome");
-		System.out.println("Automation executing in "+System.getProperty("environment")+" environment");
-	    if (browserName.equalsIgnoreCase("firefox"))
+		System.out.println("Automation executing in "+environment+" environment");
+	    if(browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
 	    }
-	    else if (browserName.equalsIgnoreCase("Chrome"))
+	    else if(browserName.equalsIgnoreCase("Chrome"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
 	    	if(environment.equalsIgnoreCase("stage"))
@@ -92,13 +92,12 @@ public class RegressionTesting
 			EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = ProcessExcel.readExcelFileAsRows(excelPath);
 			
 			ArrayList<ArrayList<String>> master = data.get("Master");// Master sheet in excel
-		ArrayList<String> environment = master.get(1);// Environment row in excel
+			ArrayList<String> environment = master.get(1);// Environment row in excel
 			if(master.get(1).toString().contains(getEnvironment))
 			{
 				ENV_TO_USE = environment.get(1);//Use envToUse appropriately
 			}
 			ENV_TO_USE = getEnvironment;
-			ArrayList<String> browser = master.get(1);
 			ArrayList<String> pages = master.get(0);// Pages row in excel
 			for(int j = 0; j < pages.size(); j++)// iterating the pages row
 			{
