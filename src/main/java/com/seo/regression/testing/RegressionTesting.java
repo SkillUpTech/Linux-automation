@@ -51,7 +51,7 @@ public class RegressionTesting
 	    	driver = OpenWebsite.openDriver(browserName);
 	    	if(environment.equalsIgnoreCase("stage"))
 	    	{
-	    		getEnvironment = "stage-in";
+	    		getEnvironment = "stage";
 	    	}
 	    	else if(environment.equalsIgnoreCase("stage-in"))
 	    	{
@@ -63,7 +63,7 @@ public class RegressionTesting
 	    	}
 	    	else if(environment.equalsIgnoreCase("prod"))
 	    	{
-	    		getEnvironment = "prod-in";
+	    		getEnvironment = "prod";
 	    	}
 	    }
 	    else

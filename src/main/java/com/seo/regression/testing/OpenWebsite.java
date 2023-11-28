@@ -68,9 +68,9 @@ public class OpenWebsite
 		{
 			setHost = "https://"+host+".skillup.online";
 		}
-		else if(host.equalsIgnoreCase("stage-in"))
+		else if(host.equalsIgnoreCase("stage"))
 		{
-			setHost = "https://stage-in.skillup.online";
+			setHost = "https://stage.skillup.online";
 		}
 		else if(host.equalsIgnoreCase("prod"))
 		{
