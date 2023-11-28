@@ -134,8 +134,12 @@ public class SearchPageLocator {
 												driver.switchTo().window(window1);
 												if(driver.getCurrentUrl().contains("/courses/") && driver.getCurrentUrl().contains(OpenWebsite.setHost))
 												{
+													Thread.sleep(3000);
+													driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 													driver.switchTo().window(window1);
+													driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 													System.out.println("course is opened");
+													driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 													Thread.sleep(1000);
 													String courseURL = driver.getCurrentUrl();
 													System.out.println("course Link : "+courseURL);
