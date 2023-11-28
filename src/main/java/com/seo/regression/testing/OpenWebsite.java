@@ -70,7 +70,7 @@ public class OpenWebsite
 		}
 		else if(host.equalsIgnoreCase("stage"))
 		{
-			setHost = "https://"+host+".skillup.online";
+			setHost = "https://stage-in.skillup.online";
 		}
 		else if(host.equalsIgnoreCase("prod"))
 		{
