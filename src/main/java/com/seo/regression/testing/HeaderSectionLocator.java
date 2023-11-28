@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +16,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class HeaderSectionLocator
@@ -36,15 +39,22 @@ public class HeaderSectionLocator
 		String status = "fail";
 		try
 		{
-			WebElement clickLogo = driver.findElement(By.cssSelector("div[class*='Header_headerLeft'] a img[alt='logo']"));
 			//clickLogo.click();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
+			
 			JavascriptExecutor js = (JavascriptExecutor)driver;
-			js.executeScript("arguments[0].click()", clickLogo);
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				    .withTimeout(Duration.ofSeconds(100))
+				    .pollingEvery(Duration.ofSeconds(5))
+				    .ignoring(NoSuchElementException.class);
+			WebElement clickLogo = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class*='Header_headerLeft'] a img[alt='logo']")));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
-			status = "pass";
+			if(clickLogo.isDisplayed())
+			{
+				js.executeScript("arguments[0].click()", clickLogo);
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+				System.out.println("Skill up logo verified");
+				status = "pass";
+			}
 		}
 		catch(Exception e)
 		{
@@ -61,34 +71,41 @@ public class HeaderSectionLocator
 	{
 		String status = "fail";
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		WebElement clickContactUs = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(2) a"));
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
-		wait.until(ExpectedConditions.elementToBeClickable(clickContactUs));
-		String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
-		clickContactUs.sendKeys(n);
-		String parentWindow = driver.getWindowHandle();
-		Set<String> nextWindow = driver.getWindowHandles();
-		for(String window : nextWindow)
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+			    .withTimeout(Duration.ofSeconds(100))
+			    .pollingEvery(Duration.ofSeconds(5))
+			    .ignoring(NoSuchElementException.class);
+			WebElement clickContactUs = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(2) a")));
+if(clickContactUs.isDisplayed())
+{
+	
+	wait.until(ExpectedConditions.elementToBeClickable(clickContactUs));
+	String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
+	clickContactUs.sendKeys(n);
+	String parentWindow = driver.getWindowHandle();
+	Set<String> nextWindow = driver.getWindowHandles();
+	for(String window : nextWindow)
+	{
+		driver.switchTo().window(window);
+		if(driver.getCurrentUrl().contains("contact/"))
 		{
 			driver.switchTo().window(window);
-			if(driver.getCurrentUrl().contains("contact/"))
-			{
-				driver.switchTo().window(window);
-				System.out.println("contact window");
-				status = "pass";
-				driver.close();
-				status = "success";
-				break;
-			}
-			else if(driver.getCurrentUrl().contains("data"))
-			{
-				driver.close();
-			}
-		}
-		driver.switchTo().window(parentWindow);
-		if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
-		{
+			System.out.println("contact window");
+			status = "pass";
+			driver.close();
 			status = "success";
+			break;
+		}
+		else if(driver.getCurrentUrl().contains("data"))
+		{
+			driver.close();
+		}
+	}
+	driver.switchTo().window(parentWindow);
+	if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
+	{
+		status = "success";
+	}
 		}
 		return status;
 	}
@@ -102,118 +119,129 @@ public class HeaderSectionLocator
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
 		wait.until(ExpectedConditions.elementToBeClickable(clickBusiness));
-		String getBusinessURL = clickBusiness.getAttribute("href");
-		this.checkURLStatus(getBusinessURL);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
-		clickBusiness.click();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
-		String parentWindow = driver.getWindowHandle();
-		Set<String> nextWindow = driver.getWindowHandles();
-		Iterator<String> iterator = nextWindow.iterator();
-		while (iterator.hasNext()) 
+		if(clickBusiness.isDisplayed())
 		{
-			String childWindow = iterator.next();
-			driver.switchTo().window(childWindow);
-			if(parentWindow.equalsIgnoreCase(childWindow))
+			
+			String getBusinessURL = clickBusiness.getAttribute("href");
+			this.checkURLStatus(getBusinessURL);
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
+			clickBusiness.click();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
+			String parentWindow = driver.getWindowHandle();
+			Set<String> nextWindow = driver.getWindowHandles();
+			Iterator<String> iterator = nextWindow.iterator();
+			while (iterator.hasNext()) 
 			{
+				String childWindow = iterator.next();
 				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("enterprise"))
+				if(parentWindow.equalsIgnoreCase(childWindow))
 				{
-					status = "success";
-					driver.get(getDriverDetails());
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
+					driver.switchTo().window(childWindow);
+					if(driver.getCurrentUrl().contains("enterprise"))
+					{
+						status = "success";
+						driver.get(getDriverDetails());
+						System.out.println("business page");
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
+						break;
+					}
+				}
+				else if(!parentWindow.equalsIgnoreCase(childWindow))
+				{
+					driver.switchTo().window(childWindow);
+					if(driver.getCurrentUrl().contains("enterprise"))
+					{
+						driver.switchTo().window(childWindow);
+						System.out.println("business window");
+						status = "success";
+						driver.close();
+						driver.switchTo().window(parentWindow);
+					}
 					break;
 				}
 			}
-			else if(!parentWindow.equalsIgnoreCase(childWindow))
+			if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
 			{
-				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("enterprise"))
-				{
-					driver.switchTo().window(childWindow);
-					System.out.println("business window");
-					status = "success";
-					driver.close();
-					driver.switchTo().window(parentWindow);
-				}
-				break;
+				status = "success";
 			}
+
 		}
-		if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
-		{
-			status = "success";
-		}
-		return status;
+				return status;
 	}
 
 	public String checkBlog() throws InterruptedException 
 	{
 		String status = "fail";
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		WebElement clickBlog = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(3) a"));
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+			    .withTimeout(Duration.ofSeconds(100))
+			    .pollingEvery(Duration.ofSeconds(5))
+			    .ignoring(NoSuchElementException.class);
+		WebElement clickBlog = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(3) a")));
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
 		wait.until(ExpectedConditions.elementToBeClickable(clickBlog));
-		String getBlogURL = clickBlog.getAttribute("href");
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
-		this.checkURLStatus(getBlogURL);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
-		clickBlog.click();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
-		String parentWindow = driver.getWindowHandle();
-		Set<String> nextWindow = driver.getWindowHandles();
-		Iterator<String> iterator = nextWindow.iterator();
-		while (iterator.hasNext()) 
+		if(clickBlog.isDisplayed())
 		{
-			String childWindow = iterator.next();
-			if(parentWindow.equalsIgnoreCase(childWindow))
+			String getBlogURL = clickBlog.getAttribute("href");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
+			this.checkURLStatus(getBlogURL);
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
+			clickBlog.click();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
+			String parentWindow = driver.getWindowHandle();
+			Set<String> nextWindow = driver.getWindowHandles();
+			Iterator<String> iterator = nextWindow.iterator();
+			while (iterator.hasNext()) 
 			{
-				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("blog"))
+				String childWindow = iterator.next();
+				if(parentWindow.equalsIgnoreCase(childWindow))
 				{
 					driver.switchTo().window(childWindow);
-					System.out.println("blog window");
 					if(driver.getCurrentUrl().contains("blog"))
 					{
-						System.out.println("In blog window, url changed as stage to blog");
-						status = "success";
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
-						driver.get(getDriverDetails());
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
-					//	Thread.sleep(1000);
-						break;
-					}
-				}	
-			}
-			else if(!parentWindow.equalsIgnoreCase(childWindow))
-			{
-				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("blog"))
+						driver.switchTo().window(childWindow);
+						System.out.println("blog window");
+						if(driver.getCurrentUrl().contains("blog"))
+						{
+							System.out.println("In blog window, url changed as stage to blog");
+							status = "success";
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
+							driver.get(getDriverDetails());
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
+							break;
+						}
+					}	
+				}
+				else if(!parentWindow.equalsIgnoreCase(childWindow))
 				{
 					driver.switchTo().window(childWindow);
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
-					System.out.println("blog window");
-					status = "success";
-					driver.close();
-					driver.switchTo().window(parentWindow);
-				}
-				else if(driver.getCurrentUrl().contains("data"))
-				{
-					driver.close();
+					if(driver.getCurrentUrl().contains("blog"))
+					{
+						driver.switchTo().window(childWindow);
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
+						System.out.println("blog window");
+						status = "success";
+						driver.close();
+						driver.switchTo().window(parentWindow);
+					}
+					else if(driver.getCurrentUrl().contains("data"))
+					{
+						driver.close();
+					}
 				}
 			}
 		}
-	//	Thread.sleep(1000);
+		
 		return status;
 	
 	}
@@ -225,24 +253,33 @@ public class HeaderSectionLocator
 		try
 		{
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			WebElement  clickCourseDropdown = driver.findElement(By.cssSelector("ul[class='navbar-nav nav '] a#navbarDropdown"));
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				    .withTimeout(Duration.ofSeconds(50))
+				    .pollingEvery(Duration.ofSeconds(5))
+				    .ignoring(NoSuchElementException.class);
+				WebElement clickCourseDropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("ul[class='navbar-nav nav '] a#navbarDropdown")));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
-			clickCourseDropdown.click();
-			//Thread.sleep(4000);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+			if(clickCourseDropdown.isDisplayed())
+			{
+				
+				clickCourseDropdown.click();
+				//Thread.sleep(4000);
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+			}
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
 			/*
 			 * if(clickCourseDropdown.getAttribute("aria-expanded").equalsIgnoreCase("false"
 			 * )) { System.out.println("drop down tryinh to click again");
 			 * clickCourseDropdown.click(); Thread.sleep(3000); }
 			 */
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+			
 			List<WebElement> selectCourse = driver.findElements(By.cssSelector("ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='MainCatE catcolumn divbox1']>ul[class='categorylist customscroll dropdown-submenu']>li"));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			for(int i = 0; i < selectCourse.size(); i++)
-			{	
+			{
 				if(i>0)
 				{
 					driver.findElement(By.cssSelector("a#navbarDropdown")).click();
