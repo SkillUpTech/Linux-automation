@@ -90,6 +90,7 @@ public class OpenWebsite
 	public static String openSite(WebDriver driver)
 	{
 		String setURL;
+		System.out.println("environment for regression is" +RegressionTesting.ENV_TO_USE);
 		setURL = setEnvironment(RegressionTesting.ENV_TO_USE);
 		driver.get(setURL);
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
