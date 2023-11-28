@@ -93,6 +93,7 @@ public class OpenWebsite
 		System.out.println("environment for regression is" +RegressionTesting.ENV_TO_USE);
 		setURL = setEnvironment(RegressionTesting.ENV_TO_USE);
 		driver.get(setURL);
+		System.out.println("checking host url : "+driver.getCurrentUrl());
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		return setURL;
