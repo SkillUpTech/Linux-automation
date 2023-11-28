@@ -129,7 +129,7 @@ public class SearchPageLocator {
 										{
 											//getCourse.click();
 											js.executeScript("arguments[0].click()", getCourse);
-											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 											Thread.sleep(1000);
 											String parent1 = driver.getWindowHandle();
 											Set<String> windows1 = driver.getWindowHandles();

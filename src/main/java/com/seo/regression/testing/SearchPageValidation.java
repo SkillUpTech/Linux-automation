@@ -15,6 +15,7 @@ public class SearchPageValidation
 		this.sheetData = sheetData;
 		this.driver = driver;
 		OpenWebsite.openSite(driver);
+		System.out.println("first time of opening website : "+driver.getCurrentUrl());
 		this.searchPageLocator = new SearchPageLocator(driver);
 		//this.start();
 	}
