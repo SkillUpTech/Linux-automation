@@ -41,7 +41,7 @@ public class RegressionTesting
 	public void setup(String browserName, String environment) throws Exception
 	{
 		System.out.println("welcome");
-		System.out.println("Automation executing in "+environment+" environment");
+		System.out.println("Automation executing in "+System.getProperty("environment")+" environment");
 	    if(browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
@@ -98,6 +98,7 @@ public class RegressionTesting
 				ENV_TO_USE = environment.get(1);//Use envToUse appropriately
 			}
 			ENV_TO_USE = getEnvironment;
+			System.out.println("environment assigned as "+ENV_TO_USE);
 			ArrayList<String> pages = master.get(0);// Pages row in excel
 			for(int j = 0; j < pages.size(); j++)// iterating the pages row
 			{
