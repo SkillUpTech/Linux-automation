@@ -132,7 +132,7 @@ public class SearchPageLocator {
 											for(String window1 : windows1)
 											{
 												driver.switchTo().window(window1);
-												if(driver.getCurrentUrl().contains("/courses/"))
+												if(driver.getCurrentUrl().contains("/courses/") && driver.getCurrentUrl().contains(OpenWebsite.setHost))
 												{
 													driver.switchTo().window(window1);
 													System.out.println("course is opened");
