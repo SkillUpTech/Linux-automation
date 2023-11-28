@@ -59,7 +59,7 @@ public class SearchPageLocator {
 					
 				WebElement searchBox = driver.findElement(By.cssSelector("ul[class*='Header_headSearch_'] input#contentSearch[value]"));
 				((JavascriptExecutor)driver).executeScript("arguments[0].click();", searchBox);
-				
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 				WebDriverWait wb = new WebDriverWait(driver, Duration.ofSeconds(30));
 				wb.until(ExpectedConditions.elementToBeClickable(searchBox)).click();
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
@@ -75,7 +75,7 @@ public class SearchPageLocator {
 					{
 						for(int j = 0; j < checkListOfCourse.size(); j++)
 						{
-							if(checkListOfCourse.get(j).getText().equalsIgnoreCase(dataFromExcel.get(1)))
+							if(checkListOfCourse.get(j).getText().equalsIgnoreCase(dataFromExcel.get(i)))
 							{
 								System.out.println("Entered course available");
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
@@ -127,6 +127,7 @@ public class SearchPageLocator {
 										WebElement getCourse = driver.findElement(By.cssSelector("div[class*='RegularCourseCard_courseHeading__1Ohrn'] p"));
 										if(getCourse.getText().equalsIgnoreCase(dataFromExcel.get(i)))
 										{
+											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 											//getCourse.click();
 											js.executeScript("arguments[0].click()", getCourse);
 											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
@@ -155,6 +156,8 @@ public class SearchPageLocator {
 													driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 													break;
 												}
+												Thread.sleep(3000);
+												driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 											}
 											
 										}
