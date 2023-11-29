@@ -54,6 +54,7 @@ public class HeaderSectionLocator
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				System.out.println("Skill up logo verified");
 				status = "pass";
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
 			}
 		}
 		catch(Exception e)
@@ -72,6 +73,7 @@ public class HeaderSectionLocator
 		String status = "fail";
 		try
 		{
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 				    .withTimeout(Duration.ofSeconds(50))
 				    .pollingEvery(Duration.ofSeconds(5))
