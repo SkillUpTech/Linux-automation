@@ -237,7 +237,7 @@ public class RegressionTesting
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "stage_result_" + formattedDateTime + ".xlsx");
 			}
-			else if(!"stage".contains(driver.getCurrentUrl()))
+			else if (!driver.getCurrentUrl().contains("stage"))
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "prod_result_" + formattedDateTime + ".xlsx");
 			}
