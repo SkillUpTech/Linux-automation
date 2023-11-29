@@ -70,43 +70,51 @@ public class HeaderSectionLocator
 	public String checkContactUs() throws InterruptedException 
 	{
 		String status = "fail";
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-			    .withTimeout(Duration.ofSeconds(400))
-			    .pollingEvery(Duration.ofSeconds(5))
-			    .ignoring(NoSuchElementException.class);
-			WebElement clickContactUs = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class*='Header_headerRight']>ul[class*='Header_navLinks'] li:nth-child(2) a")));
-if(clickContactUs.isDisplayed())
-{
-	
-	wait.until(ExpectedConditions.elementToBeClickable(clickContactUs));
-	String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
-	clickContactUs.sendKeys(n);
-	String parentWindow = driver.getWindowHandle();
-	Set<String> nextWindow = driver.getWindowHandles();
-	for(String window : nextWindow)
-	{
-		driver.switchTo().window(window);
-		if(driver.getCurrentUrl().contains("contact/"))
+		try
 		{
-			driver.switchTo().window(window);
-			System.out.println("contact window");
-			status = "pass";
-			driver.close();
-			status = "success";
-			break;
-		}
-		else if(driver.getCurrentUrl().contains("data"))
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+				    .withTimeout(Duration.ofSeconds(400))
+				    .pollingEvery(Duration.ofSeconds(5))
+				    .ignoring(NoSuchElementException.class);
+				WebElement clickContactUs = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class*='Header_headerRight']>ul[class*='Header_navLinks'] li:nth-child(2) a")));
+				wait.until(ExpectedConditions.elementToBeClickable(clickContactUs));
+		if(clickContactUs.isDisplayed())
 		{
-			driver.close();
+			
+			String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
+			clickContactUs.sendKeys(n);
+			String parentWindow = driver.getWindowHandle();
+			Set<String> nextWindow = driver.getWindowHandles();
+			for(String window : nextWindow)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().contains("contact/"))
+				{
+					driver.switchTo().window(window);
+					System.out.println("contact window");
+					status = "pass";
+					driver.close();
+					status = "success";
+					break;
+				}
+				else if(driver.getCurrentUrl().contains("data"))
+				{
+					driver.close();
+				}
+			}
+			driver.switchTo().window(parentWindow);
+			if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
+			{
+				status = "success";
+			}
 		}
-	}
-	driver.switchTo().window(parentWindow);
-	if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
-	{
-		status = "success";
-	}
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		
 		return status;
 	}
 
