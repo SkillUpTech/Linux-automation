@@ -72,10 +72,10 @@ public class HeaderSectionLocator
 		String status = "fail";
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-			    .withTimeout(Duration.ofSeconds(100))
+			    .withTimeout(Duration.ofSeconds(400))
 			    .pollingEvery(Duration.ofSeconds(5))
 			    .ignoring(NoSuchElementException.class);
-			WebElement clickContactUs = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(2) a")));
+			WebElement clickContactUs = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class*='Header_headerRight']>ul[class*='Header_navLinks'] li:nth-child(2) a")));
 if(clickContactUs.isDisplayed())
 {
 	
