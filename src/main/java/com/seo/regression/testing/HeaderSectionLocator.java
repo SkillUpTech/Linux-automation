@@ -73,7 +73,7 @@ public class HeaderSectionLocator
 		try
 		{
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-				    .withTimeout(Duration.ofSeconds(400))
+				    .withTimeout(Duration.ofSeconds(50))
 				    .pollingEvery(Duration.ofSeconds(5))
 				    .ignoring(NoSuchElementException.class);
 				WebElement clickContactUs = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class*='Header_headerRight']>ul[class*='Header_navLinks'] li:nth-child(2) a")));
