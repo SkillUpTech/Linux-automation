@@ -78,7 +78,7 @@ public class HeaderSectionLocator
 				    .withTimeout(Duration.ofSeconds(50))
 				    .pollingEvery(Duration.ofSeconds(5))
 				    .ignoring(NoSuchElementException.class);
-				WebElement clickContactUs = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class*='Header_headerRight']>ul[class*='Header_navLinks'] li:nth-child(2) a")));
+				WebElement clickContactUs = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class*='Header_headerRight']>ul[class*='Header_navLinks']>li:nth-child(2)>a")));
 				wait.until(ExpectedConditions.elementToBeClickable(clickContactUs));
 		if(clickContactUs.isDisplayed())
 		{
