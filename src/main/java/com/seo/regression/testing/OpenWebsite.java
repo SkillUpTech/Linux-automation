@@ -28,7 +28,7 @@ public class OpenWebsite
 		    options.addArguments("no-sandbox");
 		    options.addArguments("--disable-extensions");
 		    options.addArguments("--headless");
-		 
+		    options.setBinary("/opt/google/chrome/google-chrome");
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
