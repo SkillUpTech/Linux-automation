@@ -12,6 +12,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.regression.utility.*;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
+
 public class OpenWebsite
 {
 	static String setURL;
@@ -21,8 +23,7 @@ public class OpenWebsite
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
 			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-			 
+			 WebDriverManager.chromedriver().setup();
 		    // Explicitly set the ChromeDriver port
 		    ChromeOptions options = new ChromeOptions();
 		    options.addArguments("no-sandbox");
