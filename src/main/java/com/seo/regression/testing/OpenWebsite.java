@@ -17,6 +17,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class OpenWebsite
 {
 	static String setURL;
+	static String chromeBinaryPath = "/opt/google/chrome/chrome";
 	public static WebDriver openDriver(String browserName)
 	{
 		WebDriver driver = null;
@@ -29,6 +30,7 @@ public class OpenWebsite
 		    options.addArguments("no-sandbox");
 		    options.addArguments("--disable-extensions");
 		    options.addArguments("--headless");
+		    options.setBinary(chromeBinaryPath);
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
