@@ -17,7 +17,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class OpenWebsite
 {
 	static String setURL;
-	static String chromeBinaryPath = "/opt/google/chrome/chrome";
+	//static String chromeBinaryPath = "/opt/google/chrome/chrome";
 	public static WebDriver openDriver(String browserName)
 	{
 		WebDriver driver = null;
@@ -27,7 +27,7 @@ public class OpenWebsite
 			 WebDriverManager.chromedriver().setup();
 		    // Explicitly set the ChromeDriver port
 		    ChromeOptions options = new ChromeOptions();
-		    options.setBinary(chromeBinaryPath);
+		 //   options.setBinary(chromeBinaryPath);
 		    options.addArguments("--no-sandbox");
 		    options.addArguments("--disable-extensions");
 		    options.addArguments("--headless");
