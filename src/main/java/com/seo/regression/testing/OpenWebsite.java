@@ -28,9 +28,13 @@ public class OpenWebsite
 		    // Explicitly set the ChromeDriver port
 		    ChromeOptions options = new ChromeOptions();
 		 //   options.setBinary(chromeBinaryPath);
-		    options.addArguments("--no-sandbox");
-		    options.addArguments("--disable-extensions");
 		    options.addArguments("--headless");
+		    options.addArguments("--no-sandbox");
+		    options.addArguments("start-maximized"); 
+		    options.addArguments("disable-infobars"); 
+		    options.addArguments("--disable-gpu");
+		    options.addArguments("--disable-dev-shm-usage");
+		    options.addArguments("--disable-extensions");
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
