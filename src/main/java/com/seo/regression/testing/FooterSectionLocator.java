@@ -18,8 +18,6 @@ import org.openqa.selenium.WindowType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import io.cucumber.core.backend.Status;
-
 public class FooterSectionLocator
 {
 	WebDriver driver;
