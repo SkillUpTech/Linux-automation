@@ -22,7 +22,7 @@ public class OpenWebsite
 		WebDriver driver = null;
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
-			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+			System.setProperty("webdriver.chrome.driver", "/usr/lib/chromium-browser/chromedriver");
 			WebDriverManager.chromedriver().setup();
 		   ChromeOptions options = new ChromeOptions();
 		 // options.setBinary(chromeBinaryPath);
