@@ -17,7 +17,6 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class OpenWebsite
 {
 	static String setURL;
-	//static String chromeBinaryPath = "/opt/google/chrome/chrome";
 	public static WebDriver openDriver(String browserName)
 	{
 		WebDriver driver = null;
