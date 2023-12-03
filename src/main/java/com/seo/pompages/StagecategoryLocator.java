@@ -42,7 +42,7 @@ public class StagecategoryLocator
 	}
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "/usr/lib/chromium-browser/chromedriver");
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
 		options.addArguments("--disable notifications");

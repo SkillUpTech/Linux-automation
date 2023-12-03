@@ -37,7 +37,7 @@ public class CourseDetailsPage
 
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "/usr/lib/chromium-browser/chromedriver");
 		ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
         options.addArguments("disable-infobars");
