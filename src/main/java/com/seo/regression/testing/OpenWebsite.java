@@ -24,7 +24,7 @@ public class OpenWebsite
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
 			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-			 WebDriverManager.chromedriver().setup();
+			 //WebDriverManager.chromedriver().setup();
 		    // Explicitly set the ChromeDriver port
 		    ChromeOptions options = new ChromeOptions();
 		 //   options.setBinary(chromeBinaryPath);
