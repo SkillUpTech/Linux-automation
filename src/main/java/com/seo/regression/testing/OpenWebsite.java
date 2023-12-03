@@ -23,6 +23,7 @@ public class OpenWebsite
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
 			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+			WebDriverManager.chromedriver().setup();
 		   // ChromeOptions options = new ChromeOptions();
 		 // options.setBinary(chromeBinaryPath);
 		    //options.addArguments("--headless");
