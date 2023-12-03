@@ -29,6 +29,9 @@ public class OpenWebsite
 		    //options.addArguments("--headless");
 //		    options.addArguments("--no-sandbox");
 		    options.addArguments("--remote-allow-origins=*");
+		    options.addArguments("--no-sandbox");
+		    options.addArguments("--disable-gpu");
+		    options.addArguments("--headless");
 			/*
 			 * options.addArguments("start-maximized");
 			 * options.addArguments("disable-infobars");
