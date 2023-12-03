@@ -24,7 +24,6 @@ public class OpenWebsite
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
 			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-			System.setProperty("webdriver.http.factory", "jdk-http-client");
 			 WebDriverManager.chromedriver().setup();
 		    // Explicitly set the ChromeDriver port
 		    ChromeOptions options = new ChromeOptions();
@@ -32,11 +31,13 @@ public class OpenWebsite
 		    options.addArguments("--headless");
 		    options.addArguments("--no-sandbox");
 		    options.addArguments("--remote-allow-origins=*");
-		    options.addArguments("start-maximized"); 
-		    options.addArguments("disable-infobars"); 
-		    options.addArguments("--disable-gpu");
-		    options.addArguments("--disable-dev-shm-usage");
-		    options.addArguments("--disable-extensions");
+			/*
+			 * options.addArguments("start-maximized");
+			 * options.addArguments("disable-infobars");
+			 * options.addArguments("--disable-gpu");
+			 * options.addArguments("--disable-dev-shm-usage");
+			 * options.addArguments("--disable-extensions");
+			 */
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
