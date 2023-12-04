@@ -10,7 +10,9 @@ import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -44,6 +46,7 @@ public class OpenWebsite
 			options.addArguments("--remote-allow-origins=*");
              options.setCapability(CapabilityType.BROWSER_NAME, "chrome");
             options.addArguments("--headless");
+            options.addArguments("start-maximized");
             options.setCapability(CapabilityType.PLATFORM_NAME, Platform.LINUX);
             driver = new RemoteWebDriver(options);
 			//driver = new ChromeDriver(options);
