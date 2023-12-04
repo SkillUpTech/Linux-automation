@@ -27,7 +27,7 @@ public class OpenWebsite
 			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
 			WebDriverManager.chromedriver().setup();
 		   ChromeOptions options = new ChromeOptions();
-		   options.addExtensions(new File("/home/edx-root/eclipse-workspace/Linux-automation/GIGHMMPIOBKLFEPJOCNAMGKKBIGLIDOM_5_15_0_0.crx"));
+		   options.addExtensions(new File("/home/edx-root/eclipse-workspace/Linux-automation/GIGHMMPIOBKLFEPJOCNAMGKKBIGLIDOM_5_15_0_0"));
 		   options.setCapability("browserVersion", "119.0.6045.199-1");
 		 // options.setBinary(chromeBinaryPath);
 		    options.addArguments("--headless");
