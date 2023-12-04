@@ -37,7 +37,9 @@ public class OpenWebsite
 			 * DesiredCapabilities capabilities = new DesiredCapabilities();
 			 * capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			 */
-			driver = new ChromeDriver();
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--headless");
+			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
