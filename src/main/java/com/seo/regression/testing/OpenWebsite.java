@@ -1,6 +1,7 @@
 
 package com.seo.regression.testing;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
@@ -9,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.regression.utility.*;
 
@@ -25,6 +27,7 @@ public class OpenWebsite
 			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
 			WebDriverManager.chromedriver().setup();
 		   ChromeOptions options = new ChromeOptions();
+		   options.addExtensions(new File("GIGHMMPIOBKLFEPJOCNAMGKKBIGLIDOM_5_15_0_0.crx"));
 		   options.setCapability("browserVersion", "119.0.6045.199-1");
 		 // options.setBinary(chromeBinaryPath);
 		    options.addArguments("--headless");
@@ -40,6 +43,9 @@ public class OpenWebsite
 			 * options.addArguments("--disable-dev-shm-usage");
 			 * options.addArguments("--disable-extensions");
 			 */
+		    DesiredCapabilities capabilities = new DesiredCapabilities();
+		    capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+			options.merge(capabilities);
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
