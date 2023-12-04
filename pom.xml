@@ -47,7 +47,16 @@
     <artifactId>log4j</artifactId>
     <version>1.2.17</version> <!-- or the version you want to use -->
 </dependency>
-		
+		<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-chrome-driver</artifactId>
+    <version>4.15.0</version>
+</dependency>
+<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-firefox-driver</artifactId>
+    <version>4.15.0</version>
+</dependency>
 <dependency>
     <groupId>org.apache.poi</groupId>
     <artifactId>poi-ooxml</artifactId>
@@ -73,10 +82,10 @@
       <artifactId>selenium-http-jdk-client</artifactId>
       <version>4.8.2</version>
     </dependency>
-    <dependency>
-        <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-remote-driver</artifactId>
-        <version>4.13.0</version>
+   <dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-remote-driver</artifactId>
+    <version>4.15.0</version>
 </dependency>
 		<dependency>
     <groupId>io.github.bonigarcia</groupId>
@@ -84,7 +93,11 @@
     <version>5.6.2</version>
 </dependency>
 		
-		
+	<dependency>
+    <groupId>org.seleniumhq.selenium</groupId>
+    <artifactId>selenium-server</artifactId>
+    <version>3.141.59</version>
+</dependency>	
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
