@@ -25,8 +25,9 @@ public class OpenWebsite
 			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
 			WebDriverManager.chromedriver().setup();
 		   ChromeOptions options = new ChromeOptions();
+		   options.setCapability("browserVersion", "119.0.6045.199-1");
 		 // options.setBinary(chromeBinaryPath);
-		    //options.addArguments("--headless");
+		    options.addArguments("--headless");
 //		    options.addArguments("--no-sandbox");
 		    options.addArguments("--remote-allow-origins=*");
 		    options.addArguments("--no-sandbox");
