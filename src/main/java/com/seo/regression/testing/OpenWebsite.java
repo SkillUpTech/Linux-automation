@@ -41,6 +41,7 @@ public class OpenWebsite
 			 * capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			 */
 			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
              options.setCapability(CapabilityType.BROWSER_NAME, "chrome");
             options.addArguments("--headless");
             options.setCapability(CapabilityType.PLATFORM_NAME, Platform.LINUX);
