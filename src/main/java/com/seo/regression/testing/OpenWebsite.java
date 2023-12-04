@@ -6,11 +6,14 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.PageLoadStrategy;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.regression.utility.*;
 
@@ -38,8 +41,11 @@ public class OpenWebsite
 			 * capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			 */
 			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--headless");
-			driver = new ChromeDriver(options);
+             options.setCapability(CapabilityType.BROWSER_NAME, "chrome");
+            options.addArguments("--headless");
+            options.setCapability(CapabilityType.PLATFORM_NAME, Platform.LINUX);
+            driver = new RemoteWebDriver(options);
+			//driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
