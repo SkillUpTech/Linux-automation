@@ -25,18 +25,19 @@ public class OpenWebsite
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
 			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-			WebDriverManager.chromedriver().setup();
-		   ChromeOptions options = new ChromeOptions();
-		   options.addExtensions(new File("/home/edx-root/eclipse-workspace/Linux-automation/GIGHMMPIOBKLFEPJOCNAMGKKBIGLIDOM_5_15_0_0.crx"));
-		    options.addArguments("--headless");
-		    options.addArguments("--remote-allow-origins=*");
-		    options.addArguments("--no-sandbox");
-		    options.addArguments("--disable-gpu");
-		    options.addArguments("--headless");
-			
-		    DesiredCapabilities capabilities = new DesiredCapabilities();
-		    capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-			driver = new ChromeDriver(options);
+			/*
+			 * WebDriverManager.chromedriver().setup(); ChromeOptions options = new
+			 * ChromeOptions(); options.addExtensions(new File(
+			 * "/home/edx-root/eclipse-workspace/Linux-automation/GIGHMMPIOBKLFEPJOCNAMGKKBIGLIDOM_5_15_0_0.crx"
+			 * )); options.addArguments("--headless");
+			 * options.addArguments("--remote-allow-origins=*");
+			 * options.addArguments("--no-sandbox"); options.addArguments("--disable-gpu");
+			 * options.addArguments("--headless");
+			 * 
+			 * DesiredCapabilities capabilities = new DesiredCapabilities();
+			 * capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+			 */
+			driver = new ChromeDriver();
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
