@@ -1,4 +1,3 @@
-
 package com.seo.regression.testing;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -45,6 +44,22 @@ public class RegressionTesting
 	    if(browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
+	    	if(environment.equalsIgnoreCase("stage"))
+	    	{
+	    		getEnvironment = "stage";
+	    	}
+	    	else if(environment.equalsIgnoreCase("stage-in"))
+	    	{
+	    		getEnvironment = "stage-in";
+	    	}
+	    	else if(environment.equalsIgnoreCase("prod-in"))
+	    	{
+	    		getEnvironment = "prod-in";
+	    	}
+	    	else if(environment.equalsIgnoreCase("prod"))
+	    	{
+	    		getEnvironment = "prod";
+	    	}
 	    }
 	    else if(browserName.equalsIgnoreCase("Chrome"))
 	    {
