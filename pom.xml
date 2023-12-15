@@ -150,7 +150,9 @@
 				<environment>${Denvironment}</environment>
 			</systemPropertyVariables>
           <suiteXmlFiles>
-            <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
+           <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
+           <!-- <suiteXmlFile>stage.xml</suiteXmlFile>-->
+          <!-- <suiteXmlFile>TestNG.xml</suiteXmlFile>-->
           </suiteXmlFiles>
         </configuration>
       </plugin>
