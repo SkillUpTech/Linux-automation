@@ -36,27 +36,27 @@ public class RegressionTesting
 	WebDriver driver;
 	
 	@BeforeTest
-	@Parameters({"browser","environment"})
-	public void setup(String browserName, String environment) throws Exception
+	@Parameters({"browser","Denvironment"})
+	public void setup(String browserName, String Denvironment) throws Exception
 	{
 		System.out.println("welcome");
-		System.out.println("Automation executing in "+System.getProperty("environment")+" environment");
+		System.out.println("Automation executing in "+System.getProperty("Denvironment")+" environment");
 	    if(browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
-	    	if(environment.equalsIgnoreCase("stage"))
+	    	if(Denvironment.equalsIgnoreCase("stage"))
 	    	{
 	    		getEnvironment = "stage";
 	    	}
-	    	else if(environment.equalsIgnoreCase("stage-in"))
+	    	else if(Denvironment.equalsIgnoreCase("stage-in"))
 	    	{
 	    		getEnvironment = "stage-in";
 	    	}
-	    	else if(environment.equalsIgnoreCase("prod-in"))
+	    	else if(Denvironment.equalsIgnoreCase("prod-in"))
 	    	{
 	    		getEnvironment = "prod-in";
 	    	}
-	    	else if(environment.equalsIgnoreCase("prod"))
+	    	else if(Denvironment.equalsIgnoreCase("prod"))
 	    	{
 	    		getEnvironment = "prod";
 	    	}
@@ -64,19 +64,19 @@ public class RegressionTesting
 	    else if(browserName.equalsIgnoreCase("Chrome"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
-	    	if(environment.equalsIgnoreCase("stage"))
+	    	if(Denvironment.equalsIgnoreCase("stage"))
 	    	{
 	    		getEnvironment = "stage";
 	    	}
-	    	else if(environment.equalsIgnoreCase("stage-in"))
+	    	else if(Denvironment.equalsIgnoreCase("stage-in"))
 	    	{
 	    		getEnvironment = "stage-in";
 	    	}
-	    	else if(environment.equalsIgnoreCase("prod-in"))
+	    	else if(Denvironment.equalsIgnoreCase("prod-in"))
 	    	{
 	    		getEnvironment = "prod-in";
 	    	}
-	    	else if(environment.equalsIgnoreCase("prod"))
+	    	else if(Denvironment.equalsIgnoreCase("prod"))
 	    	{
 	    		getEnvironment = "prod";
 	    	}
