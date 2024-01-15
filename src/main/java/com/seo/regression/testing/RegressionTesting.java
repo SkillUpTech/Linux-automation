@@ -1,6 +1,4 @@
 package com.seo.regression.testing;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -250,20 +248,14 @@ public class RegressionTesting
 	        // Format the current date and time using the formatter
 	        String formattedDateTime = currentDateTime.format(formatter);
 	        
-	        String directoryPath = "/home/edx-root/Desktop/testing/";
-	        
 	        
 			if(driver.getCurrentUrl().contains("stage"))
 			{
-				String fileName = "stage_result_" + formattedDateTime + ".xlsx";
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, Paths.get(directoryPath).toString(), Paths.get(fileName).toString()/*"/home/edx-root/Desktop/testing/", "stage_result_" + formattedDateTime + ".xlsx"*/);
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "stage_result_" + formattedDateTime + ".xlsx");
 			}
 			else if (!driver.getCurrentUrl().contains("stage"))
 			{
-				String fileName = "prod_result_" + formattedDateTime + ".xlsx";
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP,
-						Paths.get(directoryPath).toString(),
-						Paths.get(fileName).toString()/* , "prod_result_" + formattedDateTime + ".xlsx" */);
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "prod_result_" + formattedDateTime + ".xlsx");
 			}
 		}
 	}
