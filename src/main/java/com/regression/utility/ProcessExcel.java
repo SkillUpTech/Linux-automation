@@ -152,8 +152,7 @@ public class ProcessExcel
 		return DATA_AS_TABLE;
 	}
 	
-	public static boolean writeExcelFileAsRows(LinkedHashMap<String, ArrayList<ArrayList<String>>> data,
-			String filePathToWrite/* , String fileName */)
+	public static boolean writeExcelFileAsRows(LinkedHashMap<String, ArrayList<ArrayList<String>>> data, String filePathToWrite, String fileName)
 	{
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		 XSSFCellStyle cellStyle = workbook.createCellStyle();//new code
@@ -269,7 +268,7 @@ public class ProcessExcel
 				sheet.setTabColor(Constants.RED);
 			}
 		}
-		try (FileOutputStream outputStream = new FileOutputStream(filePathToWrite /* + "\\" + fileName */)) {
+		try (FileOutputStream outputStream = new FileOutputStream(filePathToWrite + "\\" + fileName)) {
             workbook.write(outputStream);
             outputStream.close();
         } catch (FileNotFoundException e) {
