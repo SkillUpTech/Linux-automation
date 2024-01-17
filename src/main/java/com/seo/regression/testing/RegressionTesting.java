@@ -257,21 +257,11 @@ public class RegressionTesting
 	        
 			if(driver.getCurrentUrl().contains("stage"))
 			{
-				String fileName = "stage_result_" + formattedDateTime + ".xlsx";
-				Path filePath = FileSystems.getDefault().getPath("home", "edx-root", "Desktop", "testing", fileName);
-				 try {
-					Files.write(filePath, new byte[0], StandardOpenOption.CREATE);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "stage_result_" + formattedDateTime + ".xlsx");
 				}
-				    System.out.println("File created successfully at: " + filePath);
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, filePath.toString(),
-					    fileName);
-			}
 			else if (!driver.getCurrentUrl().contains("stage"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing", "prod_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "prod_result_" + formattedDateTime + ".xlsx");
 			}
 		}
 	}
