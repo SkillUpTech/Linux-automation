@@ -1,5 +1,7 @@
 package com.seo.regression.testing;
 import java.io.File;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -252,7 +254,10 @@ public class RegressionTesting
 	        
 			if(driver.getCurrentUrl().contains("stage"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing", File.separator +"stage_result_" + formattedDateTime + ".xlsx");
+				String fileName = "stage_result_" + formattedDateTime + ".xlsx";
+				Path filePath = FileSystems.getDefault().getPath("home", "edx-root", "Desktop", "testing", fileName);
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, filePath.toString(),
+					    fileName);
 			}
 			else if (!driver.getCurrentUrl().contains("stage"))
 			{
