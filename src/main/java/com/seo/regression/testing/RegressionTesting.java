@@ -1,7 +1,10 @@
 package com.seo.regression.testing;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -256,6 +259,13 @@ public class RegressionTesting
 			{
 				String fileName = "stage_result_" + formattedDateTime + ".xlsx";
 				Path filePath = FileSystems.getDefault().getPath("home", "edx-root", "Desktop", "testing", fileName);
+				 try {
+					Files.write(filePath, new byte[0], StandardOpenOption.CREATE);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				    System.out.println("File created successfully at: " + filePath);
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, filePath.toString(),
 					    fileName);
 			}
