@@ -249,7 +249,7 @@ public class RegressionTesting
 			LocalDateTime currentDateTime = LocalDateTime.now();
 
 	        // Define a custom date and time format
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHm");
 
 	        // Format the current date and time using the formatter
 	        String formattedDateTime = currentDateTime.format(formatter);
@@ -257,13 +257,11 @@ public class RegressionTesting
 	        
 			if(driver.getCurrentUrl().contains("stage"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP,
-						/* "/var/lib/jenkins/workspace/demo/test-output/", */ "stage_result_" + formattedDateTime + ".xlsx");
-			}
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/demo/test-output/", "stage_result_" + formattedDateTime + ".xlsx");
+				}
 			else if (!driver.getCurrentUrl().contains("stage"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP,
-						/* "/home/edx-root/Desktop/testing/", */ "prod_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "prod_result_" + formattedDateTime + ".xlsx");
 			}
 		}
 	}
