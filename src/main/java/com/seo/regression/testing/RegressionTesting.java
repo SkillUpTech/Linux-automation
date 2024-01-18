@@ -257,11 +257,16 @@ public class RegressionTesting
 	        
 			if(driver.getCurrentUrl().contains("stage"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/", "stage_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/demo/test-output/", "stage_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/stage build/test-output/", "stage_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/Stage/test-output/", "stage_result_" + formattedDateTime + ".xlsx");
 			}
 			else if (!driver.getCurrentUrl().contains("stage"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "prod_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/demo/test-output/", "prod_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/prod build/test-output/", "prod_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/Prod/test-output/", "prod_result_" + formattedDateTime + ".xlsx");
+
 			}
 		}
 	}
