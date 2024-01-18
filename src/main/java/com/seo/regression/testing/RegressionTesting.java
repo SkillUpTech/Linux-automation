@@ -262,7 +262,6 @@ public class RegressionTesting
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/Stage/test-output/", "stage_result_" + formattedDateTime + ".xlsx");
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/jobs/StageAutomation/", "stage_result_" + formattedDateTime + ".xlsx");
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/jenkins/workspace/StageAutomation/test-output/", "stage_result_" + formattedDateTime + ".xlsx");
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/jenkins/workspace/StageAutomation/", "stage_result_" + formattedDateTime + ".xlsx");
 
 				
 			}
