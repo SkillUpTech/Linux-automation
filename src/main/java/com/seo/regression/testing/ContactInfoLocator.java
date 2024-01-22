@@ -530,12 +530,17 @@ public class ContactInfoLocator
 				for(String window : windows)
 				{
 					driver.switchTo().window(window);
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					if(driver.getCurrentUrl().contains("privacy"))
 					{
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 						driver.switchTo().window(window);
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 						System.out.println("Privacy policy window");
 						driver.close();
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 						driver.switchTo().window(parentWindow);
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					}
 					if(driver.getCurrentUrl().contains("tos"))
 					{

@@ -27,7 +27,11 @@ public class RegressionGenericValidator
 		this.SHEET_NAME = sheetName; 
 		this.ROWS = rows;
 		this.regressionGenericLocator = new RegressionGenericLocator(driver);
-		
+	}
+	
+	public RegressionGenericValidator(WebDriver driver)
+	{
+		this.driver = driver;
 	}
 	
 	public String processSheetData()
@@ -147,31 +151,31 @@ public class RegressionGenericValidator
 				verifyEnrollmentProcess = regressionGenericLocator.enroll(enrollDataFromExcel);
 				for(int i = 0; i < verifyEnrollmentProcess.size(); i++)
 				{
-					if(verifyEnrollmentProcess.get(0).contains("fail"))
+					if(verifyEnrollmentProcess.get(0).contains("loginFail"))
 					{
 						sheetStatus = "Fail";
 						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).get(1);
 						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).set(1, (cellValue + " - failed"));
 					}
-					if(verifyEnrollmentProcess.get(1).contains("fail"))
+					if(verifyEnrollmentProcess.get(1).contains("choosePlanFail"))
 					{
 						sheetStatus = "Fail";
 						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).get(2);
 						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).set(2, (cellValue + " - failed"));
 					}
-					if(verifyEnrollmentProcess.get(2).contains("fail"))
+					if(verifyEnrollmentProcess.get(2).contains("razorpayFail"))
 					{
 						sheetStatus = "Fail";
 						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).get(3);
 						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).set(3, (cellValue + " - failed"));
 					}
-					if(verifyEnrollmentProcess.get(3).contains("fail"))
+					if(verifyEnrollmentProcess.get(3).contains("paymentFail"))
 					{
 						sheetStatus = "Fail";
 						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).get(4);
 						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).set(4, (cellValue + " - failed"));
 					}
-					if(verifyEnrollmentProcess.get(4).contains("fail"))
+					if(verifyEnrollmentProcess.get(4).contains("orderDetailFail"))
 					{
 						sheetStatus = "Fail";
 						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).get(5);

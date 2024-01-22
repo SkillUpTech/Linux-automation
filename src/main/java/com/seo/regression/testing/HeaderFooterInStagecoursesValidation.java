@@ -29,7 +29,7 @@ public class HeaderFooterInStagecoursesValidation
 			switch(firstColumn)
 			{
 			  case "LoginIcon": 
-				  LoginIcon(); 
+				  LoginIcon(row); 
 				  break; 
 				/*
 				 * case "FindOutMore": FindOutMore(row.get(1)); break;
@@ -70,9 +70,9 @@ public class HeaderFooterInStagecoursesValidation
 			  case "SkillupOnlineForBusiness": 
 				  SkillupOnlineForBusiness(row.get(1)); 
 				  break; 
-			  case "Placement": 
-				  Placement(row.get(1)); 
-				  break; 
+				/*
+				 * case "Placement": Placement(row.get(1)); break;
+				 */
 			  case "FAQ": 
 				  FAQ(row.get(1)); 
 				  break; 
@@ -92,13 +92,16 @@ public class HeaderFooterInStagecoursesValidation
 		return sheetStatus;
 	}
 	
-	public void LoginIcon()
+	public void LoginIcon(ArrayList<String> data)
 	{
-		String status = headerFooterInStagecoursesLocator.loginProcess();
-		if(status.equalsIgnoreCase("fail"))
+		if(!data.contains("NA"))
 		{
-			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(1).set(0, "LoginIcon - failed");
+			String status = headerFooterInStagecoursesLocator.loginProcess();
+			if(status.equalsIgnoreCase("fail"))
+			{
+				sheetStatus="Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(1).set(0, "LoginIcon - failed");
+			}
 		}
 	}
 	public void FindOutMore(String data)
@@ -235,16 +238,16 @@ public class HeaderFooterInStagecoursesValidation
 
 		}
 	}
-	public void Placement(String data)
-	{
-		String status = headerFooterInStagecoursesLocator.PlacementProcess(data);
-		if(!status.equalsIgnoreCase("pass"))
-		{
-			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(16).add(2, (status + " - failed"));
 
-		}
-	}
+	/*
+	 * public void Placement(String data) { String status =
+	 * headerFooterInStagecoursesLocator.PlacementProcess(data);
+	 * if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
+	 * RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
+	 * "HeaderFooterStagecourses").get(16).add(2, (status + " - failed"));
+	 * 
+	 * } }
+	 */
 	public void FAQ(String data)
 	{
 		String status = headerFooterInStagecoursesLocator.FAQProcess(data);

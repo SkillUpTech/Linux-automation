@@ -42,10 +42,10 @@ public class FluidEducationValidation
 					CTADownloadDetails();
 					break;
 				case "programs":
-					programs();
+					programs(row);
 					break;
 				case "ExploreCourse":
-					  ExploreCourse(); 
+					  ExploreCourse(row); 
 					  break;
 			}
 		}
@@ -88,25 +88,31 @@ public class FluidEducationValidation
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Fluideducation").get(3).set(0, "CTADownloadDetails - failed");
 		}
 	}
-	public void programs()
+	public void programs(ArrayList<String> data)
 	{
-		ArrayList<String> getStatus = fluidEducationLocator.verifyFluidEducationProgram();
-		if(getStatus.size()>0)
+		if(!data.contains("NA"))
 		{
-			for(int i = 0; i < getStatus.size(); i++)
+			ArrayList<String> getStatus = fluidEducationLocator.verifyFluidEducationProgram();
+			if(getStatus.size()>0)
 			{
-				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Fluideducation").get(4).add(i+1, (getStatus.get(i) + "programs - failed"));
+				for(int i = 0; i < getStatus.size(); i++)
+				{
+					sheetStatus = "Fail";
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Fluideducation").get(4).add(i+1, (getStatus.get(i) + "programs - failed"));
+				}
 			}
 		}
 	}
-	public void ExploreCourse() throws InterruptedException
+	public void ExploreCourse(ArrayList<String> data) throws InterruptedException
 	{
-		String status = fluidEducationLocator.ExploreCourseProcess();
-		if(status.equalsIgnoreCase("fail"))
+		if(!data.contains("NA"))
 		{
-			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Fluideducation").get(5).set(0, "ExploreCourse - failed");
+			String status = fluidEducationLocator.ExploreCourseProcess();
+			if(status.equalsIgnoreCase("fail"))
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Fluideducation").get(5).set(0, "ExploreCourse - failed");
+			}
 		}
 	}
 }

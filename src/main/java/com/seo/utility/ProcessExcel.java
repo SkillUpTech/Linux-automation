@@ -24,6 +24,7 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 /**
  * Read and write excel
  * Can read as rows or as table
@@ -32,10 +33,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class ProcessExcel 
 {
-	private static LinkedHashMap<String, List<HashMap<String, String>>> DATA_AS_TABLE = new LinkedHashMap<String, List<HashMap<String, String>>>();
+	private static LinkedHashMap<String, List<LinkedHashMap<String, String>>> DATA_AS_TABLE = new LinkedHashMap<String, List<LinkedHashMap<String, String>>>();
 	private static LinkedHashMap<String, ArrayList<ArrayList<String>>> DATA_AS_ROWS = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
 	
-	public static LinkedHashMap<String, List<HashMap<String, String>>> getLastReadExcelAsTable()
+	public static LinkedHashMap<String, List<LinkedHashMap<String, String>>> getLastReadExcelAsTable()
 	{
 		return DATA_AS_TABLE;
 	}
@@ -74,6 +75,8 @@ public class ProcessExcel
 						{
 							DataFormatter formatter = new DataFormatter();
 							String value = formatter.formatCellValue(excelRow.getCell(j));
+							System.out.println(value);
+							
 							if(!value.trim().isEmpty())
 							{
 								rowData.add(value);
@@ -100,7 +103,7 @@ public class ProcessExcel
 		return data;
 	}
 	
-	public static LinkedHashMap<String, List<HashMap<String, String>>> readExcelFileAsTable(String path) throws IOException
+	public static LinkedHashMap<String, List<LinkedHashMap<String, String>>> readExcelFileAsTable(String path) throws IOException
 	{
 		File file = new File(path);
 		FileInputStream fis = new FileInputStream(file);
@@ -110,7 +113,7 @@ public class ProcessExcel
 			for(int sheet = 0; sheet < workbook.getNumberOfSheets(); sheet++)
 			{
 				XSSFSheet excelSheet = workbook.getSheetAt(sheet);
-				int rowSize = excelSheet.getLastRowNum();
+				int rowSize = excelSheet.getPhysicalNumberOfRows();
 				int columnSize = 0;
 				if(rowSize > 1)
 				{
@@ -123,10 +126,10 @@ public class ProcessExcel
 						String value = cell.getStringCellValue();
 						columns.add(value);
 					}
-					List<HashMap<String, String>> rows = new ArrayList<HashMap<String, String>>();
-					for(int i = 1; i <= rowSize; i++)
+					List<LinkedHashMap<String, String>> rows = new ArrayList<LinkedHashMap<String, String>>();
+					for(int i = 1; i < rowSize; i++)
 					{
-						HashMap<String, String> rowData = new HashMap<String, String>();
+						LinkedHashMap<String, String> rowData = new LinkedHashMap<String, String>();
 						XSSFRow excelRow =  excelSheet.getRow(i);
 						for(int j = 0; j < columnSize; j++)
 						{
@@ -158,9 +161,9 @@ public class ProcessExcel
 		{
 			String sheetName = entry.getKey();
 			String sheetTabColor = "";
-			if(sheetName.indexOf(Utils.STYLE_DELIMITTER) >= 0)
+			if(sheetName.indexOf(Utils.DELIMITTER) >= 0)
 			{
-				String[] sheetAndColor = sheetName.split(Utils.STYLE_DELIMITTER);
+				String[] sheetAndColor = sheetName.split(Utils.DELIMITTER);
 				sheetName = sheetAndColor[0];
 				sheetTabColor = sheetAndColor[1];
 			}
@@ -168,7 +171,8 @@ public class ProcessExcel
 			XSSFSheet sheet = workbook.createSheet(sheetName);
 			if(sheetTabColor.equalsIgnoreCase("green"))
 			{
-				sheet.setTabColor(com.seo.utility.Constants.GREEN);
+				
+				sheet.setTabColor(Constants.GREEN);
 			}
 			else if(sheetTabColor.equalsIgnoreCase("red"))
 			{
@@ -188,9 +192,9 @@ public class ProcessExcel
 	                style.setWrapText(true);
 	                cell.setCellStyle(style);
 	                
-	                if(cellValue.indexOf( Utils.STYLE_DELIMITTER ) >= 0)
+	                if(cellValue.indexOf( Utils.DELIMITTER ) >= 0)
 	                {
-	                	String[] styles = cellValue.split(Utils.STYLE_DELIMITTER);
+	                	String[] styles = cellValue.split(Utils.DELIMITTER);
 		                cellValue = styles[0];
 		                if(styles.length > 1)
 		                {
@@ -238,6 +242,18 @@ public class ProcessExcel
 						cell.setCellValue(originalValue);
 						errorCell(workbook, cell);
 					}
+					else if(cellValue.indexOf(" - ignored") >= 0)
+					{
+						String originalValue = cellValue.replaceAll(" - ignored", "");
+						cell.setCellValue(originalValue);
+						ignoreCell(workbook, cell);
+					}
+					else if(cellValue.indexOf(" - header") >= 0)
+					{
+						String originalValue = cellValue.replaceAll(" - header", "");
+						cell.setCellValue(originalValue);
+						headerCell(workbook, cell);
+					}
 					else
 					{
 						cell.setCellValue((String) cellValue);
@@ -256,9 +272,201 @@ public class ProcessExcel
 		return true;
 	}
 	
+	public static boolean writeExcelAsTable(LinkedHashMap<String, List<LinkedHashMap<String, String>>> data, String filePathToWrite, String fileName)
+	{
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		for(Entry<String, List<LinkedHashMap<String, String>>> entry: data.entrySet())
+		{
+			String sheetName = entry.getKey();
+			String sheetTabColor = "";
+			if(sheetName.indexOf(Utils.DELIMITTER) >= 0)
+			{
+				String[] sheetAndColor = sheetName.split(Utils.DELIMITTER);
+				sheetName = sheetAndColor[0];
+				sheetTabColor = sheetAndColor[1];
+			}
+			XSSFSheet sheet = workbook.createSheet(sheetName);
+			if(sheetTabColor.equalsIgnoreCase("green"))
+			{
+				sheet.setTabColor(Constants.GREEN);
+			}
+			else if(sheetTabColor.equalsIgnoreCase("red"))
+			{
+				sheet.setTabColor(Constants.RED);
+			}
+			List<LinkedHashMap<String, String>> rowsData = entry.getValue();
+			List<String> columns = new ArrayList<String>();
+			if(rowsData.size() > 0)
+			{
+				HashMap<String, String> firstRow = rowsData.get(0);
+				for(Entry<String, String> ent: firstRow.entrySet())
+				{
+					columns.add(ent.getKey());
+				}
+			}
+			XSSFRow columnRow = sheet.createRow(0);
+			columnRow.setHeightInPoints((2 * sheet.getDefaultRowHeightInPoints()));
+			for(int i = 0; i < columns.size(); i++)
+			{
+				String cellValue = (String) columns.get(i);
+				sheet.setColumnWidth(i, 40 * 256);
+				Cell cell = columnRow.createCell(i);
+				CellStyle style = workbook.createCellStyle();
+                style.setWrapText(true);
+                cell.setCellStyle(style);
+                
+                if(cellValue.indexOf( Utils.DELIMITTER ) >= 0)
+                {
+                	String[] styles = cellValue.split(Utils.DELIMITTER);
+	                cellValue = styles[0];
+	                if(styles.length > 1)
+	                {
+	                	for(int k = 1; k < styles.length; k++)
+	                	{
+	                		String styleToDo = styles[k];
+	                		if(styleToDo.equalsIgnoreCase("bold"))
+	                		{
+	                			cell = changeCellFontBold(workbook, cell);
+	                		}
+	                		if(styleToDo.indexOf("color") >= 0)
+	                		{
+	                			String color = "";
+	                			if(styleToDo.equalsIgnoreCase("colorGreen"))
+	                			{
+	                				color = Utils.HEXA_GREEN_COLOR;
+	                			}
+	                			else if(styleToDo.equalsIgnoreCase("colorRed"))
+	                			{
+	                				color = Utils.HEXA_RED_COLOR;
+	                			}
+	                			cell = changeCellFontColor(workbook, cell, color);
+	                		}
+	                		if(styleToDo.indexOf("background") >= 0)
+	                		{
+	                			if(styleToDo.equalsIgnoreCase("backgroundlime"))
+	                			{
+	                				cell = changeBackGroundColor(cell, IndexedColors.LEMON_CHIFFON);
+	                			}
+	                			else if(styleToDo.equalsIgnoreCase("backgroundLT"))
+	                			{
+	                				cell = changeBackGroundColor(cell, IndexedColors.LIGHT_TURQUOISE);
+	                			}
+	                		}
+	                		if(styleToDo.equalsIgnoreCase("border"))
+	                		{
+	                			cell = setCellBorder(cell);
+	                		}
+	                	}
+	                }
+                }
+                cell.setCellValue(cellValue);
+			}
+			for(int i = 0; i < rowsData.size(); i++)
+			{
+				LinkedHashMap<String, String> rowData = rowsData.get(i);
+				XSSFRow row = sheet.createRow(i+1);
+				row.setHeightInPoints((2 * sheet.getDefaultRowHeightInPoints()));
+				int j = 0;
+				for(Entry<String, String> rowEntry: rowData.entrySet())
+				{
+					sheet.setColumnWidth(j, 40 * 256);
+					String cellValue = rowEntry.getValue();
+					Cell cell = row.createCell(j);
+					CellStyle style = workbook.createCellStyle();
+	                style.setWrapText(true);
+	                cell.setCellStyle(style);
+	                
+	                if(cellValue.indexOf( Utils.DELIMITTER ) >= 0)
+	                {
+	                	String[] styles = cellValue.split(Utils.DELIMITTER);
+		                cellValue = styles[0];
+		                if(styles.length > 1)
+		                {
+		                	for(int k = 1; k < styles.length; k++)
+		                	{
+		                		String styleToDo = styles[k];
+		                		if(styleToDo.equalsIgnoreCase("bold"))
+		                		{
+		                			cell = changeCellFontBold(workbook, cell);
+		                		}
+		                		if(styleToDo.indexOf("color") >= 0)
+		                		{
+		                			String color = "";
+		                			if(styleToDo.equalsIgnoreCase("colorGreen"))
+		                			{
+		                				color = Utils.HEXA_GREEN_COLOR;
+		                			}
+		                			else if(styleToDo.equalsIgnoreCase("colorRed"))
+		                			{
+		                				color = Utils.HEXA_RED_COLOR;
+		                			}
+		                			cell = changeCellFontColor(workbook, cell, color);
+		                		}
+		                		if(styleToDo.indexOf("background") >= 0)
+		                		{
+		                			if(styleToDo.equalsIgnoreCase("backgroundlime"))
+		                			{
+		                				cell = changeBackGroundColor(cell, IndexedColors.LEMON_CHIFFON);
+		                			}
+		                			else if(styleToDo.equalsIgnoreCase("backgroundLT"))
+		                			{
+		                				cell = changeBackGroundColor(cell, IndexedColors.LIGHT_TURQUOISE);
+		                			}
+		                		}
+		                		if(styleToDo.equalsIgnoreCase("border"))
+		                		{
+		                			cell = setCellBorder(cell);
+		                		}
+		                	}
+		                }
+	                }
+					if(cellValue.indexOf(" - failed") >= 0)
+					{
+						String originalValue = cellValue.replaceAll(" - failed", "");
+						cell.setCellValue(originalValue);
+						errorCell(workbook, cell);
+					}
+					else if(cellValue.indexOf(" - ignored") >= 0)
+					{
+						String originalValue = cellValue.replaceAll(" - ignored", "");
+						cell.setCellValue(originalValue);
+						ignoreCell(workbook, cell);
+					}
+					else if(cellValue.indexOf(" - header") >= 0)
+					{
+						String originalValue = cellValue.replaceAll(" - header", "");
+						cell.setCellValue(originalValue);
+						headerCell(workbook, cell);
+					}
+					else if(cellValue.indexOf("errorString") >= 0)
+					{
+						cell.setCellValue(cellValue);
+						ignoreCell(workbook, cell);
+					}
+					else
+					{
+						cell.setCellValue((String) cellValue);
+					}
+	                
+	                j++;
+				}
+			}
+		}
+		try (FileOutputStream outputStream = new FileOutputStream(filePathToWrite + "\\" + fileName)) {
+            workbook.write(outputStream);
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
 	public static Cell changeCellFontColor(XSSFWorkbook wb, Cell cell, String color) {
 		CellStyle style = cell.getCellStyle();
 		XSSFFont font = wb.createFont();
+		//font.setColor(new XSSFColor(Color.decode(color)));
 		font.setColor(new XSSFColor((IndexedColorMap) Color.decode(color)));
 		style.setFont(font);
 		cell.setCellStyle(style);
@@ -279,7 +487,7 @@ public class ProcessExcel
 		CellStyle style = cell.getCellStyle();
 		style.setFillForegroundColor(color.getIndex());
 		style.setFillBackgroundColor(color.getIndex());  
-        style.setFillPattern(FillPatternType.SPARSE_DOTS);
+        style.setFillPattern(FillPatternType.SPARSE_DOTS);//CellStyle.BIG_SPOTS
         cell.setCellStyle(style);
         return cell;
 	}
@@ -287,10 +495,10 @@ public class ProcessExcel
 	public static Cell setCellBorder(Cell cell)
 	{
 		CellStyle style = cell.getCellStyle();
-		style.setBorderBottom(BorderStyle.THIN);
-		style.setBorderTop(BorderStyle.THIN);
-		style.setBorderLeft(BorderStyle.THIN);
-		style.setBorderRight(BorderStyle.THIN);
+		style.setBorderBottom(BorderStyle.THIN);//CellStyle.BORDER_THIN
+		style.setBorderTop(BorderStyle.THIN);//CellStyle.BORDER_THIN
+		style.setBorderLeft(BorderStyle.THIN);//CellStyle.BORDER_THIN
+		style.setBorderRight(BorderStyle.THIN);//CellStyle.BORDER_THIN
 		cell.setCellStyle(style);
 		return cell;
 	}
@@ -299,7 +507,32 @@ public class ProcessExcel
 		CellStyle style = cell.getCellStyle();
 		style.setFillForegroundColor(IndexedColors.RED.getIndex());
 		style.setFillBackgroundColor(IndexedColors.RED.getIndex());  
-        style.setFillPattern(FillPatternType.SPARSE_DOTS);
+        style.setFillPattern(FillPatternType.SPARSE_DOTS);//CellStyle.BIG_SPOTS
         cell.setCellStyle(style);
+	}
+	
+	public static void ignoreCell(XSSFWorkbook wb, Cell cell) {
+		CellStyle style = cell.getCellStyle();
+		style.setFillForegroundColor(IndexedColors.GOLD.getIndex());
+		style.setFillBackgroundColor(IndexedColors.GOLD.getIndex());  
+        style.setFillPattern(FillPatternType.SPARSE_DOTS);//CellStyle.BIG_SPOTS
+        cell.setCellStyle(style);
+	}
+	
+	public static void headerCell(XSSFWorkbook wb, Cell cell) {
+		CellStyle style = cell.getCellStyle();
+		style.setFillForegroundColor(IndexedColors.PALE_BLUE.getIndex());
+		style.setFillBackgroundColor(IndexedColors.PALE_BLUE.getIndex());  
+        style.setFillPattern(FillPatternType.SPARSE_DOTS);//CellStyle.BIG_SPOTS
+        cell.setCellStyle(style);
+	}
+	public static void main(String[] args) {
+		try {
+			LinkedHashMap<String, List<LinkedHashMap<String, String>>> data = ProcessExcel.readExcelFileAsTable("C:\\Users\\Skillup 200\\Desktop\\SampleRestApi.xlsx");
+			System.out.println(data);
+			ProcessExcel.writeExcelAsTable(data, "C:\\Users\\Skillup 200\\Desktop\\", "result.xlsx");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

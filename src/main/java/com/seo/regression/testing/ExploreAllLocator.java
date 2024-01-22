@@ -14,6 +14,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -354,8 +355,9 @@ public class ExploreAllLocator
 						wait.until(ExpectedConditions.elementToBeClickable(category));
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 					}
-					
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 					jse3.executeScript("arguments[0].click()", category);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 					System.out.println("category Name : "+categoryName);
 					//Thread.sleep(1000);
 					
@@ -372,16 +374,29 @@ public class ExploreAllLocator
 					try
 					{
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+						String categoryCourseName = null;
 						List<WebElement> listOfCourses = driver.findElements(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_courseResult'] div[class*='RegularCourseCard_RegularcardLinks']>a"));
-
+						listOfCourses = driver.findElements(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_courseResult'] div[class*='RegularCourseCard_RegularcardLinks']>a"));
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 						if(listOfCourses.size()>0)
 						{
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 							for(int j = 0; j < listOfCourses.size(); j++)
 							{
-								String categoryCourseName = listOfCourses.get(j).getAttribute("href");
-								categoryCourseName = listOfCourses.get(j).getAttribute("href");
+								try 
+								{
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+									categoryCourseName = listOfCourses.get(j).getAttribute("href");
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+								} 
+								catch(StaleElementReferenceException e)
+								{
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+									System.out.println("facing stale element exception");
+									listOfCourses = driver.findElements(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_courseResult'] div[class*='RegularCourseCard_RegularcardLinks']>a"));
+									categoryCourseName = listOfCourses.get(j).getAttribute("href");
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+								}
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 								wait.until(ExpectedConditions.visibilityOf(listOfCourses.get(j)));
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
@@ -542,8 +557,9 @@ public class ExploreAllLocator
 					
 					if(!level.isSelected())
 					{
-						level.click();
-					//	Thread.sleep(1000);
+						//jse3.executeScript("arguments[0].click()", level);
+						Actions actions = new Actions(driver);
+						actions.moveToElement(level).click().perform();
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 					System.out.println(level.getAttribute("id"));
@@ -675,7 +691,8 @@ public class ExploreAllLocator
 					
 					if(!level.isSelected())
 					{
-						level.click();
+						Actions actions = new Actions(driver);
+						actions.moveToElement(level).click().perform();
 						//Thread.sleep(1000);
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));

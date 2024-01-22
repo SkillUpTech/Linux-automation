@@ -1,7 +1,5 @@
 package com.test.course;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.Test;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,7 +39,6 @@ public class TestCourseDetails
 		this.testCourseDetails(excelPath);
 	}
 	
-	@Test
 	public void testCourseDetails(String excelPath)
 	{
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();

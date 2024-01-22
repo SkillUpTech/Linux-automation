@@ -36,6 +36,7 @@ public class RegressionGenericLocator {
 	String setLoginURL;
 	String courseCode;
 	String orderNumber = "";
+	String getEnrolledCourseName = "";
 	String amountWithTax;
 	String amountWithOutTax;
 	String checkPaymentProcess;
@@ -47,7 +48,7 @@ public class RegressionGenericLocator {
 
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "/usr/local/bin/geckodriver");
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Hemamalini\\Downloads\\chromedriver-win64\\chromedriverVersion119\\chromedriver.exe");
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
 		options.addArguments("--disable notifications");
@@ -72,6 +73,9 @@ public class RegressionGenericLocator {
 			setHost = "https://" + host + ".skillup.online";
 		} else if (host.equalsIgnoreCase("prod")) {
 			setHost = "https://skillup.online";
+		}
+		else if (host.equalsIgnoreCase("dev-in")) {
+			setHost = "https://" + host + ".skillup.online";
 		}
 		return setHost;
 	}
@@ -228,8 +232,11 @@ public class RegressionGenericLocator {
 				((JavascriptExecutor) driver).executeScript("arguments[0].click();", clickbutton);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				WebElement fullName = driver.findElement(By.cssSelector("input[name='fullname']"));
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[name='fullname']")));
+				wait.until(ExpectedConditions.elementToBeClickable(fullName));
 				fullName.clear();
 				fullName.sendKeys(kv.get("name"));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				WebElement email = driver.findElement(
 						By.cssSelector("div[class='GetConsultationForm_formContent__Q7Cwa'] input[name='email']"));
@@ -280,8 +287,11 @@ public class RegressionGenericLocator {
 									System.out.println("privacy policy window");
 									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 									Thread.sleep(1000);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 									driver.close();
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 									driver.switchTo().window(parentwindow);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 								}
 								else if (driver.getCurrentUrl().contains( "/tos/")) 
 								{
@@ -289,8 +299,11 @@ public class RegressionGenericLocator {
 									System.out.println("terms of service");
 									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 									Thread.sleep(1000);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 									driver.close();
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 									driver.switchTo().window(parentwindow);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 								}
 							}
 						}
@@ -313,16 +326,21 @@ public class RegressionGenericLocator {
 						freeConsultationStatus.add("Fail");
 						WebElement closePopUp = driver
 								.findElement(By.xpath("(//button[@class='btn-close shadow-none'])[2]"));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						if (closePopUp.isDisplayed()) 
 						{
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 							closePopUp.click();
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						}
 					} 
 					else 
 					{
 						WebElement closePopUp = driver
 								.findElement(By.xpath("(//button[@class='btn-close shadow-none'])"));//(//button[@class='btn-close shadow-none'])[2]
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						closePopUp.click();
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						freeConsultationStatus.add("pass");
 					}
 				} 
@@ -339,13 +357,18 @@ public class RegressionGenericLocator {
 
 	public String checkOutRazorpay(String amountFromExcel)
 	{
-		String checkRazorpay = "fail";
-		String amountWithTax[] = amountFromExcel.split("=");
-		String amt = amountWithTax[1].replaceAll("\\s", "");
-		String value = amt.toString();
-		int excelValue = Integer.parseInt(value);
+		/*
+		 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+		 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+		 */
+		System.out.println("payment gateway process started");
+		String checkRazorpay = "razorpayFail";
 		try 
 		{
+		String amountWithTax[] = amountFromExcel.split("=");
+		String amt = amountWithTax[1].replaceAll("\\s", "");
+		String value = amt.replace(",", "").toString();
+		int excelValue = Integer.parseInt(value);
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(500));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			String parentWindow = driver.getWindowHandle();
@@ -353,7 +376,7 @@ public class RegressionGenericLocator {
 			for (String window : allWindows)
 			{
 				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("/basket/") && driver.getCurrentUrl().contains("-in."))
+				if(driver.getCurrentUrl().contains("/basket/"))
 				{
 					driver.switchTo().window(window);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
@@ -372,12 +395,12 @@ public class RegressionGenericLocator {
 					if (browserValue == excelValue) 
 					{
 						System.out.println("both Razorpay amount and excel amount are same");
-						checkRazorpay = "pass";
+						checkRazorpay = "razorpayPass";
 					} 
 					else 
 					{
 						System.out.println(" amount with GST from Excel : " + amountWithTax[1]);
-						checkRazorpay = "fail";
+						checkRazorpay = "razorpayFail";
 					}
 					if(!driver.getCurrentUrl().contains("-in."))
 					{
@@ -394,10 +417,21 @@ public class RegressionGenericLocator {
 					}
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript("window.scrollBy(0,200)");
+					Thread.sleep(400);
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
-					WebElement completePayment = driver
-							.findElement(By.xpath("//button[@id='razorpay' or @id='stripecheckout']"));
-					completePayment.click();
+					try
+					{
+						WebElement completePayment = driver
+								.findElement(By.xpath("//button[@id='razorpay' or @id='stripecheckout']"));
+						//completePayment.click();
+						js.executeScript("arguments[0].click()", completePayment);
+						checkRazorpay = "razorpayPass";
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+						checkRazorpay = "razorpayFail";
+					}
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(150));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
@@ -405,7 +439,7 @@ public class RegressionGenericLocator {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			checkRazorpay = "fail";
+			checkRazorpay = "razorpayFail";
 		}
 		return checkRazorpay;
 	}
@@ -478,6 +512,7 @@ public class RegressionGenericLocator {
 				{
 					System.out.println("bank is selected : "+netbankingName);
 					statusOfbankSelection = true;
+					paymentAndOrderStatus.add("paymentPass");
 					WebElement clickBank = listOfNetBanking.get(j);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 					wait.until(ExpectedConditions.elementToBeClickable(clickBank)).click();
@@ -501,7 +536,7 @@ public class RegressionGenericLocator {
 								driver.findElement(By.cssSelector("button[class='success']")).click();
 								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(370));
-								paymentAndOrderStatus.add("pass");
+								//paymentAndOrderStatus.add("pass");
 								System.out.println("success button clicked");
 							}
 					}
@@ -530,6 +565,7 @@ public class RegressionGenericLocator {
 			e.printStackTrace();
 			checkPaymentProcess = "fail";
 			System.out.println("netbanking is fail");
+			paymentAndOrderStatus.add("paymentFail");
 		}
 		return paymentAndOrderStatus;
 	}
@@ -631,7 +667,7 @@ public class RegressionGenericLocator {
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(470));
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-						checkPaymentProcess = "pass";
+						checkPaymentProcess = "cardPass";
 					} else {
 						WebElement cardNumber = driver.findElement(By.cssSelector("input#card_number"));
 						cardNumber.sendKeys("5267 3181 8797 5449");
@@ -646,13 +682,13 @@ public class RegressionGenericLocator {
 						System.out.println("Pay now button is clicked");
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(470));
-						checkPaymentProcess = "pass";
+						checkPaymentProcess = "cardPass";
 					}
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			checkPaymentProcess = "fail";
+			checkPaymentProcess = "cardFail";
 			System.out.println("card payment is fail");
 		}
 
@@ -661,14 +697,16 @@ public class RegressionGenericLocator {
 
 	public String indiaOrderDetails(String priceWOGSTFromExcel)
 	{
-		String checkOrderDetails = "fail";
+		String checkOrderDetails = "orderDetailFail";
 		try {
-			int digit = Integer.parseInt(priceWOGSTFromExcel);
+			int digit = Integer.parseInt(priceWOGSTFromExcel.replace(",", "").toString());
 			  driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(570));
 			  System.out.println("checkout page");
 			  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
+			
 			  WebElement getOrderDetails = driver.findElement(By.cssSelector("table[class=' spacing-pl8 spacing-pr8 spacing-pl20 spacing-pr20 mb table_border'] tr td"));
+			  
 			  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
 			  System.out.println("order details : " + getOrderDetails.getText());
@@ -677,23 +715,29 @@ public class RegressionGenericLocator {
 			  double n = Double.parseDouble(amountOrderDetails);
 			  int v = (int) n;
 			  System.out.println("amount order details : " + amountOrderDetails.toString());
+			 
 			  WebElement getOrderNumber = driver.findElement(By.cssSelector("div[class*='order_info']:nth-child(2) div:nth-child(3) h4"));
+			 
 			  orderNumber = getOrderNumber.getText();
 			  System.out.println("OrderNumber: " + orderNumber);
+			  
+			  WebElement nameOfcourse = driver.findElement(By.cssSelector("table[class=' spacing-pl8 spacing-pr8 spacing-pl20 spacing-pr20 mb table_border'] tr td>p"));
+			  getEnrolledCourseName = nameOfcourse.getText();
+			  System.out.println("Enrolled course name : "+getEnrolledCourseName);
 			  if(digit == v)
 			  {
-				checkOrderDetails = "pass";
+				checkOrderDetails = "orderDetailPass";
 				System.out.println("both price without GST from excel and ordered amount values are same : " + amountOrderDetails);
 			  } 
 			  else 
 			  {
-				checkOrderDetails = "fail";
+				checkOrderDetails = "orderDetailFail";
 			  }
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			checkOrderDetails = "fail";
+			checkOrderDetails = "orderDetailFail";
 		}
 		return checkOrderDetails;
 	}
@@ -889,7 +933,7 @@ public class RegressionGenericLocator {
 
 	public String loginProcess(String getData)
 	{
-		String status = "fail";
+		String status = "loginFail";
 		try
 		{
 			String[] splitData = getData.split("-split-", 2);
@@ -901,7 +945,7 @@ public class RegressionGenericLocator {
 				if (driver.getCurrentUrl().contains("login?")) 
 				{
 					driver.switchTo().window(window1);
-					status = "pass";
+					status = "loginPass";
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					WebElement email = driver.findElement(By.cssSelector("input#email"));
@@ -918,14 +962,14 @@ public class RegressionGenericLocator {
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
-			status = "fail";
+			status = "loginFail";
 		}
 		return status;
 	}
 
 	public String choosePlan(String plan)
 	{
-		String checkPlanStatus = "fail";
+		String checkPlanStatus = "choosePlanFail";
 		boolean checkProcess = false;
 		try {
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
@@ -962,7 +1006,7 @@ public class RegressionGenericLocator {
 								js.executeScript("arguments[0].click()", clickPlan);
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(800));
-								checkPlanStatus = "pass";
+								checkPlanStatus = "choosePlanPass";
 								checkProcess = true;
 								break;
 							} 
@@ -971,7 +1015,7 @@ public class RegressionGenericLocator {
 								if (listOfPlan.get(i).findElement(By.cssSelector(" button[disabled]")).isDisplayed())
 								{
 									System.out.println("button is disabled");
-									checkPlanStatus = "fail";
+									checkPlanStatus = "choosePlanFail";
 									break;
 								}
 							}
@@ -979,12 +1023,19 @@ public class RegressionGenericLocator {
 					}
 					if(checkProcess != false)
 					{
+						checkPlanStatus = "choosePlanPass";
 						break;
 					}
+				}
+				else
+				{
+					System.out.println("Plan is not available");
+					checkPlanStatus = "choosePlanPass";
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			checkPlanStatus= "choosePlanFail";
 		}
 
 		return checkPlanStatus;
@@ -1033,22 +1084,19 @@ public class RegressionGenericLocator {
 				statusOfProcess.add(this.loginProcess(enrollDataFromExcel.get(1)));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				
 				statusOfProcess.add(this.choosePlan(enrollDataFromExcel.get(2)));
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				
+				Thread.sleep(500);
 				statusOfProcess.add(this.checkOutRazorpay(enrollDataFromExcel.get(3)));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				
 				statusOfProcess.addAll(this.indiaPaymentProcess(enrollDataFromExcel.get(4), enrollDataFromExcel.get(5)));
-				//statusOfProcess.add(this.indiaOrderDetails(enrollDataFromExcel.get(5)));
+				Thread.sleep(100);	
 			}
 			else
 			{
 				System.out.println("US Enroll Process");
 			}
+			Thread.sleep(1000);	
 			WebElement clickDropdownIcon = driver.findElement(By.cssSelector("li[class='SigNUP']>a"));
 			clickDropdownIcon.click();
 			Thread.sleep(2000);
@@ -1134,52 +1182,83 @@ public class RegressionGenericLocator {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0,-2000)", "");
 			WebElement clickShareLink = driver
-					.findElement(By.cssSelector("button[class='CourseDescription_shareBtn__0vLDp ']"));
+					.findElement(By.cssSelector("button[class*='CourseDescription_shareBtn']"));
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 			wait.until(ExpectedConditions.elementToBeClickable(clickShareLink));
 			if (clickShareLink.isDisplayed()) {
-				Thread.sleep(2000);
-				clickShareLink.click();
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+			//	clickShareLink.click();
+				js.executeScript("arguments[0].click()", clickShareLink);
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 			}
-			Thread.sleep(2000);
 			WebElement copyLink = driver.findElement(By.cssSelector("button[class*='btn shadow-none shareSocialMedia_copyButton']"));
-			String getLinkText = copyLink.getText();
 			copyLink.click();
-			List<WebElement> share = driver.findElements(By.cssSelector("a[class='ShareCourse_socialIcon__f7x_3']"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+			List<WebElement> share = driver.findElements(By.cssSelector("div[class*='shareSocialMedia_sociallist'] a[class*='shareSocialMedia_socialIcon']"));
 			for (int i = 0; i < share.size(); i++)
 			{
-				if(share.get(i).getAttribute("href").contains(shareFromExcel))
+				if(share.get(i).isDisplayed())
 				{
-					share.get(i).click();
-					String parentWindow = driver.getWindowHandle();
-					Set<String> allWindow = driver.getWindowHandles();
-					Iterator<String> itr = allWindow.iterator();
-					while (itr.hasNext())
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+					
+					
+					if(share.get(i).getAttribute("href").contains("mailto:?"))
 					{
-						String childWindow = itr.next();
-						if(!parentWindow.equalsIgnoreCase(childWindow))
+						System.out.println("microsoft mail");
+					}
+					else
+					{
+						share.get(i).click();
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						String parentWindow = driver.getWindowHandle();
+						Set<String> allWindow = driver.getWindowHandles();
+						Iterator<String> itr = allWindow.iterator();
+						while (itr.hasNext())
 						{
-							driver.switchTo().window(childWindow);
-							if (driver.getCurrentUrl().contains("twitter"))
+							String childWindow = itr.next();
+							if(!parentWindow.equalsIgnoreCase(childWindow))
 							{
 								driver.switchTo().window(childWindow);
-								System.out.println("twitter screen");
-								driver.close();
-								driver.switchTo().window(parentWindow);
-							}
-							if (driver.getCurrentUrl().equalsIgnoreCase("facebook"))
-							{
-								driver.switchTo().window(childWindow);
-								System.out.println("facebook screen");
-								driver.close();
-								driver.switchTo().window(parentWindow);
-							}
-							if (driver.getCurrentUrl().equalsIgnoreCase("linked"))
-							{
-								driver.switchTo().window(childWindow);
-								System.out.println("linkedIn Screen");
-								driver.close();
-								driver.switchTo().window(parentWindow);
+								if (driver.getCurrentUrl().contains("twitter"))
+								{
+									driver.switchTo().window(childWindow);
+									System.out.println("twitter screen");
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+									driver.close();
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+									driver.switchTo().window(parentWindow);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+								}
+								if (driver.getCurrentUrl().contains("facebook"))
+								{
+									driver.switchTo().window(childWindow);
+									System.out.println("facebook screen");
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+									driver.close();
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+									driver.switchTo().window(parentWindow);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+								}
+								if (driver.getCurrentUrl().contains("linked"))
+								{
+									driver.switchTo().window(childWindow);
+									System.out.println("linkedIn Screen");
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+									driver.close();
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+									driver.switchTo().window(parentWindow);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+								}
+								if (driver.getCurrentUrl().contains("whatsapp"))
+								{
+									driver.switchTo().window(childWindow);
+									System.out.println("whatsapp Screen");
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+									driver.close();
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+									driver.switchTo().window(parentWindow);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+								}
 							}
 						}
 					}

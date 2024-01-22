@@ -83,25 +83,32 @@ public class PLUValidation
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("PLU").get(2).set(0, "description - failed");
 		}
 	}
+	
 	public void techPrograms(ArrayList<String> programs)
 	{
-		ArrayList<String> failTechPgm = this.PLUPageLocators.verifyPrograms(programs);
-		if(failTechPgm.size()>0)
+		if(!programs.contains("NA"))
 		{
-			for(int i = 0; i < failTechPgm.size(); i++)
+			ArrayList<String> failTechPgm = this.PLUPageLocators.verifyPrograms(programs);
+			if(failTechPgm.size()>0)
 			{
-				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Pacific").get(3).add(i+1, (failTechPgm.get(i) + " - failed"));
+				for(int i = 0; i < failTechPgm.size(); i++)
+				{
+					sheetStatus = "Fail";
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Pacific").get(3).add(i+1, (failTechPgm.get(i) + " - failed"));
+				}
 			}
 		}
 	}
 	public void PLUCourses(ArrayList<String> courses)
 	{
-		ArrayList<String> failedUrls = this.PLUPageLocators.verifyPLUCourse(courses);
-		for(int i = 0; i < failedUrls.size(); i++)
+		if(!courses.contains("NA"))
 		{
-			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Pacific").get(4).add(i+1, (failedUrls.get(i) + " - failed"));
+			ArrayList<String> failedUrls = this.PLUPageLocators.verifyPLUCourse(courses);
+			for(int i = 0; i < failedUrls.size(); i++)
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Pacific").get(4).add(i+1, (failedUrls.get(i) + " - failed"));
+			}
 		}
 	}
 	public void FAQ(ArrayList<String> faq, int rowIndex)

@@ -27,7 +27,7 @@ public class HeaderFooterInErrorScreenValidation {
 			switch(firstColumn)
 			{
 			  case "LoginIcon": 
-				  LoginIcon(); 
+				  LoginIcon(row); 
 				  break; 
 				
 				/*
@@ -94,13 +94,16 @@ public class HeaderFooterInErrorScreenValidation {
 		}
 		return sheetStatus;
 	}
-	public void LoginIcon()
+	public void LoginIcon(ArrayList<String> data)
 	{
-		String status = headerFooterInErrorScreenLocator.loginProcess();
-		if(status.equalsIgnoreCase("fail"))
+		if(!data.contains("NA"))
 		{
-			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterErrorScreen").get(1).add(1, (status + " - failed"));
+			String status = headerFooterInErrorScreenLocator.loginProcess();
+			if(status.equalsIgnoreCase("fail"))
+			{
+				sheetStatus="Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterErrorScreen").get(1).add(1, (status + " - failed"));
+			}
 		}
 	}
 	

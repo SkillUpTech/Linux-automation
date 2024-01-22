@@ -1,5 +1,4 @@
 package com.seo.utility;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -8,7 +7,7 @@ public class Utils
 	public static final String DEFAULT_DATA_FORMAT = "dd-MMM-yyyy_HH:mm:ss";
 	public static final String HEXA_RED_COLOR = "#ff0000";
 	public static final String HEXA_GREEN_COLOR = "#008000";
-	public static final String STYLE_DELIMITTER = "-style-";
+	public static final String DELIMITTER = "-style-";
 	
 	public static String findDifference(String start_date, String end_date) {
 

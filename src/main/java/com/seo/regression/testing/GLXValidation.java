@@ -18,7 +18,7 @@ public class GLXValidation
 		this.driver = driver;
 		OpenWebsite.openSite(driver);
 		this.glxLocator = new GLXLocator(driver);
-		System.out.println("fluidEducation process started");
+		System.out.println("GLX process started");
 		//this.start();
 	}
 	
@@ -43,10 +43,10 @@ public class GLXValidation
 					CTADownloadDetails();
 					break;
 				case "programs":
-					programs();
+					programs(row);
 					break;
 				case "ExploreCourse":
-					  ExploreCourse(); 
+					  ExploreCourse(row); 
 					  break;
 			}
 		}
@@ -89,25 +89,31 @@ public class GLXValidation
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GLX").get(0).set(0, "CTADownloadDetails - failed");
 		}
 	}
-	public void programs()
+	public void programs(ArrayList<String> data)
 	{
-		ArrayList<String> getStatus = glxLocator.verifyGLXProgram();
-		if(getStatus.size()>0)
+		if(!data.contains("NA"))
 		{
-			for(int i = 0; i < getStatus.size(); i++)
+			ArrayList<String> getStatus = glxLocator.verifyGLXProgram();
+			if(getStatus.size()>0)
 			{
-				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GLX").get(1).add(i+1, (getStatus.get(i) + "programs - failed"));
+				for(int i = 0; i < getStatus.size(); i++)
+				{
+					sheetStatus = "Fail";
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GLX").get(1).add(i+1, (getStatus.get(i) + "programs - failed"));
+				}
 			}
 		}
 	}
-	public void ExploreCourse() throws InterruptedException
+	public void ExploreCourse(ArrayList<String> data) throws InterruptedException
 	{
-		String status = glxLocator.ExploreCourseProcess();
-		if(status.equalsIgnoreCase("fail"))
+		if(!data.contains("NA"))
 		{
-			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GLX").get(2).set(0, "ExploreCourse - failed");
+			String status = glxLocator.ExploreCourseProcess();
+			if(status.equalsIgnoreCase("fail"))
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GLX").get(2).set(0, "ExploreCourse - failed");
+			}
 		}
 	}
 

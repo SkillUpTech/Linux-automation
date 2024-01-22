@@ -85,6 +85,7 @@ public class MicrosoftCourseLocator
 	 */
 	public String checkCourseCode(String getURL)
 	{
+		int status = 0;
 		String getstatus = "pass";
 		String url="";
 		int respCode = 200;
@@ -119,7 +120,7 @@ public class MicrosoftCourseLocator
 				boolean redirect = false;
 
 				// normally, 3xx is redirect
-				int status = conn.getResponseCode();
+			status = conn.getResponseCode();
 				if (status != HttpURLConnection.HTTP_OK) {
 					if (status == HttpURLConnection.HTTP_MOVED_TEMP
 						|| status == HttpURLConnection.HTTP_MOVED_PERM
@@ -160,12 +161,13 @@ public class MicrosoftCourseLocator
 				System.out.println("Done");
 				if(status>200)
 				{
-					getstatus = "fail" + respCode;
+					getstatus = "fail" + status;
 				}
 			    } 
 			catch (Exception e) 
 			{
 				e.printStackTrace();
+				getstatus = "fail" + status;
 			}
 
 			

@@ -30,7 +30,7 @@ public class FAQValidation
 			switch(firstColumn)
 			{
 				case "login":
-					login(row.get(1), row.get(2));
+					login(row);
 					break;
 				case "verifyFAQ":
 					verifyFAQ();
@@ -69,13 +69,18 @@ public class FAQValidation
 		}
 		return sheetStatus;
 	}
-	public void login(String email, String pwd)
+	public void login(ArrayList<String> data)
 	{
-		ArrayList<String> status = faqLocator.loginProcess(email, pwd);
-		if(status.contains("fail"))
+		if(!data.contains("NA"))
 		{
-			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(0).set(0, "login - failed");
+			String email = data.get(1);
+			String pwd = data.get(2);
+			ArrayList<String> status = faqLocator.loginProcess(email, pwd);
+			if(status.contains("fail"))
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(0).set(0, "login - failed");
+			}
 		}
 	}
 	public void verifyFAQ()

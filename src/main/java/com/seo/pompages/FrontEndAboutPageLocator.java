@@ -4952,4 +4952,3 @@ public class FrontEndAboutPageLocator
 		return checkAnswerStatus;
 	}
 }
-

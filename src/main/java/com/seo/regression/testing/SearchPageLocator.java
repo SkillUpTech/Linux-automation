@@ -59,7 +59,7 @@ public class SearchPageLocator {
 					
 				WebElement searchBox = driver.findElement(By.cssSelector("ul[class*='Header_headSearch_'] input#contentSearch[value]"));
 				((JavascriptExecutor)driver).executeScript("arguments[0].click();", searchBox);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+				
 				WebDriverWait wb = new WebDriverWait(driver, Duration.ofSeconds(30));
 				wb.until(ExpectedConditions.elementToBeClickable(searchBox)).click();
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
@@ -75,12 +75,14 @@ public class SearchPageLocator {
 					{
 						for(int j = 0; j < checkListOfCourse.size(); j++)
 						{
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 							if(checkListOfCourse.get(j).getText().equalsIgnoreCase(dataFromExcel.get(i)))
 							{
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 								System.out.println("Entered course available");
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 								checkListOfCourse.get(j).click();
-								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 								
 								String parent = driver.getWindowHandle();
 								Set<String> windows = driver.getWindowHandles();
@@ -91,18 +93,14 @@ public class SearchPageLocator {
 									{
 										driver.switchTo().window(window);
 										System.out.println("results found window");
-										
 										ArrayList<Integer> getHeaderStatus = new ArrayList<Integer>();
 										ArrayList<Integer> getFooterStatus = new ArrayList<Integer>();
 										//getProcessStatus.addAll(this.verifyHeader());
-										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 										getHeaderStatus = this.verifyHeader();
-										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
-										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 										
 										//getProcessStatus.addAll(this.verifyFooter());
 										getFooterStatus = this.verifyFooter();
-										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 										for(int k = 0; k < getHeaderStatus.size(); k++)
 										{
 											if(getHeaderStatus.get(0) != getFooterStatus.get(0))
@@ -127,18 +125,17 @@ public class SearchPageLocator {
 										WebElement getCourse = driver.findElement(By.cssSelector("div[class*='RegularCourseCard_courseHeading__1Ohrn'] p"));
 										if(getCourse.getText().equalsIgnoreCase(dataFromExcel.get(i)))
 										{
-											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 											//getCourse.click();
 											js.executeScript("arguments[0].click()", getCourse);
-											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
+											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 											Thread.sleep(1000);
 											String parent1 = driver.getWindowHandle();
 											Set<String> windows1 = driver.getWindowHandles();
 											for(String window1 : windows1)
 											{
 												driver.switchTo().window(window1);
-												System.out.println("current window : "+ driver.getCurrentUrl());
-												if(driver.getCurrentUrl().contains("/courses/") && driver.getCurrentUrl().contains(OpenWebsite.setHost))
+												Thread.sleep(3000);
+												if(driver.getCurrentUrl().contains("/courses/") && driver.getCurrentUrl().contains(RegressionTesting.ENV_TO_USE))
 												{
 													Thread.sleep(3000);
 													driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
@@ -156,8 +153,6 @@ public class SearchPageLocator {
 													driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 													break;
 												}
-												Thread.sleep(3000);
-												driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 											}
 											
 										}
@@ -359,35 +354,23 @@ public class SearchPageLocator {
 		ArrayList<Integer> process = new ArrayList<Integer>();
 		try
 		{
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 			WebElement dropDown = driver.findElement(By.cssSelector("a#navbarDropdown img[alt=icon]"));
 			dropDown.click();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 			List<WebElement> categories = driver.findElements(By.cssSelector(
 					"ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] ul[class='categorylist customscroll dropdown-submenu']>li"));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 			int sizeOfCategories = categories.size();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 			process.add(sizeOfCategories);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
+			
 			List<WebElement> learningPartners = driver.findElements(By.cssSelector(
 					"ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='LearningPartners catcolumn divbox2'] ul[class='learning-Partners']>li"));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 			int sizeOfLearningPartner = learningPartners.size();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 			process.add(sizeOfLearningPartner);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
+
 			List<WebElement> popularCourses = driver.findElements(By.cssSelector(
 					"ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='PolularCourSE catcolumn divbox3'] ul[class='MegaMenu_PopularCourse']>li"));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 			int sizeOfPopularCourse = popularCourses.size();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 			process.add(sizeOfPopularCourse);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 			dropDown.click();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
-			System.out.println("header verification is done");
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 		}
 		catch(Exception e)
 		{
@@ -405,28 +388,27 @@ public class SearchPageLocator {
 			((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0, -200)", "");
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
+			
 			//List<WebElement> shareSocialLink = driver.findElements(By.cssSelector("ul[class=' Footer_socialIconsSection__5DztA d-flex'] li a"));
 
 		//	List<WebElement> company = driver.findElements(By.cssSelector("div[class='Footer_FootMenu__4fwEE'] ul li a"));
 			
 			JavascriptExecutor js1 = (JavascriptExecutor) driver;
 			js1.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
+			
 			List<WebElement> popularCategory = driver
 					.findElements(By.cssSelector("div[class='Footer_PopularCategories__23uL0'] ul li a"));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
 			getStatus.add(popularCategory.size());
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
+			
 						List<WebElement> blog = driver.findElements(
 					By.cssSelector("div[class='Footer_LatestBlogs__QZ7i4'] div[class='Footer_LatestBlogsRepT__F2CHs'] a"));
 			getStatus.add(blog.size());
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
+			
 			List<WebElement> popularCoursesLink = driver
 					.findElements(By.cssSelector("div[class='Footer_PopularCourses__Yc9Ft'] ul li"));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
+			
 			getStatus.add(popularCoursesLink.size());
-			System.out.println("Footer verification is done");
+
 
 		}
 		catch(Exception e)

@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 
-public class HomepageValidator 
+public class HomePageValidator 
 {
 	ArrayList<ArrayList<String>> sheetData;
 	WebDriver driver;
 	HomepageLocator homepageLocator;
 	String sheetStatus;
 	
-	public HomepageValidator(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
+	public HomePageValidator(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
 	{
 		this.sheetData = sheetData;
 		this.driver = driver;

@@ -209,11 +209,6 @@ public class FooterSectionValidation
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(11).set(0, "blog - failed");
 			}
 		}
-		else
-		{
-			//markProcessIgnored();
-			System.out.println("not executing");
-		}
 	}
 	public void verifyPopularCategories(ArrayList<String> data) throws InterruptedException
 	{

@@ -15,8 +15,11 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import io.cucumber.core.backend.Status;
 
 public class FooterSectionLocator
 {
@@ -314,24 +317,24 @@ public class FooterSectionLocator
 	{
 		String status = "failed";
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
-	//	Thread.sleep(3000);
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-	//	Thread.sleep(2000);
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 		JavascriptExecutor js1 = (JavascriptExecutor) driver;
 		js1.executeScript("window.scrollBy(0, 500)", "");
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
-	//	Thread.sleep(1000);
-		List<WebElement> clickAboutSkillupOnline= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu'] ul li a"));
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+		List<WebElement> clickAboutSkillupOnline= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu']>ul>li>a"));
 		for(int i = 0; i < clickAboutSkillupOnline.size(); i++)
 		{
 			String getText = clickAboutSkillupOnline.get(i).getText();
-			if(getText.equalsIgnoreCase("About SkillUp Online"))
+			if(getText.contains("About"))
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 				wait.until(ExpectedConditions.elementToBeClickable(clickAboutSkillupOnline.get(i)));
-		//		Thread.sleep(800);
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				js.executeScript("arguments[0].click()", clickAboutSkillupOnline.get(i));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
@@ -350,6 +353,7 @@ public class FooterSectionLocator
 							String subString = StringUtils.substringBefore(getURL, "online/");
 							subString = subString+"online";
 							driver.get(subString);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 							if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
 							{
 								status = "success";
@@ -369,15 +373,16 @@ public class FooterSectionLocator
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-		List<WebElement> clickBusiness= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu'] ul li a"));
+		List<WebElement> clickBusiness= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu']>ul>li>a"));
 		for(int i = 0; i < clickBusiness.size(); i++)
 		{
 			String getText = clickBusiness.get(i).getText();
-			if(getText.equalsIgnoreCase("SkillUp Online for Business"))
+			if(getText.contains("Business"))
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(150));
 				wait.until(ExpectedConditions.elementToBeClickable(clickBusiness.get(i)));
@@ -399,6 +404,7 @@ public class FooterSectionLocator
 							String subString = StringUtils.substringBefore(getURL, "online/");
 							subString = subString+"online";
 							driver.get(subString);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 							if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
 							{
 								status = "success";
@@ -416,227 +422,185 @@ public class FooterSectionLocator
 	public String verifyFaq() throws InterruptedException
 	{
 		String status = "failed";
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
-	//	Thread.sleep(3000);
-		((JavascriptExecutor) driver)
-	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-	//	Thread.sleep(2000);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0, -200)", "");
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-	//	Thread.sleep(1000);
-		List<WebElement> clickFaq= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu'] ul li a"));
-		for(int i = 0; i < clickFaq.size(); i++)
+		try
 		{
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			String getText = clickFaq.get(i).getText();
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			if(getText.equalsIgnoreCase("FAQs"))
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+			((JavascriptExecutor) driver)
+		     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("window.scrollBy(0, -200)", "");
+			List<WebElement> clickFaq= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu']>ul>li>a"));
+			for(int i = 0; i < clickFaq.size(); i++)
 			{
-		//		Thread.sleep(1000);
-				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
-				wait.until(ExpectedConditions.elementToBeClickable(clickFaq.get(i)));
-//				clickFaq.get(i).click();
-				js.executeScript("arguments[0].click()", clickFaq.get(i));
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				String parentWindow = driver.getWindowHandle();
-				Set<String> nextWindow = driver.getWindowHandles();
-				Iterator<String> iterator = nextWindow.iterator();
-				while (iterator.hasNext()) 
+				WebElement element = wait.until(ExpectedConditions.visibilityOf(clickFaq.get(i)));
+				String getText = element.getText();
+				if(getText.contains("FAQ"))
 				{
-					String childWindow = iterator.next();
-					if(parentWindow.equalsIgnoreCase(childWindow))
+					wait.until(ExpectedConditions.elementToBeClickable(clickFaq.get(i)));
+					String parentwindow = driver.getWindowHandle();
+					String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN); //Keys.chord(Keys.CONTROL,Keys.RETURN)
+					clickFaq.get(i).sendKeys(selectLinkOpeninNewTab);
+					for(String winHandle : driver.getWindowHandles())
 					{
-						if(driver.getCurrentUrl().contains("faq"))
-						{
-							System.out.println("FAQ's window");
-							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-							String getURL = driver.getCurrentUrl();//https://stage-in.skillup.online/
-							String subString = StringUtils.substringBefore(getURL, "online/");
-							subString = subString+"online";
-							driver.get(subString);
-							if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
-							{
-								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-								status = "success";
-							}
-						}	
+					    driver.switchTo().window(winHandle);
+					    if(driver.getCurrentUrl().contains("faq"))
+					    {
+					    	System.out.println("faq page verification done");
+					    	status = "success";
+					    	driver.close();
+					    	break;
+					    }
 					}
+					driver.switchTo().window(parentwindow);
+					break;
 				}
-				break;
-				
 			}
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		return status;
 	}
 	
 	public String verifyPrivacyPolicy() throws InterruptedException
 	{
 		String status = "failed";
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-	//	Thread.sleep(3000);
-		((JavascriptExecutor) driver)
-	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-	//	Thread.sleep(3000);
-		JavascriptExecutor js1 = (JavascriptExecutor) driver;
-		js1.executeScript("window.scrollBy(0, 500)", "");
-	//	Thread.sleep(1000);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0, -200)", "");
-	//	Thread.sleep(1000);
-		List<WebElement> clickPrivacyPolicy= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu'] ul li a"));
-		for(int i = 0; i < clickPrivacyPolicy.size(); i++)
+		try
 		{
-			String getText = clickPrivacyPolicy.get(i).getText();
-			if(getText.equalsIgnoreCase("Privacy Policy"))
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+			System.out.println("privacy page verification");
+			((JavascriptExecutor) driver)
+		     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("window.scrollBy(0, -200)", "");
+			List<WebElement> clickBusiness= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu']>ul>li>a"));
+			for(int i = 0; i < clickBusiness.size(); i++)
 			{
-		//		Thread.sleep(500);
-				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
-				wait.until(ExpectedConditions.elementToBeClickable(clickPrivacyPolicy.get(i)));
-				js.executeScript("arguments[0].click()", clickPrivacyPolicy.get(i));
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-		//		Thread.sleep(1000);
-				String parentWindow = driver.getWindowHandle();
-				Set<String> nextWindow = driver.getWindowHandles();
-				Iterator<String> iterator = nextWindow.iterator();
-				while (iterator.hasNext()) 
+				WebElement element = wait.until(ExpectedConditions.visibilityOf(clickBusiness.get(i)));
+				String getText = element.getText();
+				if(getText.contains("Privacy"))
 				{
-					String childWindow = iterator.next();
-					if(parentWindow.equalsIgnoreCase(childWindow))
+					wait.until(ExpectedConditions.elementToBeClickable(clickBusiness.get(i)));
+					String parentwindow = driver.getWindowHandle();
+					String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN); //Keys.chord(Keys.CONTROL,Keys.RETURN)
+					clickBusiness.get(i).sendKeys(selectLinkOpeninNewTab);
+					for(String winHandle : driver.getWindowHandles())
 					{
-						if(driver.getCurrentUrl().contains("privacy"))
-						{
-							System.out.println("Privacy Policy window");
-							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-							String getURL = driver.getCurrentUrl();//https://stage-in.skillup.online/
-							String subString = StringUtils.substringBefore(getURL, "online/");
-							subString = subString+"online";
-							driver.get(subString);
-							if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
-							{
-								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-								status = "success";
-								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-							}
-						}	
+						driver.switchTo().window(winHandle);
+					    if(driver.getCurrentUrl().contains("privacy"))
+					    {
+					    	System.out.println("Privacy page verification done");
+					    	status = "success";
+					    	driver.close();
+					    	break;
+					    }
 					}
+					driver.switchTo().window(parentwindow);
+					break;
 				}
-				break;
 			}
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		return status;
 	}
 	
 	public String verifyTermsofService() throws InterruptedException
 	{
-		//this.scrollToFooterSection();
+		
 		String status = "failed";
-		((JavascriptExecutor) driver)
-	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-	//	Thread.sleep(3000);
-		JavascriptExecutor js1 = (JavascriptExecutor) driver;
-		js1.executeScript("window.scrollBy(0, 500)", "");
-	//	Thread.sleep(1000);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0, -100)", "");
-	//	Thread.sleep(2000);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		List<WebElement> clickTermsofService= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu'] ul li a"));
-		for(int i = 0; i < clickTermsofService.size(); i++)
+		try
 		{
-			String getText = clickTermsofService.get(i).getText();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			if(getText.equalsIgnoreCase("Terms of Service"))
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+			System.out.println("Terms page verification");
+			((JavascriptExecutor) driver)
+		     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("window.scrollBy(0, -200)", "");
+			List<WebElement> clickTerms = driver.findElements(By.cssSelector("div[class*='Footer_FootMenu']>ul>li>a"));
+			for(int i = 0; i < clickTerms.size(); i++)
 			{
-				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
-				wait.until(ExpectedConditions.elementToBeClickable(clickTermsofService.get(i)));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				js.executeScript("arguments[0].click()", clickTermsofService.get(i));
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				String parentWindow = driver.getWindowHandle();
-				Set<String> nextWindow = driver.getWindowHandles();
-				Iterator<String> iterator = nextWindow.iterator();
-				while (iterator.hasNext()) 
+				WebElement element = wait.until(ExpectedConditions.visibilityOf(clickTerms.get(i)));
+				String getText = element.getText();
+				if(getText.contains("Terms"))
 				{
-					String childWindow = iterator.next();
-					if(parentWindow.equalsIgnoreCase(childWindow))
+					wait.until(ExpectedConditions.elementToBeClickable(clickTerms.get(i)));
+					String parentwindow = driver.getWindowHandle();
+					String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN); //Keys.chord(Keys.CONTROL,Keys.RETURN)
+					clickTerms.get(i).sendKeys(selectLinkOpeninNewTab);
+					for(String winHandle : driver.getWindowHandles())
 					{
-						if(driver.getCurrentUrl().contains("tos"))
-						{
-							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-							System.out.println("Terms of service window");
-							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-							String getURL = driver.getCurrentUrl();//https://stage-in.skillup.online/
-							String subString = StringUtils.substringBefore(getURL, "online/");
-							subString = subString+"online";
-							driver.get(subString);
-							if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
-							{
-								
-								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-								status = "success";
-								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-							}
-						}	
+						driver.switchTo().window(winHandle);
+					    if(driver.getCurrentUrl().contains("tos"))
+					    {
+					    	System.out.println("Terms page verification done");
+					    	status = "success";
+					    	driver.close();
+					    	break;
+					    }
 					}
+					driver.switchTo().window(parentwindow);
+					break;
 				}
-				break;
 			}
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		return status;
 	}
 	
 	public String verifyBlog() throws InterruptedException
 	{
 		String status = "failed";
-	//	Thread.sleep(3000);
-		((JavascriptExecutor) driver)
-	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-	//	Thread.sleep(2000);
-		JavascriptExecutor js1 = (JavascriptExecutor) driver;
-		js1.executeScript("window.scrollBy(0, 500)", "");
-//		Thread.sleep(1000);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0, -200)", "");
-	//	Thread.sleep(1000);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
-		List<WebElement> clickBlog= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu'] ul li a"));
-		for(int i = 0; i < clickBlog.size(); i++)
+		try
 		{
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			String getText = clickBlog.get(i).getText();
-			if(getText.equalsIgnoreCase("Blog"))
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+			System.out.println("Blog page verification");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+			((JavascriptExecutor) driver)
+		     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("window.scrollBy(0, -200)", "");
+			List<WebElement> clickBlog= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu']>ul>li>a"));
+			for(int i = 0; i < clickBlog.size(); i++)
 			{
-				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
-				wait.until(ExpectedConditions.elementToBeClickable(clickBlog.get(i)));
-		//		Thread.sleep(500);
-				//clickBlog.get(i).click();
-				js.executeScript("arguments[0].click()", clickBlog.get(i));
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
-				String parentWindow = driver.getWindowHandle();
-				Set<String> nextWindow = driver.getWindowHandles();
-				Iterator<String> iterator = nextWindow.iterator();
-				while (iterator.hasNext()) 
+				WebElement element = wait.until(ExpectedConditions.visibilityOf(clickBlog.get(i)));
+				String getText = element.getText();
+				if(getText.contains("Blog"))
 				{
-					String childWindow = iterator.next();
-					if(parentWindow.equalsIgnoreCase(childWindow))
+					wait.until(ExpectedConditions.elementToBeClickable(clickBlog.get(i)));
+					String parentwindow = driver.getWindowHandle();
+					String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN); //Keys.chord(Keys.CONTROL,Keys.RETURN)
+					clickBlog.get(i).sendKeys(selectLinkOpeninNewTab);
+					for(String winHandle : driver.getWindowHandles())
 					{
-						if(driver.getCurrentUrl().contains("blog"))
-						{
-							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-							System.out.println("blog window");
-							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-							status = "success";
-						}	
+						driver.switchTo().window(winHandle);
+					    if(driver.getCurrentUrl().contains("blog"))
+					    {
+					    	System.out.println("Blog page verification done");
+					    	status = "success";
+					    	driver.close();
+					    	break;
+					    }
 					}
+					driver.switchTo().window(parentwindow);
+					break;
 				}
-				break;
 			}
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		return status;
 	}
 	
