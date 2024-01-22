@@ -150,7 +150,7 @@ public class RegressionTesting
 							}
 							break;
 							case "Dashboard":
-								sheetStatus = new DashboardValidation(sheetData, driver).start();
+								sheetStatus = new DashboardValidation(driver, sheetName, sheetData).start();
 								break;
 							case "URLValidation":
 								sheetStatus = new ErrorCodeValidation(sheetData, driver).start();
@@ -171,7 +171,7 @@ public class RegressionTesting
 								sheetStatus = new HeaderSectionValidation(sheetData, driver).start();
 								break;
 							case"HomePage":
-								sheetStatus = new HomepageValidator(sheetData, driver).start();
+								sheetStatus = new HomePageValidator(sheetData, driver).start();
 								break;
 							case "ContactInfo":
 								sheetStatus = new ContactInfoValidation(sheetData, driver).start();
