@@ -35,50 +35,51 @@ public class RegressionTesting
 	public static String ENV_TO_USE = "";
 	String getEnvironment = "";
 	WebDriver driver;
-	public static String  driverPath = "C:\\Users\\Hemamalini\\Downloads\\125driver\\chromedriver-win64\\chromedriver.exe";
+	public static String  driverPath = "/usr/local/bin/chromedriver";
 	@BeforeTest
-	@Parameters({"browser","env"})
-	public void setup(String browserName, String env) throws Exception
+	@Parameters({"browser","Denvironment"})
+	public void setup(String browserName, String Denvironment) throws Exception
 	{
 		System.out.println("welcome");
-	    if (browserName.equalsIgnoreCase("firefox"))
+		System.out.println("Automation executing in "+System.getProperty("Denvironment")+" environment");
+	    if(browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
-	    }
-	    else if (browserName.equalsIgnoreCase("Chrome"))
-	    {
-	    	driver = OpenWebsite.openDriver(browserName);
-	    	if(env.equalsIgnoreCase("stage"))
+	    	if(Denvironment.equalsIgnoreCase("stage"))
 	    	{
 	    		getEnvironment = "stage";
 	    	}
-	    	else if(env.equalsIgnoreCase("stage-in"))
+	    	else if(Denvironment.equalsIgnoreCase("stage-in"))
 	    	{
 	    		getEnvironment = "stage-in";
 	    	}
-	    	else if(env.equalsIgnoreCase("prod-in"))
+	    	else if(Denvironment.equalsIgnoreCase("prod-in"))
 	    	{
 	    		getEnvironment = "prod-in";
 	    	}
-	    	else if(env.equalsIgnoreCase("prod"))
+	    	else if(Denvironment.equalsIgnoreCase("prod"))
 	    	{
 	    		getEnvironment = "prod";
 	    	}
-	    	else if(env.equalsIgnoreCase("dev-in"))
+	    }
+	    else if(browserName.equalsIgnoreCase("Chrome"))
+	    {
+	    	driver = OpenWebsite.openDriver(browserName);
+	    	if(Denvironment.equalsIgnoreCase("stage"))
 	    	{
-	    		getEnvironment = "dev-in";
+	    		getEnvironment = "stage";
 	    	}
-	    	else if(env.equalsIgnoreCase("dev"))
+	    	else if(Denvironment.equalsIgnoreCase("stage-in"))
 	    	{
-	    		getEnvironment = "dev";
+	    		getEnvironment = "stage-in";
 	    	}
-	    	else if(env.equalsIgnoreCase("qa-in"))
+	    	else if(Denvironment.equalsIgnoreCase("prod-in"))
 	    	{
-	    		getEnvironment = "qa-in";
+	    		getEnvironment = "prod-in";
 	    	}
-	    	else if(env.equalsIgnoreCase("qa"))
+	    	else if(Denvironment.equalsIgnoreCase("prod"))
 	    	{
-	    		getEnvironment = "qa";
+	    		getEnvironment = "prod";
 	    	}
 	    }
 	    else
@@ -97,7 +98,7 @@ public class RegressionTesting
 	
 	public void startTesting()
 	{
-		String excelPath = "D:\\Doc\\RegressionTesting.xlsx";
+		String excelPath = "/home/edx-root/Desktop/testing/TestData.xlsx";
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		try
