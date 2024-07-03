@@ -2,19 +2,23 @@ package com.seo.regression.testing;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
-public class EditProfileValidation {
+public class EditProfileValidation
+{
 	ArrayList<ArrayList<String>> sheetData = null;
 	WebDriver driver;
 	EditProfileLocator editProfileLocator;
 	String sheetStatus = "Pass";
 
-	public EditProfileValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) {
+	public EditProfileValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver)
+	{
+		
 		this.sheetData = sheetData;
 		this.driver = driver;
-		OpenWebsite.openSite(driver);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		this.editProfileLocator = new EditProfileLocator(driver);
 		System.out.println("Edit profile Process started");
@@ -22,45 +26,61 @@ public class EditProfileValidation {
 
 	public String start() throws InterruptedException 
 	{
+		try
+		{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		for (int i = 0; i < this.sheetData.size(); i++) {
 			ArrayList<String> row = this.sheetData.get(i);
 			String firstColumn = row.get(0);
-			switch (firstColumn) {
+			switch (firstColumn)
+			{
+			
 			case "login":
 				verifyLogin(row);
 				break;
+				
 			case "ProfileIcon":
 				verifyProfileIcon();
 				break;
 			
-			  case "contacts_updateIcon": verifyUpdateIcon(); break; case
-			  "contacts_submitWithoutData": verifySubmitWithoutDataForMobile(); break; case
-			  "contacts_submitInvalidData_mobile":
-			  verifySubmitInvalidDataForMobile(row.get(1)); break; case
-			  "contacts_cancelIcon": verifyCancelIcon(); break; case
-			  "contacts_Alert_close": verifyContactsAlertClose(); break; case
+			case "contacts_updateIcon": 
+				verifyUpdateIcon(); 
+				break; 
+			case "contacts_submitWithoutData": 
+				verifySubmitWithoutDataForMobile(); 
+				break;
+			case "contacts_submitInvalidData_mobile":
+			  verifySubmitInvalidDataForMobile(row.get(1)); break; 
+			case
+			  "contacts_cancelIcon": verifyCancelIcon(); break; 
+			case
+			  "contacts_Alert_close": verifyContactsAlertClose(); break; 
+			case
 			  "contacts_submitValidData_mobile":
-			  verifySubmitValidDataForMobile(row.get(1)); break; case
-			  "contacts_Alert_yesButton": verifyAlertYesButton(); break; case
+			  verifySubmitValidDataForMobile(row.get(1)); break; 
+			case
+			  "contacts_Alert_yesButton": verifyAlertYesButton(); break; 
+			case
 			  "contacts_Alert_goBackButton": verifyAlertGoBackButton(); break;
-			 
 			
-			  case "AreasOfInterest_updateIcon": verifyAreasOfInterestUpdateIcon(); break;
-			  case "AreasOfInterest_cancelIcon": verifyAreasOfInterestCancelIcon(); break;
-			  case "AreasOfInterest_Alert_close": verifyAreasOfInterestAlertClose(); break;
-			  case "AreasOfInterest_submitValidData":
+			case "AreasOfInterest_updateIcon": verifyAreasOfInterestUpdateIcon(); break;
+			case "AreasOfInterest_cancelIcon": verifyAreasOfInterestCancelIcon(); break;
+			case "AreasOfInterest_Alert_close": verifyAreasOfInterestAlertClose(); break;
+			case "AreasOfInterest_submitValidData":
 			  verifyAreasOfInterestSubmitValidData(row); break; case
 			  "AreasOfInterest_Alert_yesButton": verifyAreasOfInterestAlertyesButton();
-			  break; case "AreasOfInterest_Alert_goBackButton":
+			  break; 
+			case "AreasOfInterest_Alert_goBackButton":
 			  verifyAreasOfInterestAlertGoBackButton(); break;
-			 
-
 			
-			  case "CurrentWorkStatus_updateIcon": CurrentWorkStatus_updateIcon(); break;
-			  case "CurrentWorkStatus_cancelIcon": CurrentWorkStatus_cancelIcon(); break;
-			  case "CurrentWorkStatus_Alert_close": CurrentWorkStatus_Alert_close(); break;
-			  case "CurrentWorkStatus_submitValidData":
-			  CurrentWorkStatus_submitValidData(row); break; case
+			case "CurrentWorkStatus_updateIcon": CurrentWorkStatus_updateIcon(); break;
+			case "CurrentWorkStatus_cancelIcon": CurrentWorkStatus_cancelIcon(); break;
+			case "CurrentWorkStatus_Alert_close": CurrentWorkStatus_Alert_close(); break;
+			case "CurrentWorkStatus_submitValidData":
+			  CurrentWorkStatus_submitValidData(row); break; 
+			case
 			  "CurrentWorkStatus_Alert_yesButton": CurrentWorkStatus_Alert_yesButton();
 			  break; case "CurrentWorkStatus_Alert_goBackButton":
 			  CurrentWorkStatus_Alert_goBackButton(); break;
@@ -86,16 +106,48 @@ public class EditProfileValidation {
 			  "PersonalDetails_Alert_goBackButton": PersonalDetails_Alert_goBackButton();
 			  break;
 			 
-							  case "Education_updateIcon": Education_updateIcon(); break; case
-							  "Education_cancelIcon": Education_cancelIcon(); break; case
-							  "Education_Alert_close": Education_Alert_close(); break; case
-							  "Education_submitValidData": Education_submitValidData(row); break; case
-							  "Education_Alert_yesButton": Education_Alert_yesButton(); break; case
-							  "Education_Alert_goBackButton": Education_Alert_goBackButton(); break;
+			  case "Education_updateIcon": Education_updateIcon(); break; case
+			  "Education_cancelIcon": Education_cancelIcon(); break; case
+			  "Education_Alert_close": Education_Alert_close(); break; case
+			  "Education_submitValidData": Education_submitValidData(row); break; case
+			  "Education_Alert_yesButton": Education_Alert_yesButton(); break; case
+			  "Education_Alert_goBackButton": Education_Alert_goBackButton(); break;
 							 
 			  
 			 
 			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}

@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+
 
 public class ErrorCodeLocator
 {
@@ -17,10 +20,10 @@ public class ErrorCodeLocator
 		this.driver = driver;
 	}
 	
-	ArrayList<String> statusOfErrorCode = new ArrayList<String>();
-	
 	public ArrayList<String> checkCourseCode(ArrayList<String> codeFromExcel)
 	{
+		ArrayList<String> statusOfErrorCode = new ArrayList<String>();
+		
 		String url="";
 		int respCode = 200;
 		HttpURLConnection huc = null;
@@ -97,7 +100,7 @@ public class ErrorCodeLocator
 				System.out.println("Done");
 				if(status>200)
 				{
-					statusOfErrorCode.add(endURL);
+					statusOfErrorCode.add(addHosturl + " status code :  "+status);
 				}
 			    } 
 			catch (Exception e) 
@@ -109,4 +112,82 @@ public class ErrorCodeLocator
 			
 		return statusOfErrorCode;
 	}
+
+	public ArrayList<String> checkURLRedirection(ArrayList<String> data)
+	{
+		ArrayList<String> status = new ArrayList<String>();
+		  String redirectedURL = "";
+		try
+		{
+			String currentTabHandle = driver.getWindowHandle();
+			for(int i = 1; i < data.size(); i++)
+			{
+				if(i == 1)
+				{
+					((JavascriptExecutor) driver).executeScript("window.open(arguments[0])", OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE)+data.get(i));	
+					Set<String> windowHandles = driver.getWindowHandles();
+					for (String handle : windowHandles)
+					{
+						driver.switchTo().window(handle);
+							if (driver.getCurrentUrl().contains(data.get(i+1)))
+							{
+								driver.switchTo().window(handle);
+								redirectedURL = driver.getCurrentUrl();
+								URL url = new URL(redirectedURL);
+
+					            // Remove the hostname
+								
+					            String path = url.getPath();
+					            String modifiedUrl = path;
+								System.out.println("Redirected URL : "+redirectedURL);
+								if(data.get(i+1).equals(modifiedUrl))
+								{
+									System.out.println("redirected is equal");
+									Thread.sleep(100);
+									driver.close();
+									Thread.sleep(100);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+									driver.switchTo().window(currentTabHandle);
+									break;
+								}
+								else
+								{
+									status.add(modifiedUrl);
+									Thread.sleep(100);
+									driver.close();
+									Thread.sleep(100);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+									driver.switchTo().window(currentTabHandle);
+									break;
+								}
+							}
+							else if(driver.getCurrentUrl().contains("data:,"))
+							{
+								driver.switchTo().window(handle);
+								driver.close();
+								driver.switchTo().window(currentTabHandle);
+							}
+							else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE)+"/"))
+							{
+								status.add(data.get(i+1));
+								System.out.println("course redirection gets failed : "+data.get(i+1));
+								Thread.sleep(100);
+								driver.close();
+								Thread.sleep(100);
+								driver.switchTo().window(currentTabHandle);
+							}
+							
+					}  
+					driver.switchTo().window(currentTabHandle);
+				}
+			}
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return status;
+	}
+
 }

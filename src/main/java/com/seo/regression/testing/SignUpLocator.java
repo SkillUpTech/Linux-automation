@@ -11,6 +11,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -126,11 +127,6 @@ public class SignUpLocator
 	{
 		System.out.println("FullName validation started");
 		OpenWebsite.openSite(driver);
-		/*
-		 * WebElement signupClick = driver.findElement(By.
-		 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
-		 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
-		 */
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
@@ -146,7 +142,7 @@ public class SignUpLocator
 				System.out.println("sign up page");
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				//this.signUpFunction(dataFromExcel);
+				this.signUpFunction(dataFromExcel);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				Thread.sleep(1000);
@@ -180,7 +176,7 @@ public class SignUpLocator
 			{
 				driver.switchTo().window(window);
 				System.out.println("sign up page");
-				//this.signUpFunction(dataFromExcel);
+				this.signUpFunction(dataFromExcel);
 				Thread.sleep(1000);
 				statusOfTestCase = this.checkValidationMessage();
 				Thread.sleep(1000);
@@ -212,7 +208,7 @@ public class SignUpLocator
 			if(driver.getCurrentUrl().contains("register"))
 			{
 				driver.switchTo().window(window);
-			//	this.signUpFunction(dataFromExcel);
+				this.signUpFunction(dataFromExcel);
 				Thread.sleep(1000);
 				statusOfTestCase = this.checkValidationMessage();
 				Thread.sleep(1000);
@@ -244,7 +240,7 @@ public class SignUpLocator
 			if(driver.getCurrentUrl().contains("register"))
 			{
 				driver.switchTo().window(window);
-				//this.signUpFunction(dataFromExcel);
+				this.signUpFunction(dataFromExcel);
 				Thread.sleep(1000);
 				statusOfTestCase.addAll(this.checkValidationMessage());
 				Thread.sleep(1000);
@@ -263,14 +259,13 @@ public class SignUpLocator
 		try
 		{
 			System.out.println("sign up validation started with valid data");
+			driver.switchTo().newWindow(WindowType.TAB);
 			OpenWebsite.openSite(driver);
-			/*
-			 * WebElement signupClick = driver.findElement(By.
-			 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
-			 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
-			 */
+			
 			this.signUpPage();//click sign up icon
+			
 			String parentWindow = driver.getWindowHandle();
+			
 			Set<String> allWindows = driver.getWindowHandles();
 			for(String window : allWindows)
 			{
@@ -278,7 +273,9 @@ public class SignUpLocator
 				if(driver.getCurrentUrl().contains("register"))
 				{
 					driver.switchTo().window(window);
+					
 					statusOfTestCase.addAll(this.signUpFunction(dataFromExcel));//enter all data in text box
+					
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					break;
 				}
@@ -293,7 +290,8 @@ public class SignUpLocator
 				if(driver.getCurrentUrl().contains("verify"))
 				{
 					driver.switchTo().window(allwindows);
-					driver.findElement(By.cssSelector("div[class='sectionContent'] a span")).click();
+					//driver.findElement(By.cssSelector("div[class='sectionContent'] a span")).click();
+					driver.navigate().back();
 					Thread.sleep(1000);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
@@ -307,7 +305,7 @@ public class SignUpLocator
 							driver.switchTo().window(allwindows1);
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-							WebElement clickdropdown = driver.findElement(By.cssSelector("img[class='dPaRoW']"));
+							WebElement clickdropdown = driver.findElement(By.cssSelector("li[class*='Header_SigNUP'] img[alt='icon']"));
 							WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(0, 40));
 							wait.until(ExpectedConditions.elementToBeClickable(clickdropdown));
 							if(clickdropdown.isDisplayed())
@@ -317,7 +315,7 @@ public class SignUpLocator
 								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 							}
 							Thread.sleep(1000);
-							WebElement clickSignOut = driver.findElement(By.cssSelector("li[class='SigNUP open'] ul[class*='dropdown-menu'] li:nth-child(5) a"));
+							WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header_Primary']>li:nth-child(5)>a"));
 							if(clickSignOut.isDisplayed())
 							{
 								clickSignOut.click();

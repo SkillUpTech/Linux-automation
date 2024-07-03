@@ -3,8 +3,10 @@ package com.seo.regression.testing;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
 import com.regression.utility.Utils;
 
@@ -36,19 +38,47 @@ public class RegressionGenericValidator
 	
 	public String processSheetData()
 	{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
-	//	regressionGenericLocator.openDriver();
-
 		for (CURRENT_ROW = 0; CURRENT_ROW < ROWS.size(); CURRENT_ROW++)
 		{
 			ArrayList<String> currentRow = ROWS.get(CURRENT_ROW);
 			String process = currentRow.get(0);
 			sheetStatus = executeProcess(process, currentRow);
 		}
-	//	regressionGenericLocator.getDriver().quit();
 		endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		duration = Utils.findDifference(startTime, endTime);
 		collectSheetResult();
+		
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
 		return sheetStatus;
 	}
 	
@@ -58,9 +88,11 @@ public class RegressionGenericValidator
 		{
 			switch (process) 
 			{
-			case "courseCode":
-				courseCode(row.get(1));
+			
+			case "courseCode": 
+				courseCode(row.get(1)); 
 				break;
+			 
 			case "getFreeConsultation":
 				getFreeConsultation(row);
 				break;
@@ -84,6 +116,9 @@ public class RegressionGenericValidator
 				break;
 			case "enrollment":
 				enrollment(row);
+				break;
+			case "chekProfileSection":
+				chekProfileSection(row);
 				break;
 			default:
 				markCellAsHeader();
@@ -355,6 +390,23 @@ public class RegressionGenericValidator
 		catch(Exception e)
 		{
 			e.printStackTrace();
+		}
+	}
+	
+	private void chekProfileSection(ArrayList<String> data)
+	{
+		if(data.contains("NA"))
+		{
+			markProcessIgnored();
+		}
+		else
+		{
+			ArrayList<String> checkProgram = regressionGenericLocator.programLocator();
+			if(checkProgram.contains("fail"))
+			{
+				sheetStatus = "Fail";
+				markProcessFailed();
+			}
 		}
 	}
 	

@@ -1,12 +1,6 @@
+
 package com.seo.regression.testing;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -37,54 +31,54 @@ public class RegressionTesting
 	private HashMap<String, String> sheetsResult = new HashMap<String, String>();
 	NewAboutCourseValidator newAboutCourseValidator;
 	RegressionGenericValidator regressionGenericValidator;
+	AboutProgramValidation aboutProgramValidation;
 	public static String ENV_TO_USE = "";
 	String getEnvironment = "";
 	WebDriver driver;
-	
+	public static String  driverPath = "C:\\Users\\Hemamalini\\Downloads\\125driver\\chromedriver-win64\\chromedriver.exe";
 	@BeforeTest
-	@Parameters({"browser","Denvironment"})
-	public void setup(String browserName, String Denvironment) throws Exception
+	@Parameters({"browser","env"})
+	public void setup(String browserName, String env) throws Exception
 	{
 		System.out.println("welcome");
-		System.out.println("Automation executing in "+System.getProperty("Denvironment")+" environment");
-	    if(browserName.equalsIgnoreCase("firefox"))
+	    if (browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
-	    	if(Denvironment.equalsIgnoreCase("stage"))
-	    	{
-	    		getEnvironment = "stage";
-	    	}
-	    	else if(Denvironment.equalsIgnoreCase("stage-in"))
-	    	{
-	    		getEnvironment = "stage-in";
-	    	}
-	    	else if(Denvironment.equalsIgnoreCase("prod-in"))
-	    	{
-	    		getEnvironment = "prod-in";
-	    	}
-	    	else if(Denvironment.equalsIgnoreCase("prod"))
-	    	{
-	    		getEnvironment = "prod";
-	    	}
 	    }
-	    else if(browserName.equalsIgnoreCase("Chrome"))
+	    else if (browserName.equalsIgnoreCase("Chrome"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
-	    	if(Denvironment.equalsIgnoreCase("stage"))
+	    	if(env.equalsIgnoreCase("stage"))
 	    	{
 	    		getEnvironment = "stage";
 	    	}
-	    	else if(Denvironment.equalsIgnoreCase("stage-in"))
+	    	else if(env.equalsIgnoreCase("stage-in"))
 	    	{
 	    		getEnvironment = "stage-in";
 	    	}
-	    	else if(Denvironment.equalsIgnoreCase("prod-in"))
+	    	else if(env.equalsIgnoreCase("prod-in"))
 	    	{
 	    		getEnvironment = "prod-in";
 	    	}
-	    	else if(Denvironment.equalsIgnoreCase("prod"))
+	    	else if(env.equalsIgnoreCase("prod"))
 	    	{
 	    		getEnvironment = "prod";
+	    	}
+	    	else if(env.equalsIgnoreCase("dev-in"))
+	    	{
+	    		getEnvironment = "dev-in";
+	    	}
+	    	else if(env.equalsIgnoreCase("dev"))
+	    	{
+	    		getEnvironment = "dev";
+	    	}
+	    	else if(env.equalsIgnoreCase("qa-in"))
+	    	{
+	    		getEnvironment = "qa-in";
+	    	}
+	    	else if(env.equalsIgnoreCase("qa"))
+	    	{
+	    		getEnvironment = "qa";
 	    	}
 	    }
 	    else
@@ -97,14 +91,13 @@ public class RegressionTesting
 	public void startTest()
 	{
 		System.out.println(driver);
-//		new RegressionTesting().startTesting();
 		this.startTesting();
 		driver.quit();
 	}
 	
 	public void startTesting()
 	{
-		String excelPath = "/home/edx-root/Desktop/testing/TestData.xlsx";
+		String excelPath = "D:\\Doc\\RegressionTesting.xlsx";
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		try
@@ -119,21 +112,22 @@ public class RegressionTesting
 				ENV_TO_USE = environment.get(1);//Use envToUse appropriately
 			}
 			ENV_TO_USE = getEnvironment;
-			System.out.println("environment assigned as "+ENV_TO_USE);
+			OpenWebsite.openSite(driver);
+			ArrayList<String> browser = master.get(1);
 			ArrayList<String> pages = master.get(0);// Pages row in excel
 			for(int j = 0; j < pages.size(); j++)// iterating the pages row
 			{
 				String sheetName = pages.get(j);// getting the cell values of pages row eg. Pages, Login-ignore, ErrorCodeValidation, etc,.
+				
 				if (data.containsKey(sheetName))// checking whether the excel is having the sheet
 				{
 					ArrayList<ArrayList<String>> sheetData = data.get(sheetName);// reading the sheet data
-					//newAboutCourseValidator = new NewAboutCourseValidator(driver, sheetName, sheetData);
 					try
 					{
 						String sheetStatus = "Pass";
-						//Get Started
 						switch(sheetName)
 						{
+							
 							case "Login":
 								sheetStatus = new RegressionTestLogin(driver, sheetData).start();
 							break;
@@ -141,6 +135,13 @@ public class RegressionTesting
 							{
 								newAboutCourseValidator = new NewAboutCourseValidator(driver, sheetName, sheetData);
 								sheetStatus = newAboutCourseValidator.processSheetData();
+							}
+							break;
+							
+							case "AboutProgram":
+							{
+								aboutProgramValidation = new AboutProgramValidation(driver, sheetName, sheetData);
+								sheetStatus = aboutProgramValidation.processSheetData();
 							}
 							break;
 							case "GenericProcess":
@@ -158,6 +159,9 @@ public class RegressionTesting
 							case"SignUp":
 								sheetStatus = new SignUpValidation(sheetData, driver).start();
 								break;
+							case"AddUser":
+								sheetStatus = new AddUserValidation(sheetData, driver).start();
+								break;
 							case"Login if mail id not verified":
 								sheetStatus = new CheckLoginValidation(sheetData, driver).start();
 								break;
@@ -171,7 +175,7 @@ public class RegressionTesting
 								sheetStatus = new HeaderSectionValidation(sheetData, driver).start();
 								break;
 							case"HomePage":
-								sheetStatus = new HomePageValidator(sheetData, driver).start();
+								sheetStatus = new HomePageValidator(driver, sheetName, sheetData).start();
 								break;
 							case "ContactInfo":
 								sheetStatus = new ContactInfoValidation(sheetData, driver).start();
@@ -203,7 +207,6 @@ public class RegressionTesting
 							case "LoginPageLinks":
 								sheetStatus = new LoginPageLinksValidation(sheetData, driver).start();
 								break;
-							
 							 case "IBM":
 								 sheetStatus = new IBMPageValidation(sheetData, driver).start(); 
 								 break;
@@ -225,10 +228,64 @@ public class RegressionTesting
 							 case "BlogPage":
 								 sheetStatus = new BlogPageValidation(sheetData, driver).start(); 
 								 break;
+							 case "InviteOnlyCourse":
+								 sheetStatus = new InviteOnlyValidation(sheetData, driver).start(); 
+								 break;
+							 case "SignUpPageLinks":
+								 sheetStatus = new SignUpPageLinksValidation(sheetData, driver).start(); 
+								 break;
+							 case "ExploreCourseByNewUser":
+								 sheetStatus = new ExploreCourseByNewUserValidation(sheetData, driver).start(); 
+								 break;
+							 case "ViewCertificate":
+								 sheetStatus = new CertificateValidation(sheetData, driver).start(); 
+								 break;
+							 case "PlacementPage":
+								 sheetStatus = new PlacementPageValidation(sheetData, driver).start(); 
+								 break;
+							 case "HeaderFeature":
+								 sheetStatus = new HeaderFeatureValidation(sheetData, driver).start(); 
+								 break;
+							 case "ReimbursedProcess":
+								 sheetStatus = new ReimbursedValidation(sheetData, driver).start(); 
+								 break;
+							 case "ApplyCoupon":
+								 sheetStatus = new ApplyCouponValidation(sheetData, driver).start(); 
+								 break;
+							 case "IBMSkillBuildPage":
+								 sheetStatus = new IBMSkillBuildPageValidation(sheetData, driver).start(); 
+								 break;
+							 case "CheckVILTSelfPacedCourse":
+								 sheetStatus = new CourseLevelValidation(sheetData, driver).start(); 
+								 break;
+							 case "AccountPage":
+								 sheetStatus = new AccountPageValidation(sheetData, driver).start(); 
+								 break;
+							 case "DevopsPage":
+								 sheetStatus = new DevopsPageValidation(sheetData, driver).start(); 
+								 break;
+							 case "OnboardingJourney":
+								 sheetStatus = new OnboardingValidation(sheetData, driver).start(); 
+								 break;
+							 case "TechMaster":
+								 sheetStatus = new TechMasterValidation(sheetData, driver).start(); 
+								 break;
+							 case "CategoryBanner":
+								 sheetStatus = new CategoryBannerValidation(sheetData, driver).start(); 
+								 break;
+							 case "CourseCardHover":
+								 sheetStatus = new CourseCardHoverValidation(sheetData, driver).start(); 
+								 break;
+							 case "IBMViewCourse":
+								 sheetStatus = new IBMViewCourseValidation(sheetData, driver).start(); 
+								 break;
+							 case "ProgramURLandSlug":
+								 sheetStatus = new verifyProgramURLValidation(sheetData, driver).start(); 
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
-						}
-						sheetsResult.put(sheetName, sheetStatus);
+						}//end of swtich case
+						sheetsResult.put(sheetName, sheetStatus);//st
 					} 
 					catch (Exception e) 
 					{
@@ -249,28 +306,41 @@ public class RegressionTesting
 			LocalDateTime currentDateTime = LocalDateTime.now();
 
 	        // Define a custom date and time format
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmm");
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
 	        // Format the current date and time using the formatter
 	        String formattedDateTime = currentDateTime.format(formatter);
 	        
-	        
-			if(driver.getCurrentUrl().contains("stage"))
+			if (/*
+				 * driver.getCurrentUrl().contains("stage-in")||driver.getCurrentUrl().contains(
+				 * "stage-in")||
+				 */ENV_TO_USE.contains("stage-in"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/demo/test-output/", "stage_result_" + formattedDateTime + ".xlsx");
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/stageBuild/test-output/", "stage_result_" + formattedDateTime + ".xlsx");
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/Stage/test-output/", "stage_result_" + formattedDateTime + ".xlsx");
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/jobs/StageAutomation/", "stage_result_" + formattedDateTime + ".xlsx");
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/jenkins/workspace/StageAutomation/test-output/", "stage_result_" + formattedDateTime + ".xlsx");
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/jenkins/workspace/stage/test-output/", "stage_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "stage_in_result_" + formattedDateTime + ".xlsx");
 			}
-			else if (!driver.getCurrentUrl().contains("stage"))
+			else if (/* !driver.getCurrentUrl().contains("stage")|| */ENV_TO_USE.contains("stage"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/demo/test-output/", "prod_result_" + formattedDateTime + ".xlsx");
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/workspace/prodBuild/test-output/", "prod_result_" + formattedDateTime + ".xlsx");
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/var/lib/jenkins/jobs/ProdAutomation/", "prod_result_" + formattedDateTime + ".xlsx");
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/jenkins/workspace/prod/test-output/", "prod_result_" + formattedDateTime + ".xlsx");
-				
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "prod_result_" + formattedDateTime + ".xlsx");
+			}
+			else if (/* !driver.getCurrentUrl().contains("qa-in")|| */ENV_TO_USE.contains("qa-in"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "qa_India_result_" + formattedDateTime + ".xlsx");
+			}
+			else if (/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("dev-in"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "dev_India_result_" + formattedDateTime + ".xlsx");
+			}
+			else if (/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("prod-in"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "prodIndia_result_" + formattedDateTime + ".xlsx");
+			}
+			else if (/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("dev"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "Dev_US_result_" + formattedDateTime + ".xlsx");
+			}
+			else if(/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("qa"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "qa_US_result_" + formattedDateTime + ".xlsx");
 			}
 		}
 	}

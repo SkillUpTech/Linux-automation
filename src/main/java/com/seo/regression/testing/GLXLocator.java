@@ -446,44 +446,60 @@ public class GLXLocator {
 					ArrayList<String> cohortData = new ArrayList<String>();
 					try
 					{
-						List<WebElement> checkEnrollmentStatus = programPageLocator.findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent'],  div#Cohort>div[class*='CourseDescription_CohortBoxDiv']>button"));
-						if(checkEnrollmentStatus.size() == 1)
+						List<WebElement> checkEnrollmentStatus = programPageLocator.findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent'], div#Cohort>div[class*='CourseDescription_CohortBoxDiv']>button"));
+						Thread.sleep(1000);
+						for(int k = 0; k < checkEnrollmentStatus.size();k++)
 						{
-							if(checkEnrollmentStatus.get(0).findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent']>button:nth-child(1)")).size()>0)
+							
+							if(checkEnrollmentStatus.size() == 1)
 							{
-								pageData.add("EnrollOpen");
+								Thread.sleep(1000);
+								if(checkEnrollmentStatus.get(k).findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent']>button:nth-child(1)")).size()>0)
+								{
+									pageData.add("EnrollOpen");
+									Thread.sleep(1000);
+									break;
+								}
+								else if(checkEnrollmentStatus.get(k).findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent']>h6")).size()>0)
+								{
+									pageData.add("EnrollClose");
+									Thread.sleep(1000);
+									break;
+								}
+								else if(checkEnrollmentStatus.get(k).getText().equalsIgnoreCase("Enroll now"))
+								{
+									pageData.add("EnrollOpen");
+									Thread.sleep(1000);
+									break;
+								}
+								else
+								{
+									pageData.add("EnrollClose");
+									Thread.sleep(1000);
+									break;
+								}
 							}
-							else if(checkEnrollmentStatus.get(0).findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent']>h6")).size()>0)
+							else if(checkEnrollmentStatus.size()>1)
 							{
-								pageData.add("EnrollClose");
-							}
-							else if(checkEnrollmentStatus.get(0).getText().equalsIgnoreCase("Enroll now"))
-							{
-								pageData.add("EnrollOpen");
-							}
-							else
-							{
-								pageData.add("EnrollClose");
-							}
-						}
-						else if(checkEnrollmentStatus.size()>1)
-						{
-							System.out.println("Enroll cohort status displayed");
-							for(int k = 0; k < checkEnrollmentStatus.size(); k++)
-							{
+								System.out.println("Enroll cohort status displayed");
+								Thread.sleep(1000);
 								cohortData.add(checkEnrollmentStatus.get(k).getText());
-							}
-							System.out.println("Enroll cohort data displayed : "+cohortData);
-							if(cohortData.contains("Enroll close"))
-							{
-								System.out.println("Enroll cohort status has close");
-								pageData.add("EnrollClose");
-							}
-							else
-							{
-								pageData.add("EnrollOpen");
+								Thread.sleep(1000);
+								System.out.println("Enroll cohort data displayed : "+cohortData);
+								if(cohortData.contains("Enroll close"))
+								{
+									System.out.println("Enroll cohort status has close");
+									pageData.add("EnrollClose");
+									Thread.sleep(1000);
+								}
+								else
+								{
+									pageData.add("EnrollOpen");
+									Thread.sleep(1000);
+								}
 							}
 						}
+						
 					}
 					catch(Exception e)
 					{
@@ -494,15 +510,18 @@ public class GLXLocator {
 					
 					try
 					{
-						WebElement programPagePrice = driver.findElement(By.xpath("//section[@class='CourseDescription_mainSection__WrO9h']//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[@class='d-flex gap-2']//div[@class='CourseDescription_courseAboutTextSection__8_6ac']//h2[contains(text(),'Fee')]/following-sibling::p"));
+						WebElement programPagePrice = driver.findElement(By.xpath("(//div[@class='d-flex gap-2'][2]/div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'Fee')]/following-sibling::p) | (//div[@class='d-flex gap-2'][3]/div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'Fee')]/following-sibling::p)"));
 						if(!programPagePrice.isDisplayed())
 						{
+							Thread.sleep(1000);
 							processStatus.add(programPageName.concat(" Issue in price section"));
+							Thread.sleep(1000);
 						}
 						else
 						{
 							if(programPagePrice.getText().contains("-"))
 							{
+								Thread.sleep(1000);
 								String price[] = programPagePrice.getText().split("-");
 								String val = price[0];
 								Pattern pattern = Pattern.compile("\\d+");
@@ -511,12 +530,14 @@ public class GLXLocator {
 								while(matcher.find())
 								{
 									build.append(matcher.group());
+									Thread.sleep(1000);
 								}
 								String result = build.toString().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim();
 								pageData.add(result);
 							}
 							else
 							{
+								Thread.sleep(1000);
 								String val = programPagePrice.getText();
 								Pattern pattern = Pattern.compile("\\d+");
 								Matcher matcher = pattern.matcher(val);
@@ -524,9 +545,11 @@ public class GLXLocator {
 								while(matcher.find())
 								{
 									build.append(matcher.group());
+									Thread.sleep(1000);
 								}
 								String result = build.toString().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim();
 								pageData.add(result);
+								Thread.sleep(1000);
 							}
 						}
 					}
@@ -574,14 +597,41 @@ public class GLXLocator {
 								}
 								if(j == 4)
 								{
-									if(!cardData.get(j).equals(pageData.get(j)))
+									if(pageData.size()>6)
 									{
-										processStatus.add("enroll status mismatch in "+programPageName);
+										ArrayList<String> checkEnroll = new ArrayList<String>();
+										for(int m = 0; m < pageData.size(); m++)
+										{
+											if(!cardData.get(j).equals(pageData.get(4)))
+											{
+												if(j == 4 && m == 4)
+												{
+													processStatus.add("enroll status mismatch for:  "+programPageName+ " enroll data from card is : "+cardData.get(4)+ " Enroll data in course page is : "+pageData.get(4));
+												}
+											}
+											if(!cardData.get(j).equals(pageData.get(5)))
+											{
+												if(j == 4 && m == 5)
+												{
+													processStatus.add("enroll status mismatch for "+programPageName+ "enroll data from card is : "+cardData.get(4)+ "Enroll data in course page is : "+pageData.get(5));
+												}
+											}
+										}
 									}
+									else
+									{
+										if(!cardData.get(j).equals(pageData.get(j)))
+										{
+											processStatus.add("enroll status mismatch in "+programPageName);
+										}
+									}
+									
 								}
 								if(j == 5)
 								{
-									if(!cardData.get(j).equals(pageData.get(j)))
+									int lastIndex = pageData.size() - 1;
+									String lastPageData = pageData.get(lastIndex);
+									if(!cardData.get(j).contains(lastPageData))
 									{
 										processStatus.add("price mismatch in "+programPageName);
 									}
@@ -610,6 +660,22 @@ public class GLXLocator {
 		{
 			e.printStackTrace();
 		}
+		driver.close();
+		Set<String> allScreen = driver.getWindowHandles();
+		 for (String handle : allScreen) 
+		 {
+			 driver.switchTo().window(handle);
+	            if(handle.equals(driver.getWindowHandle()))
+	            {
+	                driver.switchTo().window(handle);
+	                if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+	                {
+	                	 driver.switchTo().window(handle);
+	                	 break;
+	                }
+	            }
+	            driver.switchTo().window(handle);
+	      }
 		return processStatus;
 		
 	}

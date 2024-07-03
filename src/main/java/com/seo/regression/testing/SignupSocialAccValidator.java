@@ -3,6 +3,7 @@ package com.seo.regression.testing;
 import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
 public class SignupSocialAccValidator
 {
@@ -12,9 +13,10 @@ public class SignupSocialAccValidator
 	String sheetStatus="Pass";
 	public SignupSocialAccValidator(ArrayList<ArrayList<String>> sheetData, WebDriver driver)
 	{
-		OpenWebsite.openSite(driver);
 		this.sheetData = sheetData;
 		this.driver = driver;
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		this.signupSocialAccLocator = new SignupSocialAccLocator(driver);
 		//this.start();
 	}

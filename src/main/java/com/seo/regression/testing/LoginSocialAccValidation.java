@@ -1,8 +1,10 @@
 package com.seo.regression.testing;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
 public class LoginSocialAccValidation 
 {
@@ -14,15 +16,18 @@ public class LoginSocialAccValidation
 	
 	public LoginSocialAccValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
 	{
-		OpenWebsite.openSite(driver);
 		this.sheetData = sheetData;
 		this.driver = driver;
+		
 		this.loginSocialAccLocator = new LoginSocialAccLocator(driver);
 		System.out.println("login process started");
 		//this.start();
 	}
 	public String start() throws InterruptedException
 	{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -42,6 +47,27 @@ public class LoginSocialAccValidation
 					MICROSOFT();
 					break;
 			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else
+				{
+					driver.switchTo().window(win);
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+			
 		}
 		return sheetStatus;
 	}

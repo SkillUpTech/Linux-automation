@@ -1,8 +1,10 @@
 package com.seo.regression.testing;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
 public class CheckLoginValidation
 {
@@ -15,9 +17,8 @@ public class CheckLoginValidation
 	
 	public CheckLoginValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
 	{
-		this.driver = driver;
-		OpenWebsite.openSite(driver);
 		this.sheetData = sheetData;
+		this.driver = driver;
 		this.signUpLocator = new SignUpLocator(this.driver);
 		this.processLogin = new ProcessLogin(this.driver);
 		System.out.println("Sign up validation begins");
@@ -25,6 +26,11 @@ public class CheckLoginValidation
 	
 	public String start() throws InterruptedException
 	{
+		try
+		{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -38,6 +44,32 @@ public class CheckLoginValidation
 				  InvalidPassword();
 				  	break;
 			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else
+				{
+					driver.switchTo().window(win);
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+			
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}

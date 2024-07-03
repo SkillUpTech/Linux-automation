@@ -268,7 +268,7 @@ public class ProcessExcel
 				sheet.setTabColor(Constants.RED);
 			}
 		}
-		try (FileOutputStream outputStream = new FileOutputStream(filePathToWrite + fileName)) {
+		try (FileOutputStream outputStream = new FileOutputStream(filePathToWrite + "\\" + fileName)) {
             workbook.write(outputStream);
             outputStream.close();
         } catch (FileNotFoundException e) {

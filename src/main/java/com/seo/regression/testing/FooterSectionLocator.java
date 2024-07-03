@@ -14,9 +14,9 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 
 public class FooterSectionLocator
 {
@@ -24,7 +24,6 @@ public class FooterSectionLocator
 	public FooterSectionLocator(WebDriver driver)
 	{
 		this.driver = driver;
-		//OpenWebsite.openSite(driver);
 	}
 	public String getDriverDetails()
 	{
@@ -36,13 +35,14 @@ public class FooterSectionLocator
 		String status = "failed";
 		try
 		{
+			driver.switchTo().newWindow(WindowType.TAB);
+			OpenWebsite.openSite(driver);
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 			js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(120));
-		//	Thread.sleep(2000);
 			js.executeScript("window.scrollBy(0, -300)", "");
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(120));
 			//String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
@@ -53,7 +53,6 @@ public class FooterSectionLocator
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(120));
-		//	Thread.sleep(1000);
 			status = "pass";
 		}
 		catch(Exception e)
@@ -79,11 +78,9 @@ public class FooterSectionLocator
 		WebElement clickTwitter = driver.findElement(By.cssSelector("ul[class*=' Footer_socialIconsSection'] li:nth-child(1) a"));
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		wait.until(ExpectedConditions.elementToBeClickable(clickTwitter));
-		//clickTwitter.click();
 		js.executeScript("arguments[0].click()", clickTwitter);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-	//	Thread.sleep(800);
 		String parentWindow = driver.getWindowHandle();
 		Set<String> nextWindow = driver.getWindowHandles();
 		Iterator<String> iterator = nextWindow.iterator();
@@ -93,22 +90,18 @@ public class FooterSectionLocator
 			if(!parentWindow.equalsIgnoreCase(childWindow))
 			{
 				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("https://twitter.com/"))
+				if(driver.getCurrentUrl().contains("x")||driver.getCurrentUrl().contains("intent"))
 				{
 					driver.switchTo().window(childWindow);
 					System.out.println("twitter window");
 					status = "success";
 					driver.close();
-				//	Thread.sleep(1000);
 					driver.switchTo().window(parentWindow);
-					if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
-					{
-						status = "success";	
-						break;
-					}
 				}
 			}
+			driver.switchTo().window(parentWindow);
 		}
+		driver.switchTo().window(parentWindow);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		return status;
 	}
@@ -117,20 +110,16 @@ public class FooterSectionLocator
 	{
 		String status = "failed";
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-	//	Thread.sleep(2000);
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-	//	Thread.sleep(2000);
 		js.executeScript("window.scrollBy(0, -100)", "");
 		WebElement clickInstagram = driver.findElement(By.cssSelector("ul[class*=' Footer_socialIconsSection'] li:nth-child(4) a"));
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		wait.until(ExpectedConditions.elementToBeClickable(clickInstagram));
-		//clickInstagram.click();
 		js.executeScript("arguments[0].click()", clickInstagram);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-	//	Thread.sleep(1000);
 		String parentWindow = driver.getWindowHandle();
 		Set<String> nextWindow = driver.getWindowHandles();
 		Iterator<String> iterator = nextWindow.iterator();
@@ -144,13 +133,11 @@ public class FooterSectionLocator
 				{
 					driver.switchTo().window(childWindow);
 					System.out.println("instagram window");
+					status = "success";
 					driver.close();
+					
 					driver.switchTo().window(parentWindow);
-					if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
-					{
-						status = "success";
-						break;
-					}
+					break;
 				}
 			}
 		}
@@ -164,17 +151,14 @@ public class FooterSectionLocator
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-	//	Thread.sleep(3000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -160)", "");
-	//	Thread.sleep(2000);
 		WebElement clickFacebook = driver.findElement(By.cssSelector("ul[class*=' Footer_socialIconsSection'] li:nth-child(2) a"));
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		wait.until(ExpectedConditions.elementToBeClickable(clickFacebook));
-	//	clickFacebook.click();
-	js.executeScript("arguments[0].click()", clickFacebook);
-	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-	driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+		js.executeScript("arguments[0].click()", clickFacebook);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 		String parentWindow = driver.getWindowHandle();
 		Set<String> nextWindow = driver.getWindowHandles();
 		Iterator<String> iterator = nextWindow.iterator();
@@ -188,16 +172,15 @@ public class FooterSectionLocator
 				{
 					driver.switchTo().window(childWindow);
 					System.out.println("facebook window");
+					status = "success";
 					driver.close();
 					driver.switchTo().window(parentWindow);
-					if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
-					{
-						status = "success";
-						break;
-					}
+					break;
 				}
 			}
+			driver.switchTo().window(parentWindow);
 		}
+		driver.switchTo().window(parentWindow);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		return status;
 	}
@@ -206,18 +189,13 @@ public class FooterSectionLocator
 	{
 		String status = "failed";
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		//Thread.sleep(2000);
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		//Thread.sleep(1000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
-		//Thread.sleep(1000);
 		WebElement clickLinkedIn = driver.findElement(By.cssSelector("ul[class*=' Footer_socialIconsSection'] li:nth-child(3) a"));
-		//Thread.sleep(800);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		wait.until(ExpectedConditions.elementToBeClickable(clickLinkedIn));
-	//	clickLinkedIn.click();
 		js.executeScript("arguments[0].click()", clickLinkedIn);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
@@ -234,16 +212,15 @@ public class FooterSectionLocator
 				{
 					driver.switchTo().window(childWindow);
 					System.out.println("linkedIn window");
+					status = "success";
 					driver.close();
 					driver.switchTo().window(parentWindow);
-					if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
-					{
-						status = "success";
-						break;
-					}
+					break;
 				}
 			}
+			driver.switchTo().window(parentWindow);
 		}
+		driver.switchTo().window(parentWindow);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		return status;
 	}
@@ -254,14 +231,11 @@ public class FooterSectionLocator
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-	//	Thread.sleep(2000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
-	//	Thread.sleep(1000);
 		WebElement clickContactUs = driver.findElement(By.cssSelector("div[class='Footer_ContActUsIn__ywIhS'] span img[alt='icon']"));
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		wait.until(ExpectedConditions.elementToBeClickable(clickContactUs));
-	//	Thread.sleep(800);
 		js.executeScript("arguments[0].click()", clickContactUs);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
@@ -378,6 +352,7 @@ public class FooterSectionLocator
 		List<WebElement> clickBusiness= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu']>ul>li>a"));
 		for(int i = 0; i < clickBusiness.size(); i++)
 		{
+			js.executeScript("arguments[0].scrollIntoView();", clickBusiness.get(i));
 			String getText = clickBusiness.get(i).getText();
 			if(getText.contains("Business"))
 			{
@@ -631,7 +606,7 @@ public class FooterSectionLocator
 				{
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					String categoriesName = popularCategories.get(i).getText();
-					if(categoriesName.equalsIgnoreCase(data.get(i+1)))
+					if(popularCategories.get(i).isDisplayed())
 					{
 						String getCatagoriesURL =  popularCategories.get(i).getAttribute("href");
 						String urlstatus=this.checkURLStatus(getCatagoriesURL);
@@ -651,7 +626,7 @@ public class FooterSectionLocator
 						Set<String> windows = driver.getWindowHandles();
 						for(String allWindows : windows)
 						{
-							if(!parentWindow.equalsIgnoreCase(allWindows))
+							if(!parentWindow.equalsIgnoreCase(allWindows)&&!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 							{
 								driver.switchTo().window(allWindows);
 								System.out.println(driver.getCurrentUrl());
@@ -724,24 +699,20 @@ public class FooterSectionLocator
 		{
 			System.out.println("host is present");
 		}
-	//	Thread.sleep(3000);
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-//		Thread.sleep(2000);
 		JavascriptExecutor js1 = (JavascriptExecutor) driver;
 		js1.executeScript("window.scrollBy(0, 500)", "");
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-	//	Thread.sleep(1000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-	//	Thread.sleep(1000);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
 		List<WebElement> popularCourses = driver.findElements(By.cssSelector("div[class*='Footer_PopularCourses'] ul li a"));
 		for(int i = 0; i < popularCourses.size(); i++)
 		{
-			if(data.get(i+1).equalsIgnoreCase(popularCourses.get(i).getText()))
+			if(popularCourses.get(i).isDisplayed())
 			{
 				String URLStatus=this.checkURLStatus(popularCourses.get(i).getAttribute("href")); 
 				if(URLStatus.equalsIgnoreCase("failed"))
@@ -760,7 +731,7 @@ public class FooterSectionLocator
 				Set<String> windows = driver.getWindowHandles();
 				for(String allWindows : windows)
 				{
-					if(!parentWindow.equalsIgnoreCase(allWindows))
+					if(!parentWindow.equalsIgnoreCase(allWindows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 					{
 						driver.switchTo().window(allWindows);
 						System.out.println(driver.getCurrentUrl());
@@ -818,31 +789,29 @@ public class FooterSectionLocator
 			else if(driver.getCurrentUrl().equalsIgnoreCase(getHost+"/"))
 			{
 				driver.switchTo().window(tabs.get(i));
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(getHost+"/");
 			}
 			else
 			{
 				JavascriptExecutor jse = (JavascriptExecutor)driver;
 				jse.executeScript("window.open()");
-				driver.switchTo().window(tabs.get(0));
+				driver.switchTo().newWindow(WindowType.TAB);
 				OpenWebsite.openSite(driver);
 			}
 		}
 		
-//	/	Thread.sleep(3000);
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-	//	Thread.sleep(2000);
 		JavascriptExecutor js1 = (JavascriptExecutor) driver;
 		js1.executeScript("window.scrollBy(0, 500)", "");
-	//	Thread.sleep(1000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
-	//	Thread.sleep(1000);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
 		List<WebElement> blogs = driver.findElements(By.cssSelector("div[class*='Footer_LatestBlogsRepT']"));
 		for(int i = 0; i < blogs.size(); i++)
 		{
-			if(data.get(i+1).equalsIgnoreCase(blogs.get(i).findElement(By.cssSelector(" h3")).getText()))
+			if(blogs.get(i).isDisplayed())
 			{
 				String urlStatus = this.checkURLStatus(blogs.get(i).findElement(By.cssSelector("div[class*='Footer_LatestBlogsRepT'] a")).getAttribute("href"));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
@@ -861,7 +830,7 @@ public class FooterSectionLocator
 				Set<String> windows = driver.getWindowHandles();
 				for(String allWindows : windows)
 				{
-					if(!parentWindow.equalsIgnoreCase(allWindows))
+					if(!parentWindow.equalsIgnoreCase(allWindows) && !driver.getCurrentUrl().equalsIgnoreCase(getHost+"/"))
 					{
 						driver.switchTo().window(allWindows);
 						System.out.println(driver.getCurrentUrl());

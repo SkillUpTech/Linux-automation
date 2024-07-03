@@ -4,9 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
 import com.regression.utility.Utils;
 import com.seo.pompages.NewAboutCourseLocator;
@@ -36,32 +38,61 @@ public class NewAboutCourseValidator
 
 	public String processSheetData()
 	{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
-		//newAboutCourseLocators.openDriver();
-		System.out.println("About course process started");
 		for (CURRENT_ROW = 0; CURRENT_ROW < ROWS.size(); CURRENT_ROW++) 
 		{
 			ArrayList<String> currentRow = ROWS.get(CURRENT_ROW);
 			String process = currentRow.get(0);
 			sheetStatus = executeProcess(process, currentRow);
 		}
-	//	newAboutCourseLocators.getDriver().quit();
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
 		endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		duration = Utils.findDifference(startTime, endTime);
 		collectSheetResult();
 		return sheetStatus;
 	}
 	
-	public String executeProcess(String process, ArrayList<String> row) {
-
+	public String executeProcess(String process, ArrayList<String> row)
+	{
+		
 		try {
-			switch (process) {
+			switch (process)
+			{
 			case "environment":
 				environment(row.get(1));
 				break;
-			case "courseCode":
-				courseCode(row.get(1));
-				break;
+			
+			  case "courseCode": courseCode(row.get(1)); break;
+			 
 			case "courseTitle":
 				courseTitle(row.get(1));
 				break;
@@ -158,10 +189,14 @@ public class NewAboutCourseValidator
 				markCellAsHeader();
 				break;
 			}
-		} catch (Exception e) {
+			
+		} 
+		catch (Exception e)
+		{
 			e.printStackTrace();
 			markProcessFailed();
 		}
+		
 		return sheetStatus;
 	}
 
@@ -173,7 +208,7 @@ public class NewAboutCourseValidator
 		{
 			String checkEnvironment = newAboutCourseLocators.setEnvironment(environmentFromExcel);
 			getMetaHost = newAboutCourseLocators.setMetaHostURL();
-			getImageHost = newAboutCourseLocators.setImageEndpoint(environmentFromExcel);
+			//getImageHost = newAboutCourseLocators.setImageEndpoint(environmentFromExcel);
 		}
 		catch(Exception e)
 		{

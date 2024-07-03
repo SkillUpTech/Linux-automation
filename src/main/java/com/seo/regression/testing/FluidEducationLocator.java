@@ -12,6 +12,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.interactions.Actions;
 
 public class FluidEducationLocator
@@ -27,13 +28,16 @@ public class FluidEducationLocator
 	public String facebookProcess()
 	{
 		String status = "fail";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		if(driver.getCurrentUrl().contains("skillup"))
 		{
-			driver.get(driver.getCurrentUrl()+"/fluideducation");
+			driver.switchTo().newWindow(WindowType.TAB);
+			driver.get(OpenWebsite.setURL+"/fluideducation");
 		}
 		try
 		{
 			WebElement facebookIcon = driver.findElement(By.cssSelector("img[alt='facebook']"));
+			js.executeScript("arguments[0].scrollIntoView();", facebookIcon);
 			if(facebookIcon.isDisplayed())
 			{
 				Actions action = new Actions(driver);
@@ -186,170 +190,7 @@ public class FluidEducationLocator
 		return status;
 	}
 	
-	/*
-	 * public ArrayList<String> verifyFluidEducationProgram() { ArrayList<String>
-	 * processStatus = new ArrayList<String>(); ArrayList<String> cardData = new
-	 * ArrayList<String>(); ArrayList<String> pageData = new ArrayList<String>();
-	 * try { System.out.println("FluidEducation Program card verification started");
-	 * JavascriptExecutor js = (JavascriptExecutor) driver;
-	 * js.executeScript("window.scrollBy(0, 3000)", "");
-	 * driver.switchTo().defaultContent(); List<WebElement> ListOfProgram =
-	 * driver.findElements(By.
-	 * cssSelector("section[class*='DiscountSection_DataScienceAiCour'] div[class*='container-fluid DiscountSection_containerInner']>div[class='row']:nth-child(2) div[class*='DiscountSection_programcardDiv']"
-	 * )); for(int i = 0; i < ListOfProgram.size(); i++) {
-	 * js.executeScript("arguments[0].scrollIntoView();", ListOfProgram.get(i));
-	 * String programCardName = ListOfProgram.get(i).findElement(By.
-	 * cssSelector(" div[class='DiscountSection_ProgramHeading___MbKv']")).getText()
-	 * ; WebElement programCardIcon = ListOfProgram.get(i).findElement(By.
-	 * cssSelector(" div[class*='DiscountSection_programcardTop'] div[class='DiscountSection_ProgramBadGE__GFvLE']>img"
-	 * ));
-	 * 
-	 * if(!programCardIcon.isDisplayed()) { processStatus.add(programCardName.
-	 * concat(" Program Icon not present from Program card")); } else {
-	 * cardData.add("ProgramIcon");// getting ibm icon from card }
-	 * 
-	 * WebElement programCardPartnerName = ListOfProgram.get(i).findElement(By.
-	 * cssSelector(" div[class*='DiscountSection_programcardTop'] div[class='DiscountSection_companySection__SJL1K']>h6"
-	 * ));
-	 * 
-	 * if(!programCardPartnerName.isDisplayed()) {
-	 * processStatus.add(programCardName.
-	 * concat(" programCardPartnerName not present from Program card")); } else {
-	 * cardData.add("partnerNamePresent");// partner name from card }
-	 * 
-	 * WebElement programCardTitle = ListOfProgram.get(i).findElement(By.
-	 * cssSelector("  div[class='DiscountSection_ProgramHeading___MbKv']"));
-	 * 
-	 * if(!programCardTitle.isDisplayed()) { processStatus.add(programCardName.
-	 * concat(" programCardTitle not present from Program card")); } else {
-	 * cardData.add(programCardTitle.getText().toLowerCase().replaceAll(
-	 * "[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim()); // getting ibm card title
-	 * }
-	 * 
-	 * WebElement programCardLevel = ListOfProgram.get(i).findElement(By.
-	 * cssSelector(" div[class*='DiscountSection_programcardTop'] div[class='DiscountSection_ProgramList__GgHCI']>ul"
-	 * ));
-	 * 
-	 * if(!programCardLevel.isDisplayed()) { processStatus.add(programCardName.
-	 * concat(" programCardLevel not present from Program card")); } else {
-	 * cardData.add(programCardLevel.getText().toLowerCase().replaceAll(
-	 * "[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim());// levels from card }
-	 * 
-	 * WebElement programCardEnrollmentStatus = ListOfProgram.get(i).findElement(By.
-	 * cssSelector(" div[class='DiscountSection_programcardBott__eLsvF']>div[class='DiscountSection_programEnroll__k_qqU']>span"
-	 * ));
-	 * 
-	 * if(!programCardEnrollmentStatus.isDisplayed()) {
-	 * processStatus.add(programCardName.
-	 * concat(" programCardEnrollmentStatus not present from Program card")); } else
-	 * { String enrollStatus = programCardEnrollmentStatus.getText();
-	 * if(enrollStatus.contains("Open")) { cardData.add("EnrollOpen");//enrollment
-	 * status from card } else if(enrollStatus.contains("Coming Soon")) {
-	 * cardData.add("EnrollClose"); } else if(enrollStatus.contains("Close")) {
-	 * cardData.add("EnrollClose"); } }
-	 * 
-	 * WebElement programCardPrice = ListOfProgram.get(i).findElement(By.
-	 * cssSelector(" div[class='DiscountSection_programcardBott__eLsvF']>div[class='DiscountSection_programPrice__rRn9b']>span"
-	 * ));
-	 * 
-	 * if(!programCardPrice.isDisplayed()) { processStatus.add(programCardName.
-	 * concat(" programCardPrice not present from Program card")); } else { String
-	 * val = programCardPrice.getText(); Pattern pattern = Pattern.compile("\\d+");
-	 * Matcher matcher = pattern.matcher(val); StringBuilder build = new
-	 * StringBuilder(); while(matcher.find()) { build.append(matcher.group()); }
-	 * String result = build.toString().toLowerCase().replaceAll("[^a-zA-Z0-9]",
-	 * " ").replaceAll("\\s", "").trim(); cardData.add(result);// card price }
-	 * WebElement urlLink = ListOfProgram.get(i).findElement(By.cssSelector(" a"));
-	 * String parentwindow = driver.getWindowHandle();
-	 * 
-	 * String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-	 * //Keys.chord(Keys.CONTROL,Keys.RETURN)
-	 * urlLink.sendKeys(selectLinkOpeninNewTab);
-	 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-	 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-	 * for(String winHandle : driver.getWindowHandles()) {
-	 * driver.switchTo().window(winHandle); } WebElement programPageLocator =
-	 * driver.findElement(By.cssSelector(
-	 * "section[class*='CourseDescription_mainSection']"));
-	 * 
-	 * WebElement programNameLocator =
-	 * programPageLocator.findElement(By.cssSelector(" h1")); String programPageName
-	 * = programPageLocator.findElement(By.cssSelector(" h1")).getText();
-	 * 
-	 * WebElement programPageIcon = programPageLocator.findElement(By.
-	 * cssSelector(" div[class='col d-flex align-items-center']>span>img[src*='image']"
-	 * ));
-	 * 
-	 * if(!programPageIcon.isDisplayed()) {
-	 * processStatus.add(programPageName.concat(" program page has no icon")); }
-	 * else { pageData.add("ProgramIcon"); // icon from page }
-	 * 
-	 * WebElement programPagePartnerName =
-	 * programPageLocator.findElement(By.cssSelector(" img[alt='org-logo']"));
-	 * 
-	 * if(!programPagePartnerName.isDisplayed()) {
-	 * processStatus.add(programPageName.concat(" program has no Ibm partner page"))
-	 * ; } else { pageData.add("partnerNamePresent"); }
-	 * 
-	 * if(!programNameLocator.isDisplayed()) {
-	 * processStatus.add(programPageName.concat(" name not available in program"));
-	 * } else {
-	 * pageData.add(programPageName.toLowerCase().replaceAll("[^a-zA-Z0-9]",
-	 * " ").replaceAll("\\s", "").trim());// title name from page }
-	 * 
-	 * WebElement programPageLevels = programPageLocator.findElement(By.
-	 * cssSelector(" div[class*='CourseDescription_levelSection']"));
-	 * 
-	 * if(!programPageLevels.isDisplayed()) {
-	 * processStatus.add(programPageName.concat(" program has no Ibm levels page"));
-	 * } else { pageData.add(programPageLevels.getText().toLowerCase().replaceAll(
-	 * "[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim());// levels from program
-	 * page } WebElement checkEnrollmentStatus = driver.findElement(By.
-	 * cssSelector(" div[class*='CourseDescription_buttonsContent']"));
-	 * if(!checkEnrollmentStatus.isDisplayed()) {
-	 * processStatus.add(programPageName.concat(" program has no Enroll status")); }
-	 * else { if(checkEnrollmentStatus.findElements(By.
-	 * cssSelector(" div[class*='CourseDescription_buttonsContent']>button:nth-child(1)"
-	 * )).size()>0) { pageData.add("EnrollOpen"); } else
-	 * if(checkEnrollmentStatus.findElements(By.
-	 * cssSelector(" div[class*='CourseDescription_buttonsContent']>h6")).size()>0)
-	 * { pageData.add("EnrollClose"); } }
-	 * 
-	 * WebElement programPagePrice = driver.findElement(By.
-	 * xpath("//section[@class='CourseDescription_mainSection__WrO9h']//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[@class='d-flex gap-2']//div[@class='CourseDescription_courseAboutTextSection__8_6ac']//h2[contains(text(),'Fee')]/following-sibling::p"
-	 * ));
-	 * 
-	 * if(!programPagePrice.isDisplayed()) {
-	 * processStatus.add(programPageName.concat(" program has no Price")); } else {
-	 * String price[] = programPagePrice.getText().split("-"); String val =
-	 * price[0]; Pattern pattern = Pattern.compile("\\d+"); Matcher matcher =
-	 * pattern.matcher(val); StringBuilder build = new StringBuilder();
-	 * while(matcher.find()) { build.append(matcher.group()); } String result =
-	 * build.toString().toLowerCase().replaceAll("[^a-zA-Z0-9]",
-	 * " ").replaceAll("\\s", "").trim(); pageData.add(result); }
-	 * if(!cardData.equals(pageData)) {
-	 * System.out.println("issue in data match from IBM Program card"); for(int j =
-	 * 0; j < cardData.size(); j++) { if(j == 0) {
-	 * if(!cardData.get(j).equals(pageData.get(j))) {
-	 * processStatus.add("Program or course Icon mismatch "+programPageName); } }
-	 * if(j == 1) { if(!cardData.get(j).equals(pageData.get(j))) {
-	 * processStatus.add("partnerName mismatch "+programPageName); } } if(j == 2) {
-	 * if(!cardData.get(j).equals(pageData.get(j))) {
-	 * processStatus.add("programName mismatch "+programPageName); } } if(j == 3) {
-	 * if(!cardData.get(j).equals(pageData.get(j))) {
-	 * processStatus.add("level mismatch "+programPageName); } } if(j == 4) {
-	 * if(!cardData.get(j).equals(pageData.get(j))) {
-	 * processStatus.add("enroll status mismatch "+programPageName); } } if(j == 5)
-	 * { if(!cardData.get(j).equals(pageData.get(j))) {
-	 * processStatus.add("price mismatch "+programPageName); } } }
-	 * 
-	 * } cardData.clear(); pageData.clear(); driver.close();
-	 * driver.switchTo().window(parentwindow);
-	 * System.out.println("tech program card verification done for "+programPageName
-	 * ); } } catch(Exception e) { e.printStackTrace(); } return processStatus;
-	 * 
-	 * }
-	 */
+	
 	
 	public ArrayList<String> verifyFluidEducationProgram()
 	{
@@ -613,43 +454,59 @@ public class FluidEducationLocator
 					try
 					{
 						List<WebElement> checkEnrollmentStatus = programPageLocator.findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent'],  div#Cohort>div[class*='CourseDescription_CohortBoxDiv']>button"));
-						if(checkEnrollmentStatus.size() == 1)
+						Thread.sleep(1000);
+						for(int k = 0; k < checkEnrollmentStatus.size();k++)
 						{
-							if(checkEnrollmentStatus.get(0).findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent']>button:nth-child(1)")).size()>0)
+							
+							if(checkEnrollmentStatus.size() == 1)
 							{
-								pageData.add("EnrollOpen");
+								Thread.sleep(1000);
+								if(checkEnrollmentStatus.get(k).findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent']>button:nth-child(1)")).size()>0)
+								{
+									pageData.add("EnrollOpen");
+									Thread.sleep(1000);
+									break;
+								}
+								else if(checkEnrollmentStatus.get(k).findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent']>h6")).size()>0)
+								{
+									pageData.add("EnrollClose");
+									Thread.sleep(1000);
+									break;
+								}
+								else if(checkEnrollmentStatus.get(k).getText().equalsIgnoreCase("Enroll now"))
+								{
+									pageData.add("EnrollOpen");
+									Thread.sleep(1000);
+									break;
+								}
+								else
+								{
+									pageData.add("EnrollClose");
+									Thread.sleep(1000);
+									break;
+								}
 							}
-							else if(checkEnrollmentStatus.get(0).findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent']>h6")).size()>0)
+							else if(checkEnrollmentStatus.size()>1)
 							{
-								pageData.add("EnrollClose");
-							}
-							else if(checkEnrollmentStatus.get(0).getText().equalsIgnoreCase("Enroll now"))
-							{
-								pageData.add("EnrollOpen");
-							}
-							else
-							{
-								pageData.add("EnrollClose");
-							}
-						}
-						else if(checkEnrollmentStatus.size()>1)
-						{
-							System.out.println("Enroll cohort status displayed");
-							for(int k = 0; k < checkEnrollmentStatus.size(); k++)
-							{
+								System.out.println("Enroll cohort status displayed");
+								Thread.sleep(1000);
 								cohortData.add(checkEnrollmentStatus.get(k).getText());
-							}
-							System.out.println("Enroll cohort data displayed : "+cohortData);
-							if(cohortData.contains("Enroll close"))
-							{
-								System.out.println("Enroll cohort status has close");
-								pageData.add("EnrollClose");
-							}
-							else
-							{
-								pageData.add("EnrollOpen");
+								Thread.sleep(1000);
+								System.out.println("Enroll cohort data displayed : "+cohortData);
+								if(cohortData.contains("Enroll close"))
+								{
+									System.out.println("Enroll cohort status has close");
+									pageData.add("EnrollClose");
+									Thread.sleep(1000);
+								}
+								else
+								{
+									pageData.add("EnrollOpen");
+									Thread.sleep(1000);
+								}
 							}
 						}
+						
 					}
 					catch(Exception e)
 					{
@@ -660,15 +517,18 @@ public class FluidEducationLocator
 					
 					try
 					{
-						WebElement programPagePrice = driver.findElement(By.xpath("//section[@class='CourseDescription_mainSection__WrO9h']//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[@class='d-flex gap-2']//div[@class='CourseDescription_courseAboutTextSection__8_6ac']//h2[contains(text(),'Fee')]/following-sibling::p"));
+						WebElement programPagePrice = driver.findElement(By.xpath("(//div[@class='d-flex gap-2'][2]/div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'Fee')]/following-sibling::p) | (//div[@class='d-flex gap-2'][3]/div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'Fee')]/following-sibling::p)"));
 						if(!programPagePrice.isDisplayed())
 						{
+							Thread.sleep(1000);
 							processStatus.add(programPageName.concat(" Issue in price section"));
+							Thread.sleep(1000);
 						}
 						else
 						{
 							if(programPagePrice.getText().contains("-"))
 							{
+								Thread.sleep(1000);
 								String price[] = programPagePrice.getText().split("-");
 								String val = price[0];
 								Pattern pattern = Pattern.compile("\\d+");
@@ -677,12 +537,14 @@ public class FluidEducationLocator
 								while(matcher.find())
 								{
 									build.append(matcher.group());
+									Thread.sleep(1000);
 								}
 								String result = build.toString().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim();
 								pageData.add(result);
 							}
 							else
 							{
+								Thread.sleep(1000);
 								String val = programPagePrice.getText();
 								Pattern pattern = Pattern.compile("\\d+");
 								Matcher matcher = pattern.matcher(val);
@@ -690,9 +552,11 @@ public class FluidEducationLocator
 								while(matcher.find())
 								{
 									build.append(matcher.group());
+									Thread.sleep(1000);
 								}
 								String result = build.toString().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim();
 								pageData.add(result);
+								Thread.sleep(1000);
 							}
 						}
 					}
@@ -740,14 +604,40 @@ public class FluidEducationLocator
 								}
 								if(j == 4)
 								{
-									if(!cardData.get(j).equals(pageData.get(j)))
+									if(pageData.size()>6)
 									{
-										processStatus.add("enroll status mismatch in "+programPageName);
+										for(int m = 0; m < pageData.size(); m++)
+										{
+											if(!cardData.get(j).equals(pageData.get(4)))
+											{
+												if(j == 4 && m == 4)
+												{
+													processStatus.add("enroll status mismatch for:  "+programPageName+ " enroll data from card is : "+cardData.get(4)+ " Enroll data in course page is : "+pageData.get(4));
+												}
+											}
+											if(!cardData.get(j).equals(pageData.get(5)))
+											{
+												if(j == 4 && m == 5)
+												{
+													processStatus.add("enroll status mismatch for "+programPageName+ "enroll data from card is : "+cardData.get(4)+ "Enroll data in course page is : "+pageData.get(5));
+												}
+											}
+										}
 									}
+									else
+									{
+										if(!cardData.get(j).equals(pageData.get(j)))
+										{
+											processStatus.add("enroll status mismatch in "+programPageName);
+										}
+									}
+									
 								}
 								if(j == 5)
 								{
-									if(!cardData.get(j).equals(pageData.get(j)))
+									int lastIndex = pageData.size() - 1;
+									String lastPageData = pageData.get(lastIndex);
+									if(!cardData.get(j).contains(lastPageData))
 									{
 										processStatus.add("price mismatch in "+programPageName);
 									}
@@ -782,15 +672,16 @@ public class FluidEducationLocator
 	public String ExploreCourseProcess() throws InterruptedException
 	{
 		String status = "fail";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		WebElement clickExploreAll = driver.findElement(By.cssSelector("div[class='DiscountSection_ExploreOther__FDssj']>a"));
 		if(clickExploreAll.isDisplayed())
 		{
-			Actions actions = new Actions(driver);
 			WebElement clickExploreAll1 = driver.findElement(By.cssSelector("div[class='DiscountSection_ExploreOther__FDssj']>a"));
-			JavascriptExecutor js = (JavascriptExecutor) driver;
 			 js.executeScript("window.scrollBy(0, 200);");
+			 js.executeScript("arguments[0].scrollIntoView();", clickExploreAll1);
+			 driver.switchTo().newWindow(WindowType.TAB);
+			 driver.get(clickExploreAll.getAttribute("href"));
 			 Thread.sleep(500);
-			actions.keyDown(Keys.CONTROL).click(clickExploreAll1).keyUp(Keys.CONTROL).build().perform();
 			String parentWindow = driver.getWindowHandle();
 			Set<String> allWindows = driver.getWindowHandles();
 			for(String windows : allWindows)
@@ -806,6 +697,24 @@ public class FluidEducationLocator
 			}
 			driver.switchTo().window(parentWindow);
 		}
+		
+		driver.close();
+		
+		Set<String> allScreen = driver.getWindowHandles();
+		 for (String handle : allScreen) 
+		 {
+			 driver.switchTo().window(handle);
+	            if(handle.equals(driver.getWindowHandle()))
+	            {
+	                driver.switchTo().window(handle);
+	                if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+	                {
+	                	 driver.switchTo().window(handle);
+	                	 break;
+	                }
+	            }
+	            driver.switchTo().window(handle);
+	      }
 		return status;
 	}
 }

@@ -10,6 +10,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -47,7 +48,7 @@ public class HeaderFooterInErrorScreenLocator
 	@FindBy(css = "ul[class=' Footer_socialIconsSection__5DztA d-flex']>li:nth-child(4)>a")
 	private WebElement clickInstagram;
 	
-	@FindBy(css = "ul[class=' Footer_socialIconsSection__5DztA d-flex']>li:nth-child(5)>a")
+	@FindBy(css = "ul[class*=' Footer_socialIconsSection']>li:nth-child(5)>a")
 	private WebElement clickYoutube;
 	
 	@FindBy(css = "div[class='Footer_ContActUs__bZ1xZ']>a")
@@ -59,26 +60,25 @@ public class HeaderFooterInErrorScreenLocator
 	@FindBy(css = "div[class='Footer_FootMenu__4fwEE'] ul>li[class='nav-item']>a")
 	private WebElement clickSkillupOnlineForBusiness;
 	
-	@FindBy(css = "div[class='Footer_FootMenu__4fwEE'] ul>li:nth-child(3)>a")
+	@FindBy(css = "div[class*='Footer_FootMenu'] ul>li:nth-child(3)>a")
 	private WebElement clickPlacement;
 	
-	@FindBy(css = "div[class='Footer_FootMenu__4fwEE'] ul>li:nth-child(4)>a")
+	@FindBy(css = "div[class*='Footer_FootMenu'] ul>li:nth-child(4)>a")
 	private WebElement clickFAQ;
 	
-	@FindBy(css = "div[class='Footer_FootMenu__4fwEE'] ul>li:nth-child(5)>a")
+	@FindBy(css = "div[class*='Footer_FootMenu'] ul>li:nth-child(5)>a")
 	private WebElement clickPrivacyPolicy;
 	
-	@FindBy(css = "div[class='Footer_FootMenu__4fwEE'] ul>li:nth-child(6)>a")
+	@FindBy(css = "div[class*='Footer_FootMenu'] ul>li:nth-child(6)>a")
 	private WebElement clickTermsOfService;
 	
-	@FindBy(css = "div[class='Footer_FootMenu__4fwEE'] ul>li:nth-child(7)>a")
-	
+	@FindBy(css = "div[class*='Footer_FootMenu'] ul>li:nth-child(7)>a")
 	private WebElement clickBlogFooter;
+	
 	public HeaderFooterInErrorScreenLocator(WebDriver driver)
 	{
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
-		driver.get("https://stage-in.skillup.online/courses/deep/");
 	}
 	
 	public String checkURL(String link)
@@ -159,14 +159,10 @@ public class HeaderFooterInErrorScreenLocator
 		String status = "";
 		try
 		{
-			String checkURLStatus = clickLoginIcon.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
+				driver.get("https://stage-in.skillup.online/courses/deep/");
+				String parentWindow = driver.getWindowHandle();
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickLoginIcon).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -174,16 +170,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("login"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("Login page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{
@@ -197,14 +192,9 @@ public class HeaderFooterInErrorScreenLocator
 		String status = "";
 		try
 		{
-			String checkURLStatus = clickFindOutMoreIcon.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
+			String parentWindow = driver.getWindowHandle();
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickFindOutMoreIcon).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -212,16 +202,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("futureskills"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("Find out more page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{
@@ -235,31 +224,21 @@ public class HeaderFooterInErrorScreenLocator
 		String status = "";
 		try
 		{
-			String checkURLStatus = clickSkillupIcon.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
+			String parentWindow = driver.getWindowHandle();
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickSkillupIcon).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
 					driver.switchTo().window(windows);
-					if(!driver.getCurrentUrl().contains("deep/") && !driver.getCurrentUrl().contains("data:"))
+					if(windows.equals(parentWindow))
 					{
 						driver.switchTo().window(windows);
-						driver.close();
+						System.out.println("skillup logo page");
+						status = "pass";
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{
@@ -273,14 +252,9 @@ public class HeaderFooterInErrorScreenLocator
 		String status = "";
 		try
 		{
-			String checkURLStatus = clickAboutSkillupIcon.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
+			String parentWindow = driver.getWindowHandle();
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickAboutSkillupIcon).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -288,16 +262,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("about"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("About Skill up Online process page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{
@@ -311,14 +284,9 @@ public class HeaderFooterInErrorScreenLocator
 		String status = "";
 		try
 		{
-			String checkURLStatus = clickContactUSIcon.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
+			String parentWindow = driver.getWindowHandle();
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickContactUSIcon).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -326,16 +294,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("contact"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("contact Us  page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{
@@ -349,14 +316,9 @@ public class HeaderFooterInErrorScreenLocator
 		String status = "";
 		try
 		{
-			String checkURLStatus = clickBlogIcon.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
+			String parentWindow = driver.getWindowHandle();
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickBlogIcon).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -364,16 +326,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("blog"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("Blog  page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{
@@ -392,9 +353,9 @@ public class HeaderFooterInErrorScreenLocator
 		Thread.sleep(500);
 		try
 		{
+			String parentWindow = driver.getWindowHandle();
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickTwitter).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -402,12 +363,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("twitter"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("twitter page");
 						status = "pass";
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{
@@ -421,9 +385,9 @@ public class HeaderFooterInErrorScreenLocator
 		String status = "";
 		try
 		{
+			String parentWindow = driver.getWindowHandle();
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickFacebook).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -431,11 +395,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("facebook"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("facebook page");
 						status = "pass";
+						Thread.sleep(200);
 						driver.close();
-						
+						Thread.sleep(200);
+						driver.switchTo().window(parentWindow);
 						break;
 					}
+					driver.switchTo().window(windows);
 				}
 				driver.switchTo().window(parentWindow);
 		}
@@ -451,9 +419,9 @@ public class HeaderFooterInErrorScreenLocator
 		String status = "";
 		try
 		{
+			String parentWindow = driver.getWindowHandle();
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickLinkedIn).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -461,12 +429,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("linked"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("LinkedIn page");
 						status = "pass";
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{
@@ -478,11 +449,15 @@ public class HeaderFooterInErrorScreenLocator
 	public String instagramProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickInstagram).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
+			String parentWindow = driver.getWindowHandle();
+			
+				js.executeScript("arguments[0].scrollIntoView();", clickInstagram);
+				String instaLink = clickInstagram.getAttribute("href");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(instaLink);
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -490,12 +465,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("instagram"))
 					{
 						driver.switchTo().window(windows);
-						status = "pass";
+						System.out.println("intagram page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{
@@ -507,11 +485,14 @@ public class HeaderFooterInErrorScreenLocator
 	public String youtubeProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickYoutube).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
+			String parentWindow = driver.getWindowHandle();
+				js.executeScript("arguments[0].scrollIntoView();", clickYoutube);
+				String YoutubeLink = clickYoutube.getAttribute("href");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(YoutubeLink);
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -519,12 +500,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("youtube"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("youtube  page");
 						status = "pass";
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{
@@ -536,16 +520,14 @@ public class HeaderFooterInErrorScreenLocator
 	public String contactUSProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String checkURLStatus = clickContactUSFooter.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickContactUSFooter).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
+			String parentWindow = driver.getWindowHandle();
+			js.executeScript("arguments[0].scrollIntoView();", clickContactUSFooter);
+			String ContactUSFooterLink = clickContactUSFooter.getAttribute("href");
+			driver.switchTo().newWindow(WindowType.TAB);
+			driver.get(ContactUSFooterLink);
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -553,16 +535,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("contact"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("contact US Page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{
@@ -574,16 +555,13 @@ public class HeaderFooterInErrorScreenLocator
 	public String AboutSkillupOnlineFooterProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String checkURLStatus = clickAboutSkillupOnlineFooter.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
+			String parentWindow = driver.getWindowHandle();
+				js.executeScript("arguments[0].scrollIntoView();", clickAboutSkillupOnlineFooter);
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickAboutSkillupOnlineFooter).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -591,16 +569,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("about"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("About Skillup Online footer page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{
@@ -612,16 +589,14 @@ public class HeaderFooterInErrorScreenLocator
 	public String SkillupOnlineForBusinessProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String checkURLStatus = clickSkillupOnlineForBusiness.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickSkillupOnlineForBusiness).keyUp(Keys.CONTROL).build().perform();
 				String parentWindow = driver.getWindowHandle();
+				js.executeScript("arguments[0].scrollIntoView();", clickSkillupOnlineForBusiness);
+				String SkillupOnlineForBusinessLink = clickSkillupOnlineForBusiness.getAttribute("href");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(SkillupOnlineForBusinessLink);
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -629,16 +604,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("enterprise"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("skill up online for business process page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{
@@ -650,16 +624,14 @@ public class HeaderFooterInErrorScreenLocator
 	public String PlacementProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String checkURLStatus = clickPlacement.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickPlacement).keyUp(Keys.CONTROL).build().perform();
 				String parentWindow = driver.getWindowHandle();
+				js.executeScript("arguments[0].scrollIntoView();", clickPlacement);
+				String PlacementLink = clickPlacement.getAttribute("href");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(PlacementLink);
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -667,16 +639,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("placement"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("placement page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{
@@ -688,16 +659,13 @@ public class HeaderFooterInErrorScreenLocator
 	public String FAQProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String checkURLStatus = clickFAQ.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
+			String parentWindow = driver.getWindowHandle();
+				js.executeScript("arguments[0].scrollIntoView();", clickFAQ);
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickFAQ).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -705,16 +673,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("faq"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("FAQ page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{
@@ -726,16 +693,14 @@ public class HeaderFooterInErrorScreenLocator
 	public String PrivacyPolicyProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String checkURLStatus = clickPrivacyPolicy.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickPrivacyPolicy).keyUp(Keys.CONTROL).build().perform();
 				String parentWindow = driver.getWindowHandle();
+				js.executeScript("arguments[0].scrollIntoView();", clickPrivacyPolicy);
+				String PrivacyPolicyLink = clickPrivacyPolicy.getAttribute("href");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(PrivacyPolicyLink);
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -743,16 +708,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("privacy"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("Privacy policy page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{
@@ -764,16 +728,14 @@ public class HeaderFooterInErrorScreenLocator
 	public String TermsOfServiceProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String checkURLStatus = clickTermsOfService.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickTermsOfService).keyUp(Keys.CONTROL).build().perform();
 				String parentWindow = driver.getWindowHandle();
+				js.executeScript("arguments[0].scrollIntoView();", clickTermsOfService);
+				String TermsOfServiceLink = clickTermsOfService.getAttribute("href");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(TermsOfServiceLink);
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -781,16 +743,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("tos"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("Terms of service page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{
@@ -802,16 +763,13 @@ public class HeaderFooterInErrorScreenLocator
 	public String BlogFooterProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String checkURLStatus = clickBlogFooter.getAttribute("href");
-			String getURLStatus = this.checkURL(checkURLStatus);
-			if(getURLStatus.equalsIgnoreCase("pass"))
-			{
-				status = "pass";
+			String parentWindow = driver.getWindowHandle();
+				js.executeScript("arguments[0].scrollIntoView();", clickBlogFooter);
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickBlogFooter).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String windows : allWindows)
 				{
@@ -819,16 +777,15 @@ public class HeaderFooterInErrorScreenLocator
 					if(driver.getCurrentUrl().contains("blog"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("blog footer page");
+						Thread.sleep(200);
 						driver.close();
+						Thread.sleep(200);
+						status = "pass";
+						driver.switchTo().window(parentWindow);
 						break;
 					}
 				}
-				driver.switchTo().window(parentWindow);
-			}
-			else
-			{
-				status = "login Icon gets"+getURLStatus;
-			}
 		}
 		catch(Exception e)
 		{

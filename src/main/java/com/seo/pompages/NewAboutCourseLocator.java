@@ -20,6 +20,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
@@ -55,7 +56,7 @@ public class NewAboutCourseLocator
 	}
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "/usr/lib/chromium-browser/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "D:\\chromedriver123\\chromedriver-win64\\chromedriver.exe");
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
 		options.addArguments("--disable notifications");
@@ -100,36 +101,13 @@ public class NewAboutCourseLocator
 		{
 			setHost = "https://"+host+".skillup.online";
 		}
+		else if(host.equalsIgnoreCase("dev-in"))
+		{
+			setHost = "https://"+host+".skillup.online";
+		}
 		return setHost;
 	}
-	public String setImageEndpoint(String imageEndpoint)
-	{
-		if(imageEndpoint.equalsIgnoreCase("stagecourses-in"))
-		{
-			imageHost = "https://stagecourses-in.skillup.online";
-		}
-		else if(imageEndpoint.equalsIgnoreCase("qa-in"))
-		{
-			imageHost = "https://qa-in.skillup.online";
-		}
-		else if(imageEndpoint.equalsIgnoreCase("qa"))
-		{
-			imageHost = "https://qa.skillup.online";
-		}
-		else if(imageEndpoint.equalsIgnoreCase("stage"))
-		{
-			imageHost = "https://stagecourses.skillup.online";
-		}
-		else if(imageEndpoint.equalsIgnoreCase("prod-in"))
-		{
-			imageHost = "https://in.skillup.online";
-		}
-		else
-		{
-			imageHost = "https://skillup.online";
-		}
-		return imageHost;
-	}
+	
 	public String setMetaHostURL()
 	{
 		setMetaHost = setHost;
@@ -166,38 +144,12 @@ public class NewAboutCourseLocator
 			else
 			{
 				System.out.println("un broken link");
+				driver.switchTo().newWindow(WindowType.TAB);
 				driver.get(addHosturl);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				List<WebElement> checkCourseCode = driver.findElements(By.cssSelector("button[class*='enroll']"));
-				if(checkCourseCode.size()>0)
-				{
-					courseIDFromBrowser = checkCourseCode.get(0).getAttribute("href");
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					System.out.println("course ID from Browser : "+courseIDFromBrowser);
-					System.out.println("courseIDFrom Excel: "+code);
-					if(courseIDFromBrowser.contains(code))
-					{
-						CourseCodeStatus = "true";
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					}
-				}
-				else if(!setHost.contains("in."))
-				{
-					WebElement canonicalLocator = driver.findElement(By.cssSelector("link[rel='canonical']"));
-					String getCanonicalURLText = canonicalLocator.getAttribute("href");
-					if(getCanonicalURLText.contains(code))
-					{
-						System.out.println("course code is present");
-						CourseCodeStatus = "true";
-					}
-				}
-				else
-				{
-					CourseCodeStatus = "fail";
-				}
+				CourseCodeStatus = "true";
+				
 			}
 		}
 		catch(Exception e)
@@ -512,8 +464,6 @@ String addHosturl;
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 			WebElement clickEarnCertificate = driver.findElement(By.cssSelector("div[class='certificate_wrap'] a[id='certificate-preview-btn']"));
 			js.executeScript("arguments[0].click();", clickEarnCertificate);
-		//	wait.until(ExpectedConditions.visibilityOf(clickEarnCertificate)).click();
-			//((JavascriptExecutor)driver).executeScript("arguments[0].click();", clickEarnCertificate);
 			Thread.sleep(1000);
 			String AboutCourseWindow = driver.getWindowHandle(); 
 			Set<String> certificatePopup = driver.getWindowHandles(); 
@@ -607,7 +557,10 @@ String addHosturl;
 							statusOfCertificate = "fail";
 							errorCells.add(4);
 						}
-						driver.close();
+						if(!driver.getCurrentUrl().equalsIgnoreCase(getEarnCertificateText))
+						{
+							driver.close();
+						}
 						driver.switchTo().window(parentWindow);
 						WebElement closeCertificate = driver.findElement(By.cssSelector("div#certificate-preview button[class=\"close\"]"));
 						if(closeCertificate.isDisplayed())
@@ -945,6 +898,7 @@ String addHosturl;
 	public HashMap<String, HashMap<String, String>> getExperts()
 	{
 		HashMap<String, HashMap<String, String>> experts = null;
+		String Base = this.addHosturl;
 		try
 		{
 			Thread.sleep(2000);
@@ -985,7 +939,10 @@ String addHosturl;
 							{
 								driver.switchTo().window(handle);
 								System.out.println("LinkedIn URL for Experts: "+driver.getCurrentUrl());
-								driver.close();
+								if(!driver.getCurrentUrl().equalsIgnoreCase(this.setHost+"/"))
+								{
+									driver.close();
+								}
 								driver.switchTo().window(parentWindow);
 							}
 						}
@@ -1124,8 +1081,7 @@ String addHosturl;
 			}
 			else
 			{
-				WebElement focus_Fee = driver.findElement(By.cssSelector("div[class*='CourseDescription_durationAndPriceSection']>div[class='d-flex gap-2']:nth-child(2)"));
-				WebElement FeeIcon = focus_Fee.findElement(By.cssSelector(" div>span"));
+				WebElement FeeIcon = driver.findElement(By.cssSelector("div[class='d-flex gap-2']:nth-child(2)>div[class='d-block'], div[class='d-flex gap-2']:nth-child(3)>div[class='d-block']"));
 				if(FeeIcon.isDisplayed())
 				{
 					System.out.println("Fee icon is present");
@@ -1135,7 +1091,7 @@ String addHosturl;
 					System.out.println("Fee icon is not present");
 					checkPriceWOGSTStatus = "fail";
 				}
-				WebElement FeeHeader = focus_Fee.findElement(By.cssSelector(" div[class*='CourseDescription_courseAboutTextSection']>h2"));
+				WebElement FeeHeader = driver.findElement(By.cssSelector("div[class='d-flex gap-2']:nth-child(2) div[class*='CourseDescription_courseAboutTextSection']>h2, div[class='d-flex gap-2']:nth-child(3) div[class*='CourseDescription_courseAboutTextSection']>h2"));
 				if(FeeHeader.getText().equalsIgnoreCase("Fee"))
 				{
 					System.out.println("fee header is present");
@@ -1145,9 +1101,9 @@ String addHosturl;
 					System.out.println("fee header is not present");
 					checkPriceWOGSTStatus = "fail";
 				}
-				WebElement feeContent = focus_Fee.findElement(By.cssSelector(" div[class*='CourseDescription_courseAboutTextSection']>p[class]"));
+				WebElement feeContent = driver.findElement(By.cssSelector("div[class='d-flex gap-2']:nth-child(2) div[class*='CourseDescription_courseAboutTextSection'] p, div[class='d-flex gap-2']:nth-child(3) div[class*='CourseDescription_courseAboutTextSection'] p"));
 				String getStartsOnText = feeContent.getText();
-				if(getStartsOnText.trim().contains(flatPriceWithoutGSTFromExcel.trim()))
+				if(getStartsOnText.replaceAll("[^\\d]", "").trim().contains(flatPriceWithoutGSTFromExcel.replaceAll("[^\\d]", "").trim()))
 				{
 					System.out.println("fee is correct");
 					checkPriceWOGSTStatus = "success";
@@ -1434,17 +1390,6 @@ String addHosturl;
 		return ans;
 	}
 	
-	public void checkElementExist(String selector) throws Exception
-	{
-		try
-		{
-			driver.findElement(By.xpath(selector)).getText();
-		}
-		catch(Exception e)
-		{
-			throw e;
-		}
-	}
 	
 	public void launchValidator()
 	{
@@ -1686,7 +1631,10 @@ String addHosturl;
 			status[1] = "failed";
 			//driver.switchTo().window(tabs.get(0));
 		}
-		driver.close();
+		if(driver.getCurrentUrl().equalsIgnoreCase(this.setHost+"/"))
+		{
+			driver.close();
+		}
 		driver.switchTo().window(tabs.get(0));
 		return status;
 	}

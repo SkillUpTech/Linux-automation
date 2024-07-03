@@ -1,8 +1,10 @@
 package com.seo.regression.testing;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
 public class ContactUsValidation
 {
@@ -13,16 +15,19 @@ public class ContactUsValidation
 	String sheetStatus = "Pass";
 	public ContactUsValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
 	{
-		OpenWebsite.openSite(driver);
 		this.sheetData = sheetData;
 		this.driver = driver;
 		this.contactUSLocator = new ContactUSLocator(driver);
-		
-		//this.start();
+		System.out.println("contact Us Form Process started");
 	}
 	
 	public String start() throws InterruptedException
 	{
+		try
+		{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -41,8 +46,8 @@ public class ContactUsValidation
 				case"WithoutData":
 					WithoutData(row);
 					break;
-				case "WithoutContactAbout":
-					WithoutContactAbout(row);
+				case "WithoutEnquiry":
+					WithoutEnquiry(row);
 					break;
 				case"WithoutFullname":
 					WithoutFullname(row);
@@ -60,6 +65,38 @@ public class ContactUsValidation
 					ValidData(row);
 					break;
 			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/") && !BaseWindow.equals(win))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/")&& !BaseWindow.equals(win))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}
@@ -232,7 +269,7 @@ public class ContactUsValidation
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ContactUSForm").get(3).set(0, "WithoutData - failed");
 			}
 		}
-	public void WithoutContactAbout(ArrayList<String> dataFromExcel) throws InterruptedException
+	public void WithoutEnquiry(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		if(!dataFromExcel.contains("NA"))

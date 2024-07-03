@@ -1,8 +1,10 @@
 package com.seo.regression.testing;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
 public class PLUValidation
 {
@@ -16,13 +18,17 @@ public class PLUValidation
 	{
 		this.sheetData = sheetData;
 		this.driver = driver;
-		OpenWebsite.openSite(driver);
 		this.PLUPageLocators = new PLULocators(driver);
 		System.out.println("PLU process started");
 	}
 	
 	public String start() throws InterruptedException
 	{
+		try
+		{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -51,6 +57,38 @@ public class PLUValidation
 				BackGroundColor_certificateLeftContent(row);
 				break;
 			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}
@@ -89,12 +127,15 @@ public class PLUValidation
 		if(!programs.contains("NA"))
 		{
 			ArrayList<String> failTechPgm = this.PLUPageLocators.verifyPrograms(programs);
-			if(failTechPgm.size()>0)
+			if(failTechPgm.contains("fail"))
 			{
-				for(int i = 0; i < failTechPgm.size(); i++)
+				if(failTechPgm.size()>0)
 				{
-					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Pacific").get(3).add(i+1, (failTechPgm.get(i) + " - failed"));
+					for(int i = 0; i < failTechPgm.size(); i++)
+					{
+						sheetStatus = "Fail";
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Pacific").get(3).add(i+1, (failTechPgm.get(i) + " - failed"));
+					}
 				}
 			}
 		}

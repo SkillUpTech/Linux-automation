@@ -6,6 +6,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -94,205 +96,35 @@ public class PLULocators
 	}
 	public ArrayList<String> verifyPrograms(ArrayList<String>  programs)
 	{
-		ArrayList<String> failedUrls = new ArrayList<String>();
-		
-		ArrayList<String> overallFail = new ArrayList<String>();
-		String enrollProcessStatus = "";
+
+		ArrayList<String> processStatus = new ArrayList<String>();
+		ArrayList<String> cardData = new ArrayList<String>();
+		ArrayList<String> pageData = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			js.executeScript("window.scrollBy(0, 500)", "");
-			List<WebElement> techProgram = driver.findElements(By.cssSelector("section[class*='container-fluid TechPrograms_mainContainer'] div[class*='TechPrograms_cardWrapper'] a"));
-			for(int i = 0; i < techProgram.size(); i++)
+			js.executeScript("window.scrollBy(0, 600)", "");
+			List<WebElement> ListOfProgram = driver.findElements(By.cssSelector("section[class*='container-fluid TechPrograms_mainContainer'] div[class*='row g-3'] div[class*='TechPrograms_cardWrapper']>a"));
+			for(int i = 0; i < ListOfProgram.size(); i++)
 			{
-				String url = techProgram.get(i).getAttribute("href");
-				System.out.println("tech program starts execution : "+url);
-				String urlLinkStatus = this.checkURLStatus(url);
-				if(urlLinkStatus.equalsIgnoreCase("fail"))
-				{
-					failedUrls.add(url);
-				}
-			}
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			//Thread.sleep(3000);
-			System.out.println("tech pgms card validation started");
-			ArrayList<String> statusOfPgmCard = new ArrayList<String>();
+				
+				js.executeScript("arguments[0].scrollIntoView();", ListOfProgram.get(i));
+				
+				String url = ListOfProgram.get(i).getAttribute("href");
+				
+				processStatus.add(this.checkURLStatus(url));
+				
+				
 			
-			List<WebElement> pgms = driver.findElements(By.cssSelector("section[class='container-fluid TechPrograms_mainContainer__7XUwz'] div[class='row g-3']>div"));
-			for(int i = 0; i < pgms.size(); i++)
-			{
-				ArrayList<String> failCase = new ArrayList<String>();
-				boolean testingStatus=true;
-				WebElement eachPgmsFromCard = pgms.get(i);
-				String getPgmName = eachPgmsFromCard.getAttribute("href");
-				WebElement pgmIconFromCard = pgms.get(i).findElement(By.cssSelector(" div[class='row TechPrograms_cardContent__f0QGv']>div[class='col-12 gy-2'] img[src*='images']"));
-				if(pgmIconFromCard.isDisplayed())
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else 
-				{
-					failCase.add("issue in program icon in "+getPgmName+"");
-					testingStatus = false;
-				}
-				//WebElement pluFromCard = pgms.get(i).findElement(By.cssSelector(" div[class='row TechPrograms_cardContent__f0QGv']>div[class='col-12 gy-2'] div[class*='TechPrograms_plu'] p"));
-				WebElement pluPgmNameFromCard = pgms.get(i).findElement(By.cssSelector(" div[class='col-12 gy-2']:nth-child(2) h3"));
-				if(pluPgmNameFromCard.isDisplayed())
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("issue in pgm name in "+getPgmName+"");
-					testingStatus = false;
-				}
-				WebElement plulevelFromCard = pgms.get(i).findElement(By.cssSelector(" div[class='col-12 gy-2']:nth-child(2) p[class='TechPrograms_mentoredBe__1oodQ']"));
-				String getTextFromPLULevel = plulevelFromCard.getText();
-				WebElement pluAmountFromCard = pgms.get(i).findElement(By.cssSelector(" div[class='col-12 gy-4'] div[class='row TechPrograms_cardFooterContent__gtt1W']>div:nth-child(2)>p"));
-				WebElement pluEnrollmentStatusFromCard = pgms.get(i).findElement(By.cssSelector(" div[class='col-12 gy-4'] div[class='row TechPrograms_cardFooterContent__gtt1W']>div:nth-child(2)>div>p"));
-				String enrollStatusFromCard = pluEnrollmentStatusFromCard.getText();
-				if(enrollStatusFromCard.equals("ENROLLMENT OPEN"))
-				{
-					enrollProcessStatus = "open";
-				}
-				else if(enrollStatusFromCard.equals("ENROLLMENT CLOSE"))
-				{
-					enrollProcessStatus = "close";
-					
-				}
-				WebElement launchPgm = pgms.get(i).findElement(By.cssSelector(" a"));
-				
-				String parentwindow = driver.getWindowHandle();
-				
-				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN); //Keys.chord(Keys.CONTROL,Keys.RETURN)
-				launchPgm.sendKeys(selectLinkOpeninNewTab); 
-				
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				
-				for(String winHandle : driver.getWindowHandles())
-				{
-				    driver.switchTo().window(winHandle);
-				}
-				JavascriptExecutor js2 = (JavascriptExecutor) driver;
-				String enrollProcessFromPgm = "";
-				String programName = driver.findElement(By.xpath("//h1")).getText();
-				WebElement IconFromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center']>div[class='col d-flex align-items-center']:nth-child(1)>span"));
-				if(IconFromProgram.isDisplayed())
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("issue in program icon in "+programName+"");
-					testingStatus = false;
-				}
-				WebElement titleFromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center']>div[class='col-12 CourseDescription_courseText__7vJLl'] h1"));
-				if(titleFromProgram.isDisplayed())
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("issue in title in "+programName+"");
-					testingStatus = false;
-				}
-				js2.executeScript("window.scrollBy(0,300)", "");
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				//Thread.sleep(1000);
-				WebElement level1FromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='CourseDescription_levelSection__BiiUm']>[class*='uppercase CourseDescription_pluTheme']:nth-child(1)"));
-				if(getTextFromPLULevel.contains(level1FromProgram.getText()))
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("level 1 not same in "+programName+"");
-					testingStatus = false;
-				}
-				WebElement level2FromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='CourseDescription_levelSection__BiiUm']>[class*='uppercase CourseDescription_pluTheme']:nth-child(2)"));
-				String level2 = level2FromProgram.getText().toLowerCase();
-						
-				if(getTextFromPLULevel.toLowerCase().contains(level2))
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("level 2 not same in "+programName+"");
-					testingStatus = false;
-				}
-				WebElement level3FromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='CourseDescription_levelSection__BiiUm']>[class*='uppercase CourseDescription_pluTheme']:nth-child(3)"));
-				if(getTextFromPLULevel.toLowerCase().contains(level3FromProgram.getText().toLowerCase()))
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("level 3 not same in "+programName+"");
-					testingStatus = false;
-				}
-				WebElement amountFromPgm = driver.findElement(By.xpath("//section[@class='CourseDescription_mainSection__WrO9h']//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[@class='d-flex gap-2']//div[@class='CourseDescription_courseAboutTextSection__8_6ac']//h2[contains(text(),'Fee')]/following-sibling::p"));
-
-				if(!amountFromPgm.getText().equals("null"))
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("amount is null in "+programName+"");
-					testingStatus = false;
-				}
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-				int size = driver.findElements(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='col-12'] button[class*='CourseDescription_enrollNowBtnPLU']")).size();
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-				if(size>0)
-				{
-					WebElement enrollStatus = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='col-12'] button[class*='CourseDescription_enrollNowBtnPLU']"));
-					if(enrollStatus.getText().equals("Enroll Now"))
-					{
-						enrollProcessFromPgm = "open";
-					}
-				}
-				else
-				{
-					WebElement enrollStatus = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='col-12'] h6"));
-					if(enrollStatus.getText().equals("Enrollment is Closed"))
-					{
-						enrollProcessFromPgm = "close";
-					}
-				}
-				
-				if(enrollProcessStatus.equalsIgnoreCase(enrollProcessFromPgm))
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("issue in enrollstatus, its not match in "+programName+"");
-					testingStatus = false;
-				}
-				driver.close();
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				//Thread.sleep(1000);
-				driver.switchTo().window(parentwindow);
-				System.out.println("tech program card verification done for "+getPgmName);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				//Thread.sleep(1000);
-				if(testingStatus == false)
-				{
-					overallFail.addAll(failCase);
-				}
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			}
-			overallFail.addAll(failedUrls);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		return overallFail;
+		return processStatus;
+		
+	
 	}
 	public ArrayList<String> verifyPLUCourse(ArrayList<String> course)
 	{

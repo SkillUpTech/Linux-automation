@@ -1,8 +1,10 @@
 package com.seo.regression.testing;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
 public class HeaderFooterInStagecoursesValidation
 {
@@ -14,14 +16,17 @@ public class HeaderFooterInStagecoursesValidation
 	{
 		this.sheetData = sheetData;
 		this.driver = driver;
-		OpenWebsite.openSite(driver);
 		this.headerFooterInStagecoursesLocator = new HeaderFooterInStagecoursesLocator(driver);
 		System.out.println("HeaderFooterInStagecoursesValidation process started");
-		//this.start();
 	}
 	
 	public String start() throws InterruptedException
 	{
+		try
+		{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -31,9 +36,6 @@ public class HeaderFooterInStagecoursesValidation
 			  case "LoginIcon": 
 				  LoginIcon(row); 
 				  break; 
-				/*
-				 * case "FindOutMore": FindOutMore(row.get(1)); break;
-				 */
 			  case "skillupIcon": 
 				  skillupIcon(); 
 				  break; 
@@ -70,9 +72,6 @@ public class HeaderFooterInStagecoursesValidation
 			  case "SkillupOnlineForBusiness": 
 				  SkillupOnlineForBusiness(row.get(1)); 
 				  break; 
-				/*
-				 * case "Placement": Placement(row.get(1)); break;
-				 */
 			  case "FAQ": 
 				  FAQ(row.get(1)); 
 				  break; 
@@ -88,6 +87,40 @@ public class HeaderFooterInStagecoursesValidation
 							 
 				 
 			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				driver.switchTo().window(BaseWindow);
+			}
+			driver.switchTo().window(BaseWindow);
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}
@@ -239,15 +272,6 @@ public class HeaderFooterInStagecoursesValidation
 		}
 	}
 
-	/*
-	 * public void Placement(String data) { String status =
-	 * headerFooterInStagecoursesLocator.PlacementProcess(data);
-	 * if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
-	 * RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	 * "HeaderFooterStagecourses").get(16).add(2, (status + " - failed"));
-	 * 
-	 * } }
-	 */
 	public void FAQ(String data)
 	{
 		String status = headerFooterInStagecoursesLocator.FAQProcess(data);

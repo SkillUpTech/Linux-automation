@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.pompages.StagecategoryLocator;
+import com.seo.regression.testing.RegressionTesting;
 import com.regression.utility.Utils;
 
 public class StagecategoryValidator
@@ -36,7 +37,7 @@ public class StagecategoryValidator
 		{
 			ArrayList<String> currentRow = ROWS.get(CURRENT_ROW);
 			String process = currentRow.get(0);
-			executeProcess(process, currentRow);
+			sheetStatus = executeProcess(process, currentRow);
 		}
 		stagecategoryLocator.getDriver().quit();
 		endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
@@ -44,7 +45,7 @@ public class StagecategoryValidator
 		collectSheetResult();
 		return sheetStatus;
 	}
-	private void executeProcess(String process, ArrayList<String> row)
+	private String executeProcess(String process, ArrayList<String> row)
 	{
 
 		try
@@ -89,19 +90,10 @@ public class StagecategoryValidator
 				System.out.println("checkRedirectStatus Method");
 				checkRedirectStatus(row.get(1), row.get(2), row.get(3));
 				break;
-			case "programCard_TC1":
-				showMoreIcon_Program();
+			case "programCard":
+				verifyProgram(row);
 				break;
-			case "programCard_TC2":
-				compareCardDetailsInProgramPage(row);
-				break;
-			case "courseCard_TC1":
-				showMoreIcon_Course();
-				break;
-			case "courseCard_TC2":
-				compareCardDetailsInCoursePage(row);
-				break;
-			case "courses":
+			case "courseCard":
 				verifyCourses(row);
 				break;
 			default:
@@ -111,7 +103,9 @@ public class StagecategoryValidator
 		catch(Exception e)
 		{
 			markProcessFailed();
+			e.printStackTrace();
 		}
+		return sheetStatus;
 	}
 	String getMetaHost;
 	private void environment(String environmentFromExcel)
@@ -134,6 +128,7 @@ public class StagecategoryValidator
 			String getURL = stagecategoryLocator.getCourseURL(currentURL);
 			if(!(getURL.replaceAll("\\s", "").replaceAll("\u00A0", "").trim()).equals(redirectedURL.replaceAll("\\s", "").replaceAll("\u00A0", "").trim()))
 			{
+				sheetStatus = "Fail";
 				markProcessFailed();
 			}
 		}
@@ -151,6 +146,7 @@ public class StagecategoryValidator
 			String checkCanonicalURL = stagecategoryLocator.getCanonicalURL(canonicalURL);
 			if(!getCanonicalStatus.equalsIgnoreCase(checkCanonicalURL))
 			{
+				sheetStatus = "Fail";
 				markProcessFailed();
 			}
 		}
@@ -167,12 +163,12 @@ public class StagecategoryValidator
 			if (tag.equalsIgnoreCase("checkMetaTagContentByName"))
 				continue;
 			HashMap<String, String> attributes = extractAttributesFromString(tag);
-			// meta[name='title']
 			try
 			{
 				String content = stagecategoryLocator.getAttributeOfTag("meta[name='" + attributes.get("name") + "']", "content").trim();
 				if(!(content.replaceAll("\\s", "").replaceAll("\\P{InBasic_Latin}", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "").trim()).equals(attributes.get("content").replaceAll("\\P{InBasic_Latin}", "").replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "").trim()))
 				{
+					sheetStatus = "Fail";
 					markColumnFailed(i);
 				}
 			}
@@ -185,19 +181,6 @@ public class StagecategoryValidator
 	}
 	
 	
-	private void verifyCourses(ArrayList<String> dataFromExcel)
-	{
-		ArrayList<String> courseStatus = stagecategoryLocator.checkCourses(dataFromExcel);
-		{
-			for(int i = 0; i < courseStatus.size(); i++)
-			{
-				if(courseStatus.contains("fail"))
-				{
-					markProcessFailed();
-				}
-			}
-		}
-	}
 	private void checkMetaTagContentByProperty(ArrayList<String> tags)
 	{
 		for (int i = 0; i < tags.size(); i++)
@@ -208,10 +191,10 @@ public class StagecategoryValidator
 				if(tag.equalsIgnoreCase("checkMetaTagContentByProperty"))
 					continue;
 				HashMap<String, String> attributes = extractAttributesFromString(tag);
-				//property="og:url", content="https://qa.skillup.online/courses/sc-300-microsoft-identity-and-access-administrator/"
 				String content = stagecategoryLocator.getAttributeOfTag("meta[property='" + attributes.get("property") + "']", "content");
 				if(!content.replaceAll("\\s", "").replaceAll("\u00A0", "").trim().equals(attributes.get("content").replaceAll("\\s", "").replaceAll("\u00A0", "").trim()))
 				{
+					sheetStatus = "Fail";
 					markColumnFailed(i);
 				}
 			}
@@ -230,9 +213,13 @@ public class StagecategoryValidator
 			if (tag.equalsIgnoreCase("checkTagWithInnerText"))
 				continue;
 			String[] tagAndText = tag.split("-split-");
-			try {
+			try 
+			{
 				stagecategoryLocator.getTagWithInnerText(tagAndText[0], tagAndText[1]);
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
+				sheetStatus = "Fail";
 				markColumnFailed(i);
 			}
 		}
@@ -252,6 +239,7 @@ public class StagecategoryValidator
 				
 				if(!altText.replaceAll("\\s", "").replaceAll("[^\\p{ASCII}]", "").replaceAll("\u00A0", "").trim().equals(attributes.get("alt").replaceAll("\\s", "").replaceAll("\u00A0", "").trim()))
 				{
+					sheetStatus = "Fail";
 					markColumnFailed(i);
 				}
 			}
@@ -354,87 +342,53 @@ public class StagecategoryValidator
 		String[] status = stagecategoryLocator.checkRedirectStatus(url, statusCode1, statusCode2);
 		if(status[0].equalsIgnoreCase("failed"))
 		{
+			sheetStatus = "Fail";
 			markColumnFailed(2);
 		}
 		if(status[1].equalsIgnoreCase("failed"))
 		{
+			sheetStatus = "Fail";
 			markColumnFailed(3);
 		}
 	}
 	
-	private void showMoreIcon_Program()
+	private void verifyProgram(ArrayList<String> data)
 	{
-		String getProgramIconStatus = stagecategoryLocator.verifyProgramShowMoreIconStatus();
-		if(getProgramIconStatus.equalsIgnoreCase("fail"))
+		if(!data.contains("NA"))
 		{
-			markProcessFailed();
+			ArrayList<String> status = stagecategoryLocator.verifyProgram();
+			if(status.size()>0)
+			{
+				for(int i = 0; i < status.size(); i++)
+				{
+					sheetStatus = "Fail";
+					TestStageCategory.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(SHEET_NAME).get(6).add(i+1, (status.get(i) + "programCard - failed"));
+					
+					markProcessFailed();
+				}
+			}
 		}
+	}
+	private void verifyCourses(ArrayList<String> data)
+	{
+		if(!data.contains("NA"))
+		{
+			ArrayList<String> status = stagecategoryLocator.verifyCourses();
+			if(status.size()>0)
+			{
+				for(int i = 0; i < status.size(); i++)
+				{
+					sheetStatus = "Fail";
+					TestStageCategory.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(SHEET_NAME).get(7).add(i+1, (status.get(i) + "courseCard - failed"));
+					
+					markProcessFailed();
+				}
+			}
+		}
+	
+		
 	}
 	
-	private void compareCardDetailsInProgramPage(ArrayList<String> dataFromExcel)
-	{
-		ArrayList<String> getCardDEtailsStatus = stagecategoryLocator.verifyProgramCardDetailsInProgramPage(dataFromExcel);
-		for(int i = 0; i < getCardDEtailsStatus.size(); i++)
-		{
-			if(getCardDEtailsStatus.get(i).equalsIgnoreCase("fail"))
-			{
-				markColumnFailed(1);
-			}
-			if(getCardDEtailsStatus.get(i).equalsIgnoreCase("icon"))
-			{
-				markColumnFailed(2);
-			}
-			if(getCardDEtailsStatus.get(i).equalsIgnoreCase("level"))
-			{
-				markColumnFailed(3);
-			}
-			if(getCardDEtailsStatus.get(i).equalsIgnoreCase("enrollStatus"))
-			{
-				markColumnFailed(4);
-			}
-			if(getCardDEtailsStatus.get(i).equalsIgnoreCase("amount"))
-			{
-				markColumnFailed(5);
-			}
-		}
-	}
-	
-	private void showMoreIcon_Course()
-	{
-		String getCourseIconStatus = stagecategoryLocator.verifyCourseShowMoreIconStatus();
-		if(getCourseIconStatus.equalsIgnoreCase("fail"))
-		{
-			markProcessFailed();
-		}
-	}
-	
-	private void compareCardDetailsInCoursePage(ArrayList<String> dataFromExcel)
-	{
-		ArrayList<String> getCardDEtailsStatus = stagecategoryLocator.verifyCourseCardDetailsInCoursePage(dataFromExcel);
-		for(int i = 0; i < getCardDEtailsStatus.size(); i++)
-		{
-			if(getCardDEtailsStatus.get(i).equalsIgnoreCase("fail"))
-			{
-				markColumnFailed(1);
-			}
-			if(getCardDEtailsStatus.get(i).equalsIgnoreCase("icon"))
-			{
-				markColumnFailed(2);
-			}
-			if(getCardDEtailsStatus.get(i).equalsIgnoreCase("level"))
-			{
-				markColumnFailed(3);
-			}
-			if(getCardDEtailsStatus.get(i).equalsIgnoreCase("enrollStatusClosed"))
-			{
-				markColumnFailed(4);
-			}
-			if(getCardDEtailsStatus.get(i).equalsIgnoreCase("amount"))
-			{
-				markColumnFailed(5);
-			}
-		}
-	}
 	
 	private void markColumnFailed(int columnIndex)
 	{

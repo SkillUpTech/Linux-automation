@@ -36,7 +36,7 @@ public class TestStageCategory
 	{
 		softAssert = new SoftAssert();
 		stagecategoryLocator = new StagecategoryLocator();
-		excelPath = "D:\\Doc\\SkillUp_Testing\\SEO\\Category\\testData\\AI category.xlsx";
+		excelPath = "D:\\Doc\\SkillUp_Testing\\SEO\\Category\\testData\\BigData.xlsx";
 		this.aboutStageCategoryPage(excelPath);
 	}
 	

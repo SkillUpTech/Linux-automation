@@ -1,8 +1,10 @@
 package com.seo.regression.testing;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
 public class HeaderSectionValidation
 {
@@ -15,13 +17,17 @@ public class HeaderSectionValidation
 	{
 		this.sheetData = sheetData;
 		this.driver = driver;
-		OpenWebsite.openSite(this.driver);
 		this.headerSectionLocator = new HeaderSectionLocator(driver);
 		System.out.println("header process started");
 	}
 	
 	public String start() throws InterruptedException
 	{
+		try
+		{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(this.driver);
 		int j = 1;
 		while(j<=1)
 		{
@@ -38,9 +44,6 @@ public class HeaderSectionValidation
 					case "contactUs":
 						checkContactUs();
 						break;
-					/*
-					 * case "business": checkBusiness(); break;
-					 */
 					case "blog":
 						checkBlog(row);
 						break;
@@ -62,6 +65,38 @@ public class HeaderSectionValidation
 				}
 			}
 			j++;
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 		
@@ -103,13 +138,6 @@ public class HeaderSectionValidation
 		}
 	}
 
-	/*
-	 * public void checkBusiness() { String businessProcess =
-	 * headerSectionLocator.checkBusiness();
-	 * if(businessProcess.equalsIgnoreCase("fail")) { sheetStatus = "Fail";
-	 * RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection")
-	 * .get(2).set(0, "business - failed"); } }
-	 */
 	public void checkBlog(ArrayList<String> data) throws InterruptedException
 	{
 		if(!data.contains("NA"))

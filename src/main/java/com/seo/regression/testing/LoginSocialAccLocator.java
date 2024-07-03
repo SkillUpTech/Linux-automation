@@ -503,7 +503,6 @@ public class LoginSocialAccLocator
 		System.out.println("Facebook process started");
 		getFacebookProcessStatus.add(this.clickLogin());
 		getFacebookProcessStatus.addAll(this.clickFacebookIcon(uName, pwd));
-		//this.pageValidation(uName, pwd);
 		Thread.sleep(500);
 		return getFacebookProcessStatus;
 	}
