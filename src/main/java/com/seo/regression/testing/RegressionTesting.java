@@ -81,6 +81,14 @@ public class RegressionTesting
 	    	{
 	    		getEnvironment = "prod";
 	    	}
+	    	else if(Denvironment.equalsIgnoreCase("qa"))
+	    	{
+	    		getEnvironment = "qa";
+	    	}
+	    	else if(Denvironment.equalsIgnoreCase("dev"))
+	    	{
+	    		getEnvironment = "dev";
+	    	}
 	    }
 	    else
 	    {
