@@ -57,13 +57,14 @@ public class RegressionTesting
 	public void setup(String browserName, String Denvironment) throws Exception
 	{
 		System.out.println("welcome");
+		System.out.println("Automation executing in "+System.getProperty("Denvironment")+" environment");
 		nameOfBrowser = browserName;
 		nameOfEnvironment = Denvironment;
 	    if (browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
 	    }
-	    else if (browserName.equalsIgnoreCase("Chrome"))
+	    else if (browserName.equalsIgnoreCase("chrome"))
 	    {
 	    //	driver = OpenWebsite.openDriver(browserName);
 	    	if(Denvironment.equalsIgnoreCase("stage"))
@@ -353,7 +354,7 @@ public class RegressionTesting
 			}
 			else if (/* !driver.getCurrentUrl().contains("stage")|| */ENV_TO_USE.contains("stage"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "prod_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "stage_result_" + formattedDateTime + ".xlsx");
 			}
 			else if (/* !driver.getCurrentUrl().contains("qa-in")|| */ENV_TO_USE.contains("qa-in"))
 			{
@@ -374,6 +375,10 @@ public class RegressionTesting
 			else if(/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("qa"))
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "qa_US_result_" + formattedDateTime + ".xlsx");
+			}
+			else if(/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("prod"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "prod_US_result_" + formattedDateTime + ".xlsx");
 			}
 			service.shutdown();
 		}
