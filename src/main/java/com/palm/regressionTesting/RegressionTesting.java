@@ -51,14 +51,14 @@ public class RegressionTesting
 	WebDriver driver;
 	String sheetStatus = "";
 	String sheetName = "";
-	public static String  driverPath = "C:\\Users\\Hemamalini\\Downloads\\125driver\\chromedriver-win64\\chromedriver.exe";
+	public static String  driverPath = "/usr/local/bin/chromedriver";
 	@BeforeTest
-	@Parameters({"browser","env"})
-	public void setup(String browserName, String env) throws Exception
+	@Parameters({"browser","Denvironment"})
+	public void setup(String browserName, String Denvironment) throws Exception
 	{
 		System.out.println("welcome");
 		nameOfBrowser = browserName;
-		nameOfEnvironment = env;
+		nameOfEnvironment = Denvironment;
 	    if (browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
@@ -66,35 +66,35 @@ public class RegressionTesting
 	    else if (browserName.equalsIgnoreCase("Chrome"))
 	    {
 	    //	driver = OpenWebsite.openDriver(browserName);
-	    	if(env.equalsIgnoreCase("stage"))
+	    	if(Denvironment.equalsIgnoreCase("stage"))
 	    	{
 	    		getEnvironment = "stage";
 	    	}
-	    	else if(env.equalsIgnoreCase("stage-in"))
+	    	else if(Denvironment.equalsIgnoreCase("stage-in"))
 	    	{
 	    		getEnvironment = "stage-in";
 	    	}
-	    	else if(env.equalsIgnoreCase("prod-in"))
+	    	else if(Denvironment.equalsIgnoreCase("prod-in"))
 	    	{
 	    		getEnvironment = "prod-in";
 	    	}
-	    	else if(env.equalsIgnoreCase("prod"))
+	    	else if(Denvironment.equalsIgnoreCase("prod"))
 	    	{
 	    		getEnvironment = "prod";
 	    	}
-	    	else if(env.equalsIgnoreCase("dev-in"))
+	    	else if(Denvironment.equalsIgnoreCase("dev-in"))
 	    	{
 	    		getEnvironment = "dev-in";
 	    	}
-	    	else if(env.equalsIgnoreCase("dev"))
+	    	else if(Denvironment.equalsIgnoreCase("dev"))
 	    	{
 	    		getEnvironment = "dev";
 	    	}
-	    	else if(env.equalsIgnoreCase("qa-in"))
+	    	else if(Denvironment.equalsIgnoreCase("qa-in"))
 	    	{
 	    		getEnvironment = "qa-in";
 	    	}
-	    	else if(env.equalsIgnoreCase("qa"))
+	    	else if(Denvironment.equalsIgnoreCase("qa"))
 	    	{
 	    		getEnvironment = "qa";
 	    	}
@@ -112,7 +112,7 @@ public class RegressionTesting
 		
 		CompletionService<String> completionService = new ExecutorCompletionService<>(service);
 		
-		String excelPath = "D:\\Doc\\RegressionTesting.xlsx";
+		String excelPath = "/home/edx-root/Desktop/testing/TestData.xlsx";
 		
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
 		
@@ -349,31 +349,31 @@ public class RegressionTesting
 				 * "stage-in")||
 				 */ENV_TO_USE.contains("stage-in"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "stage_in_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "stage_in_result_" + formattedDateTime + ".xlsx");
 			}
 			else if (/* !driver.getCurrentUrl().contains("stage")|| */ENV_TO_USE.contains("stage"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "prod_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "prod_result_" + formattedDateTime + ".xlsx");
 			}
 			else if (/* !driver.getCurrentUrl().contains("qa-in")|| */ENV_TO_USE.contains("qa-in"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "qa_India_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "qa_India_result_" + formattedDateTime + ".xlsx");
 			}
 			else if (/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("dev-in"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "dev_India_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "dev_India_result_" + formattedDateTime + ".xlsx");
 			}
 			else if (/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("prod-in"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "prodIndia_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "prodIndia_result_" + formattedDateTime + ".xlsx");
 			}
 			else if (/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("dev"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "Dev_US_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "Dev_US_result_" + formattedDateTime + ".xlsx");
 			}
 			else if(/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("qa"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "qa_US_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "qa_US_result_" + formattedDateTime + ".xlsx");
 			}
 			service.shutdown();
 		}
