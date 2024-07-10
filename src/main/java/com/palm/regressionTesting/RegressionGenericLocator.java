@@ -544,23 +544,16 @@ public class RegressionGenericLocator
 			WebElement iFrame = driver.findElement(By.cssSelector(".razorpay-checkout-frame"));
 			driver.switchTo().frame(iFrame);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
-			List<WebElement> buttons = driver.findElements(By.xpath("//label[@class='relative cursor-pointer']"));
-			for(int i = 1; i <= buttons.size(); i++)
+			WebElement label = driver.findElement(By.xpath("//*[contains(text(),'Netbanking')]"));////label[@class='relative cursor-pointer']//span[@class='truncate font-medium']
+			System.out.println(label.getText());
+			if(label.isDisplayed())
 			{
-				if(i == 4)
-				{
-					WebElement label = buttons.get(i).findElement(By.xpath("//span[contains(normalize-space(text()),'Netbanking')]"));
-					System.out.println(label.getText());
-					if(label.getText().equalsIgnoreCase("Netbanking"))
-					{
-						label.click();
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					}
-				}
+				label.click();
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			}
 			boolean statusOfbankSelection = false;
-			List<WebElement> listOfNetBanking = driver.findElements(By.xpath("//form[@class='flex flex-col gap-2 py-3'][1]//label[@class='relative cursor-pointer']"));
+			List<WebElement> listOfNetBanking = driver.findElements(By.xpath("//form[@class='flex flex-col gap-2 py-3'][2]//label[@class='relative cursor-pointer']"));
 			for(int j = 0; j < listOfNetBanking.size(); j++)
 			{
 				//to select bank
