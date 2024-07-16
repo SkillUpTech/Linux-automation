@@ -1477,8 +1477,8 @@ public class EditProfileLocator
 					clickCancel.click(); 
 		        }
 			}
-			WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
-			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a")));
+			WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//a[contains(text(),'Yes, continue')]")));
 
 			js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 			if(clickYesFromAlert.isDisplayed())
@@ -1575,8 +1575,8 @@ public class EditProfileLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 							Thread.sleep(1000);
-							WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
-							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a")));
+							WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//a[contains(text(),'Yes, continue')]")));
 							js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 							if(clickYesFromAlert.isDisplayed())
 							{
@@ -1981,7 +1981,6 @@ public class EditProfileLocator
 							WebElement clickCancel1 = driver.findElement(By.cssSelector("div[class*='Workexperience_skipButonDesk'] button[class*='Workexperience_skipButton']"));
 							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class*='Workexperience_skipButonDesk'] button[class*='Workexperience_skipButton']")));
 							js.executeScript("arguments[0].scrollIntoView();", clickCancel1);
-							JavascriptExecutor js2 = (JavascriptExecutor) driver;
 							if(clickCancel1.isDisplayed())
 							{
 								Thread.sleep(1000);
@@ -2004,8 +2003,8 @@ public class EditProfileLocator
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 								Thread.sleep(1000);
-								WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
-								wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a")));
+								WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+								wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//a[contains(text(),'Yes, continue')]")));
 								js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 								if(clickYesFromAlert.isDisplayed())
 								{
@@ -2127,8 +2126,8 @@ public class EditProfileLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 							Thread.sleep(1000);
-							WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
-							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a")));
+							WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//a[contains(text(),'Yes, continue')]")));
 							js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 							if(clickYesFromAlert.isDisplayed())
 							{
@@ -2640,8 +2639,8 @@ public class EditProfileLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 							Thread.sleep(1000);
-							WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
-							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a")));
+							WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//a[contains(text(),'Yes, continue')]")));
 							js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 							if(clickYesFromAlert.isDisplayed())
 							{
@@ -3220,7 +3219,6 @@ public class EditProfileLocator
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 						Thread.sleep(1000);
 						js.executeScript("window.scrollBy(0, 300)","");
-						JavascriptExecutor js2 = (JavascriptExecutor) driver;
 						WebElement clickCancel = driver.findElement(By.cssSelector("div[class*='Education_buttonBottom']>div[class*='Education_skipButonDesk']>button"));
 						wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class*='Education_buttonBottom']>div[class*='Education_skipButonDesk']>button")));
 						js.executeScript("arguments[0].scrollIntoView();", clickCancel);
@@ -3244,8 +3242,8 @@ public class EditProfileLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 							Thread.sleep(1000);
-							WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
-							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a")));
+							WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//a[contains(text(),'Yes, continue')]")));
 							js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 							Thread.sleep(1000);
 							if(clickYesFromAlert.isDisplayed())

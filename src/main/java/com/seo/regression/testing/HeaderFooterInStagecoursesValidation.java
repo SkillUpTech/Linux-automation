@@ -6,6 +6,8 @@ import java.util.Set;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 
+import com.palm.regressionTesting.RegressionTesting;
+
 public class HeaderFooterInStagecoursesValidation
 {
 	WebDriver driver;
@@ -46,7 +48,7 @@ public class HeaderFooterInStagecoursesValidation
 				  ContactUs(row.get(1)); 
 				  break; 
 			  case "Blog": 
-				  Blog(row.get(1)); 
+				  Blog(row); 
 				  break; 
 			  case "twitter": 
 				  twitter(row.get(1)); 
@@ -82,10 +84,8 @@ public class HeaderFooterInStagecoursesValidation
 				  TermsOfService(row.get(1)); 
 				  break; 					 
 			  case "BlogFooter": 
-				  BlogFooter(row.get(1)); 
+				  BlogFooter(row); 
 				  break; 		 
-							 
-				 
 			}
 		}
 		Set<String> windows = driver.getWindowHandles();
@@ -179,15 +179,18 @@ public class HeaderFooterInStagecoursesValidation
 		
 		}
 	}
-	public void Blog(String data)
+	public void Blog(ArrayList<String> data)
 	{
-		String status = headerFooterInStagecoursesLocator.BlogProcess(data);
-		if(!status.equalsIgnoreCase("pass"))
+		if(!data.contains("NA"))
 		{
-
-			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(6).add(2, (status + " - failed"));
-		
+			String status = headerFooterInStagecoursesLocator.BlogProcess(data);
+			if(!status.equalsIgnoreCase("pass"))
+			{
+				
+				sheetStatus="Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(6).add(2, (status + " - failed"));
+				
+			}
 		}
 	}
 	public void twitter(String data)
@@ -302,14 +305,18 @@ public class HeaderFooterInStagecoursesValidation
 
 		}
 	}
-	public void BlogFooter(String data)
+	public void BlogFooter(ArrayList<String> data)
 	{
-		String status = headerFooterInStagecoursesLocator.BlogFooterProcess(data);
-		if(!status.equalsIgnoreCase("pass"))
+		if(!data.contains("NA"))
 		{
-			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(20).add(2, (status + " - failed"));
-
+			
+			String status = headerFooterInStagecoursesLocator.BlogFooterProcess(data);
+			if(!status.equalsIgnoreCase("pass"))
+			{
+				sheetStatus="Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(20).add(2, (status + " - failed"));
+				
+			}
 		}
 	}
 }

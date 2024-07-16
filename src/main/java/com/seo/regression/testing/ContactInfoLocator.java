@@ -669,16 +669,9 @@ public class ContactInfoLocator
 		ArrayList<String> validationMsg = new ArrayList<String>();
 		try
 		{
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));
-				driver.close();
-			}
 			System.out.println("Individual_InvalidEmail process started");
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Individual_InvalidEmail.add(this.individualFunction(dataFromExcel));
 			Individual_InvalidEmail.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -713,14 +706,6 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Individual_InvalidMobile process started");
-			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
 			Individual_InvalidMobile.add(this.individualFunction(dataFromExcel));
 			Individual_InvalidMobile.add(this.agreePolicyTerms());
@@ -757,15 +742,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Individual_Without Skill process started");
-			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Individual_WithoutSkill.add(this.individualFunction(dataFromExcel));
 			Individual_WithoutSkill.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -803,15 +781,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Individual_Without Data process started");
-			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Individual_WithoutData.add(this.individualFunction(dataFromExcel));
 			Individual_WithoutData.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -846,30 +817,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Individual_ valid data process started");
-			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			if(w.size()>2)
-			{
-				driver.switchTo().window(w.get(0));
-				if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.close();
-				}
-				driver.switchTo().window(w.get(1));
-				driver.close();
-				driver.switchTo().window(w.get(2));
-			}
-			else
-			{
-				driver.switchTo().window(w.get(0));
-				if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(w.get(0));
-					driver.close();
-				}
-				driver.switchTo().window(w.get(1));
-			}
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Individual_ValidData.add(this.individualFunction(dataFromExcel));
 			Individual_ValidData.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -908,16 +857,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_InvalidName process started");
-			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			Academic_InvalidName.add(this.academicFunction(dataFromExcel));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
@@ -956,16 +897,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_InvalidEmail process started");
-			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Academic_InvalidEmail.add(this.academicFunction(dataFromExcel));
 			Academic_InvalidEmail.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1001,16 +934,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_InvalidMobile process started");
-		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Academic_InvalidMobile.add(this.academicFunction(dataFromExcel));
 			Academic_InvalidMobile.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1046,16 +971,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_Invalid institution process started");
-		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Academic_InvalidInstitution.add(this.academicFunction(dataFromExcel));
 			Academic_InvalidInstitution.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1091,16 +1008,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_without job process started");
-		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));			
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Academic_WithoutJob.add(this.academicFunction(dataFromExcel));
 			Academic_WithoutJob.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1137,16 +1046,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic without message process started");
-		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));	
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Academic_WithoutMessage.add(this.academicFunction(dataFromExcel));
 			Academic_WithoutMessage.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1188,16 +1089,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_without data process started");
-		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));	
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Academic_WithoutData.add(this.academicFunction(dataFromExcel));
 			Academic_WithoutData.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1233,16 +1126,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_valid data process started");
-		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));	
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Academic_ValidData.add(this.academicFunction(dataFromExcel));
 			Academic_ValidData.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1283,16 +1168,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_InvalidName process started");
-		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));	
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Business_InvalidName.add(this.businessFunction(dataFromExcel));
 			Business_InvalidName.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1329,16 +1206,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_InvalidEmail process started");
-		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));	
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Business_InvalidEmail.add(this.businessFunction(dataFromExcel));
 			Business_InvalidEmail.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1374,16 +1243,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_InvalidMobile process started");
-		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));	
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Business_InvalidMobile.add(this.businessFunction(dataFromExcel));
 			Business_InvalidMobile.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1422,16 +1283,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_Without Organization process started");
-		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));	
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Business_WithoutOrganization.add(this.businessFunction(dataFromExcel));
 			Business_WithoutOrganization.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1468,16 +1321,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_without job process started");
-		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Business_WithoutJob.add(this.businessFunction(dataFromExcel));
 			Business_WithoutJob.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1515,16 +1360,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_without message process started");
-			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Business_WithoutMessage.add(this.businessFunction(dataFromExcel));
 			Business_WithoutMessage.add(this.agreePolicyTerms());
 			
@@ -1570,18 +1407,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_Without data process started");
-		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Business_WithoutData.add(this.businessFunction(dataFromExcel));
 			Business_WithoutData.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1616,16 +1443,8 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_valid data process is started");
-		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(w.get(0));
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
 			driver.navigate().refresh();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			Business_ValidData.add(this.businessFunction(dataFromExcel));
 			Business_ValidData.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;

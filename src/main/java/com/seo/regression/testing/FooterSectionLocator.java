@@ -87,19 +87,23 @@ public class FooterSectionLocator
 		while (iterator.hasNext()) 
 		{
 			String childWindow = iterator.next();
+			Thread.sleep(2000);
 			if(!parentWindow.equalsIgnoreCase(childWindow))
 			{
 				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("x")||driver.getCurrentUrl().contains("intent"))
+				Thread.sleep(2000);
+				if(driver.getCurrentUrl().contains("x.com"))
 				{
+					Thread.sleep(2000);
 					driver.switchTo().window(childWindow);
+					Thread.sleep(2000);
 					System.out.println("twitter window");
 					status = "success";
 					driver.close();
 					driver.switchTo().window(parentWindow);
+					break;
 				}
 			}
-			driver.switchTo().window(parentWindow);
 		}
 		driver.switchTo().window(parentWindow);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
@@ -178,7 +182,6 @@ public class FooterSectionLocator
 					break;
 				}
 			}
-			driver.switchTo().window(parentWindow);
 		}
 		driver.switchTo().window(parentWindow);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
@@ -218,7 +221,6 @@ public class FooterSectionLocator
 					break;
 				}
 			}
-			driver.switchTo().window(parentWindow);
 		}
 		driver.switchTo().window(parentWindow);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));

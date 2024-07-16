@@ -167,7 +167,7 @@ public class TechMasterLocator
 					else
 					{
 						cardStatus.add("nocardIcon");
-						status.add("no icon in card "+cardURL);
+						//status.add("no icon in card "+cardURL);
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 					if(driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'LearningCatalog_customCard')]//div[contains(@class,'RegularCourseCard_courseHeading')]/p")).size()>0)
@@ -179,7 +179,7 @@ public class TechMasterLocator
 					else
 					{
 						cardStatus.add("nocardTitle");//3
-						status.add("no title in card "+cardURL);
+						//status.add("no title in card "+cardURL);
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 					if(driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'RegularCourseCard_courseDes')]//ul/li")).size()>0)
@@ -190,12 +190,21 @@ public class TechMasterLocator
 							cardLevelData.add(level.get(j).getText().replace(" ", "").trim());//4
 						}
 						String levelData = Arrays.toString(cardLevelData.toArray());
-						cardStatus.add(levelData.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replace(" ", "").trim());
+						
+						String checkLevelData = levelData.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replace(" ", "").trim();
+						if(checkLevelData.contains("vILT")||checkLevelData.contains("Instructor"))
+						{
+							cardStatus.add("vILTorInstructor");
+						}
+						else
+						{
+							cardStatus.add(levelData.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replace(" ", "").trim());
+						}
 					}
 					else
 					{
-						cardStatus.add("nocardLevel");
-						status.add("no level in card "+cardURL);
+						cardStatus.add("nocardLevel");//4
+						//status.add("no level in card "+cardURL);
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 					if(driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'LearningCatalog_customCard')]//div[contains(@class,'RegularCourseCard_orgGoi')]/div")).size()>0)
@@ -205,12 +214,28 @@ public class TechMasterLocator
 					else
 					{
 						cardStatus.add("noPartner");
-						status.add("no partner in card "+cardURL);
+						//status.add("no partner in card "+cardURL);
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 					if(driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'LearningCatalog_customCard')]//div[contains(@class,'RegularCourseCard_priceLeft')]/p")).size()>0)
 					{
-						cardStatus.add("Open");//6
+						WebElement checkEnrollmentIsOpen = driver.findElement(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'LearningCatalog_customCard')]//div[contains(@class,'RegularCourseCard_priceLeft')]/p"));
+						WebElement checkEnrollmentIsClose = driver.findElement(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'LearningCatalog_customCard')]//div[contains(@class,'RegularCourseCard_priceLeft')]/h2"));
+						if(checkEnrollmentIsOpen.getText().equalsIgnoreCase("Open") && checkEnrollmentIsClose.getText().equalsIgnoreCase("Enrollment Status"))
+						{
+							cardStatus.add("Open");//6
+						}
+						else if(!checkEnrollmentIsClose.getText().equalsIgnoreCase("Enrollment Status"))
+						{
+							if(checkEnrollmentIsClose.getText().equalsIgnoreCase("Coming Soon"))//6
+							{
+								cardStatus.add("Close");
+							}
+						}
+						else if(checkEnrollmentIsClose.getText().equalsIgnoreCase("None"))
+						{
+								cardStatus.add("Close");
+						}
 					}
 					else
 					{
@@ -218,9 +243,9 @@ public class TechMasterLocator
 						status.add("no enroll status in card "+cardURL);
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-					if(driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'RegularCourseCard_priceRight')]/p")).size()>0)
+					if(driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'RegularCourseCard_priceRight')]/p[not(text()='RegularCourseCard_priceStrick')]")).size()>0)
 					{
-						WebElement cardPrice = driver.findElement(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'RegularCourseCard_priceRight')]/p"));
+						WebElement cardPrice = driver.findElement(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'RegularCourseCard_priceRight')]/p[not(text()='RegularCourseCard_priceStrick')]"));
 						
 						if(cardPrice.getText().equalsIgnoreCase("null"))
 						{
@@ -235,7 +260,7 @@ public class TechMasterLocator
 					else 
 					{
 						cardStatus.add("noPrice");
-						status.add("no price in card "+cardURL);
+						//status.add("no price in card "+cardURL);
 					}
 					
 					String parentWindow = driver.getWindowHandle();
@@ -255,28 +280,28 @@ public class TechMasterLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 							if(driver.findElements(By.xpath("//div[contains(@class,'row CourseMain_mainRow')]/div[2]//a[contains(@class,'videosPopup_videoPlayButton')]|//a[contains(@class,'CourseMain_videoPlayButton')]//img")).size()>0)
 							{
-								pageStatus.add("Image");
+								pageStatus.add("Image");//1
 							}
 							else
 							{
 								pageStatus.add("noImage");
-								status.add("no image in page"+cardURL);
+								//status.add("no image in page"+cardURL);
 							}
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 							if(driver.findElements(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//img[@alt='course-icon']")).size()>0)
 							{
-								pageStatus.add("Icon");
+								pageStatus.add("Icon");//2
 							}
 							else
 							{
 								pageStatus.add("noIcon");
-								status.add("no Icon in page "+cardURL);
+							//	status.add("no Icon in page "+cardURL);
 							}
 							if(driver.findElements(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_courseText')]/h1")).size()>0)
 							{
 								WebElement pageTitle = driver.findElement(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_courseText')]/h1"));
 								
-								pageStatus.add(pageTitle.getText().replace(" ", "").trim());
+								pageStatus.add(pageTitle.getText().replace(" ", "").trim());//3
 							}
 							else
 							{
@@ -292,56 +317,73 @@ public class TechMasterLocator
 									pageLevelData.add(pageLevels.get(k).getText());
 								}
 								String levelInfo = Arrays.toString(pageLevelData.toArray());
-								pageStatus.add(levelInfo.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replace(" ", "").trim());
+								String checkLevelData = levelInfo.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replace(" ", "").trim();
+								if(checkLevelData.contains("vILT")||checkLevelData.contains("Instructor"))
+								{
+									pageStatus.add("vILTorInstructor");
+								}
+								else
+								{
+									
+									pageStatus.add(levelInfo.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replace(" ", "").trim());//4
+								}
 							}
 							else
 							{
 								pageStatus.add("noLevel");
-								status.add("no level in page "+cardURL);
+							//	status.add("no level in page "+cardURL);
 							}
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 							if(driver.findElements(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//img[@alt='org-logo']")).size()>0)
 							{
-								pageStatus.add("partnerPresent");
+								pageStatus.add("partnerPresent");//5
 							}
 							else
 							{
 								pageStatus.add("noPartner");
-								status.add("no partner in page "+cardURL);
 							}
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 							if(driver.findElements(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//button[contains(@class,'CourseDescription_enrollNowBtn')]")).size()>0)
 							{
-								WebElement price = driver.findElement(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//button[contains(@class,'CourseDescription_enrollNowBtn')]"));
+								WebElement enrollStatus = driver.findElement(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//button[contains(@class,'CourseDescription_enrollNowBtn')]"));
 								
-								if(price.getText().equalsIgnoreCase("Enroll Now"))
+								if(enrollStatus.getText().equalsIgnoreCase("Enroll Now"))
 								{
-									pageStatus.add("Open");
+									pageStatus.add("Open");//6
+								}
+							}
+							else if(driver.findElements(By.xpath("//div[contains(@class,'CourseDescription_buttonsContent')]//h6[contains(text(),'Enrollment is Closed')]")).size()>0)
+							{
+								WebElement enrollStatus = driver.findElement(By.xpath("//div[contains(@class,'CourseDescription_buttonsContent')]//h6[contains(text(),'Enrollment is Closed')]"));
+
+								if(enrollStatus.getText().equalsIgnoreCase("Enrollment is Closed"))
+								{
+									pageStatus.add("Close");//6
 								}
 							}
 							else
 							{
 								pageStatus.add("noEnrollStatus");
-								status.add("no enroll status in page "+cardURL);
+								//status.add("no enroll status in page "+cardURL);
 							}
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 							
-							if(driver.findElements(By.xpath("//div[@class='d-flex gap-2'][2]//div[contains(@class,'CourseDescription_courseAboutTextSection')]//p|//div[@class='d-flex gap-2'][3]//div[contains(@class,'CourseDescription_courseAboutTextSection')]//p//span[not(contains(@class,'CourseDescription_priceStrike__BdyE7'))]")).size()>0)
+							if(driver.findElements(By.xpath("//div[@class='d-flex gap-2'][2]//div[contains(@class,'CourseDescription_courseAboutTextSection')]//p|//div[@class='d-flex gap-2'][3]//div[contains(@class,'CourseDescription_courseAboutTextSection')]//p")).size()>0)
 							{
-								WebElement price = driver.findElement(By.xpath("//div[@class='d-flex gap-2'][2]//div[contains(@class,'CourseDescription_courseAboutTextSection')]//p|//div[@class='d-flex gap-2'][3]//div[contains(@class,'CourseDescription_courseAboutTextSection')]//p//span[not(contains(@class,'CourseDescription_priceStrike__BdyE7'))]"));
+								WebElement price = driver.findElement(By.xpath("//div[@class='d-flex gap-2'][2]//div[contains(@class,'CourseDescription_courseAboutTextSection')]//p|//div[@class='d-flex gap-2'][3]//div[contains(@class,'CourseDescription_courseAboutTextSection')]//p"));
 								if(price.getText().replaceAll("[^\\d.]", "").trim().contains("null"))
 								{
 									status.add(price.getText().replaceAll("[^\\d.]", "").trim() +" in " +"cardURL");
 								}
 								else
 								{
-									pageStatus.add(price.getText().replaceAll("[^\\d.]", "").trim());
+									pageStatus.add(price.getText().replaceAll("[^\\d.]", "").trim());//7
 								}
 							}
 							else
 							{
 								pageStatus.add("noPrice");
-								status.add("no price in page "+cardURL);
+								//status.add("no price in page "+cardURL);
 							}
 							if(!cardStatus.equals(pageStatus))
 							{

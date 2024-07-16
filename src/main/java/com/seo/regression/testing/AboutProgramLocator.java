@@ -261,7 +261,7 @@ String addHosturl;
 			}
 			else
 			{
-				WebElement courseType1Name = driver.findElement(By.cssSelector("h2[class*='text-uppercase CourseDescription_regularThemeH2']"));
+				WebElement courseType1Name = driver.findElement(By.cssSelector("div[class*='CourseDescription_TooltipAboutSection']>p:nth-child(1)"));
 				String courseType1Text = courseType1Name.getText().replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
 				System.out.println("getCourseType1 from browser : "+courseType1Text);
 				if(courseType1FromExcel.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "").equals(courseType1Text))
@@ -292,7 +292,7 @@ String addHosturl;
 			}
 			else
 			{
-				WebElement coursetype2Name = driver.findElement(By.cssSelector("h3[class*='text-uppercase CourseDescription_regularThemeH3']"));
+				WebElement coursetype2Name = driver.findElement(By.cssSelector("div[class*='CourseDescription_TooltipAboutSection']>p:nth-child(3)"));
 				String courseType2Text = coursetype2Name.getText().replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
 				System.out.println("Course Type 2 from browser : "+courseType2Text);
 				if(courseType2FromExcel.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "").equals(courseType2Text))
@@ -324,7 +324,7 @@ String addHosturl;
 			}
 			else
 			{
-				WebElement courseLevelName = driver.findElement(By.cssSelector("h3[class*='text-uppercase CourseDescription_regularThemeH3']:nth-child(3)"));
+				WebElement courseLevelName = driver.findElement(By.cssSelector("div[class*='CourseDescription_TooltipAboutSection']>p:nth-child(5)"));
 				String courseLevelText = courseLevelName.getText().replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
 				System.out.println("courseLevelText from browser : "+courseLevelText);
 				if(courseLevelText.equals(courseLevelFromExcel.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "")))

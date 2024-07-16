@@ -33,7 +33,7 @@ public class ApplyCouponLocator
 		try
 		{
 			String url = OpenWebsite.setHost+data.get(1);
-			String statusOfURL = microsoftCourseLocator.checkCourseCode(url);
+			String statusOfURL = microsoftCourseLocator.checkURLStatus(url);
 			if(!statusOfURL.contains("fail"))
 			{
 				String parentWindow = driver.getWindowHandle();

@@ -1,5 +1,7 @@
 package com.seo.regression.testing;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +112,7 @@ public class GLXLocator {
 				for(String windows : allWindows)
 				{
 					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("twitter"))
+					if(driver.getCurrentUrl().contains("x.com"))
 					{
 						driver.switchTo().window(windows);
 						status = "pass";
@@ -343,7 +345,7 @@ public class GLXLocator {
 				}
 				
 				WebElement urlLink = ListOfProgram.get(i).findElement(By.cssSelector(" a"));
-				String statusOfURL = microsoftCourseLocator.checkCourseCode(urlLink.getAttribute("href"));
+				String statusOfURL = this.checkURLStatus(urlLink.getAttribute("href"));
 				if(!statusOfURL.contains("fail"))
 				{
 					String parentwindow = driver.getWindowHandle();
@@ -679,7 +681,37 @@ public class GLXLocator {
 		return processStatus;
 		
 	}
-	
+	public String checkURLStatus(String data)
+	{
+		String status = "fail";
+			HttpURLConnection huc = null;
+			int respCode = 200;
+			String addHosturl = data;
+			try
+			{
+				huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
+				huc.setRequestMethod("HEAD");
+				huc.connect();
+				respCode = huc.getResponseCode();
+				System.out.println("status code : "+respCode + " " +addHosturl);
+				if(respCode > 200)
+				{
+					System.out.println("broken link : "+addHosturl);
+					System.out.println("response code : "+respCode);
+					status = "fail" + respCode;
+				}
+				else
+				{
+					System.out.println("unbroken link : "+" "+addHosturl+" "+respCode);
+					status = "success";
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			return status;
+	}
 	public String ExploreCourseProcess() throws InterruptedException
 	{
 		String status = "fail";

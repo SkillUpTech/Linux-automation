@@ -159,7 +159,7 @@ public class HeaderFooterInErrorScreenLocator
 		String status = "";
 		try
 		{
-				driver.get("https://stage-in.skillup.online/courses/deep/");
+				driver.get(OpenWebsite.setHost+"/courses/deep/");
 				String parentWindow = driver.getWindowHandle();
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickLoginIcon).keyUp(Keys.CONTROL).build().perform();
@@ -360,7 +360,7 @@ public class HeaderFooterInErrorScreenLocator
 				for(String windows : allWindows)
 				{
 					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("twitter"))
+					if(driver.getCurrentUrl().contains("x.com"))
 					{
 						driver.switchTo().window(windows);
 						System.out.println("twitter page");

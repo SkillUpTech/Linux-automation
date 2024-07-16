@@ -38,31 +38,31 @@ public class HeaderSectionValidation
 				String firstColumn = row.get(0);
 				switch(firstColumn)
 				{
-					case "skillupLogo":
-						checkSkillupLogo(row.get(1));
-						break;
-					case "contactUs":
-						checkContactUs();
-						break;
-					case "blog":
-						checkBlog(row);
-						break;
-					case "categories":
-						checkCategories(row);
-						break;
-					case "popularCourses":
-						checkPopularCourses(row);
-						break;
-					case "login":
-						checkLogin(row);
-						break;
-					case "learningPartner":
-						checkLearningPartner(row);
-						break;
-					case "signUP":
-						checkSignUP(row);
-						break;
-				}
+				case "skillupLogo":
+					checkSkillupLogo(row.get(1));
+					break;
+				case "contactUs":
+					checkContactUs();
+					break;
+				case "blog":
+					checkBlog(row);
+					break;
+				case "categories":
+					checkCategories();
+					break;
+				case "popularCourses":
+					checkPopularCourses();
+					break;
+				case "login":
+					checkLogin(row);
+					break;
+				case "learningPartner":
+					checkLearningPartner();
+					break;
+				case "signUP":
+					checkSignUP(row);
+					break;
+			}
 			}
 			j++;
 		}
@@ -114,17 +114,15 @@ public class HeaderSectionValidation
 		}
 	}
 	
-	public void checkLearningPartner(ArrayList<String> data) throws InterruptedException
+	public void checkLearningPartner() throws InterruptedException
 	{
-		ArrayList<String> learningPartner = headerSectionLocator.verifyLearningPartner(data);
-		for(int i = 0; i < learningPartner.size(); i++)
+		ArrayList<String> learningPartner = headerSectionLocator.verifyLearningPartner();
+		if(learningPartner.size()>0)
 		{
-			if(data.contains(learningPartner.get(i)))
+			for(int i = 0; i < learningPartner.size(); i++)
 			{
 				sheetStatus = "Fail";
-				int position = data.indexOf(learningPartner.get(i));
-				String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(5).get(position);
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(5).set(position, (cellValue + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(5).add(learningPartner.size()+1, (learningPartner.get(i) + "failed"));
 			}
 		}
 	}
@@ -150,37 +148,30 @@ public class HeaderSectionValidation
 			}
 		}
 	}
-	public void checkCategories(ArrayList<String> data)
+	public void checkCategories()
 	{
-		ArrayList<String> categoriesProcess = headerSectionLocator.checkCategories(data);
-		for(int i = 0; i < categoriesProcess.size(); i++)
+		ArrayList<String> categoriesProcess = headerSectionLocator.checkCategories();
+		if(categoriesProcess.size()>0)
 		{
-			if(data.contains(categoriesProcess.get(i)))
+			for(int i = 0; i < categoriesProcess.size(); i++)
 			{
 				sheetStatus = "Fail";
-				int position = data.indexOf(categoriesProcess.get(i));
-				String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(3).get(position);
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(3).set(position, (cellValue + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(3).add(categoriesProcess.size()+1, (categoriesProcess.get(i) + "failed"));
 			}
 		}
 	}
-	public void checkPopularCourses(ArrayList<String> data)
+	public void checkPopularCourses()
 	{
-		if(!data.contains("NA"))
-		{
 			
-			ArrayList<String> popularCouseProcess = headerSectionLocator.checkPopularCourses(data);
-			for(int i = 0; i < popularCouseProcess.size(); i++)
+			ArrayList<String> popularCouseProcess = headerSectionLocator.checkPopularCourses();
+			if(popularCouseProcess.size()>0)
 			{
-				if(data.contains(popularCouseProcess.get(i)))
+				for(int i = 0; i < popularCouseProcess.size(); i++)
 				{
 					sheetStatus = "Fail";
-					int position = data.indexOf(popularCouseProcess.get(i));
-					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(4).get(position);
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(4).set(position, (cellValue + " - failed"));
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(4).add(popularCouseProcess.size()+1, (popularCouseProcess.get(i) + "failed"));
 				}
 			}
-		}
 	}
 	public void checkLogin(ArrayList<String> data)
 	{

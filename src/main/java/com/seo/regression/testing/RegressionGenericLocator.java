@@ -4,19 +4,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
@@ -97,7 +91,6 @@ public class RegressionGenericLocator
 	
 	public String getCourseCodeText(String code) 
 	{
-		String courseIDFromBrowser = "";
 		String CourseCodeStatus = "false";
 		HttpURLConnection huc = null;
 		int respCode = 200;
@@ -387,7 +380,6 @@ public class RegressionGenericLocator
 		int excelValue = Integer.parseInt(value);
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(500));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			String parentWindow = driver.getWindowHandle();
 			Set<String> allWindows = driver.getWindowHandles();
 			for (String window : allWindows)
 			{
@@ -543,27 +535,21 @@ public class RegressionGenericLocator
 		{
 			WebElement iFrame = driver.findElement(By.cssSelector(".razorpay-checkout-frame"));
 			driver.switchTo().frame(iFrame);
-			List<WebElement> buttons = driver.findElements(By.xpath("//label[@class='relative cursor-pointer']"));
-			for(int i = 1; i <= buttons.size(); i++)
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+			WebElement label = driver.findElement(By.xpath("//*[contains(text(),'Netbanking')]"));////label[@class='relative cursor-pointer']//span[@class='truncate font-medium']
+			System.out.println(label.getText());
+			if(label.isDisplayed())
 			{
-				if(i == 4)
-				{
-					WebElement label = buttons.get(i).findElement(By.cssSelector("//span[contains(text(),'Netbanking')]"));
-					System.out.println(label.getText());
-					if(label.getText().equalsIgnoreCase("Netbanking"))
-					{
-						label.click();
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					}
-				}
+				label.click();
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			}
 			boolean statusOfbankSelection = false;
-			List<WebElement> listOfNetBanking = driver.findElements(By.cssSelector("//form[@class='flex flex-col gap-2 py-3'][1]//label[@class='relative cursor-pointer']"));
+			List<WebElement> listOfNetBanking = driver.findElements(By.xpath("//form[@class='flex flex-col gap-2 py-3'][2]//label[@class='relative cursor-pointer']"));
 			for(int j = 0; j < listOfNetBanking.size(); j++)
 			{
 				//to select bank
-				WebElement selectBankName = listOfNetBanking.get(j).findElement(By.xpath("//span[contains(text(),'IDBI')]"));
+				WebElement selectBankName = listOfNetBanking.get(j).findElement(By.xpath("//span[contains(normalize-space(text()),'IDBI')]"));
 				String netbankingName = selectBankName.getText();
 				System.out.println("net banking name : "+netbankingName);
 				if(listOfNetBanking.get(j).getText().equalsIgnoreCase(bankName))
@@ -628,7 +614,8 @@ public class RegressionGenericLocator
 			System.out.println("netbanking is fail");
 			paymentAndOrderStatus.add("paymentFail");
 		}
-		return paymentAndOrderStatus;}
+		return paymentAndOrderStatus;
+	}
 
 	public String diffBank(String bank)
 	{
@@ -709,9 +696,9 @@ public class RegressionGenericLocator
 						skipOTP.click();
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 						WebElement cardNumber = driver.findElement(By.cssSelector("input#card_number"));
-						cardNumber.sendKeys("5267 3181 8797 5449");
+						cardNumber.sendKeys("4242 4242 4242 4242");//5267 3181 8797 5449
 						WebElement cardExpiry = driver.findElement(By.cssSelector("input#card_expiry"));
-						cardExpiry.sendKeys("12/22");
+						cardExpiry.sendKeys("12/26");
 						WebElement cardName = driver.findElement(By.cssSelector("input#card_name"));
 						cardName.sendKeys("testing");
 						WebElement cvv = driver.findElement(By.cssSelector("input#card_cvv"));
@@ -804,7 +791,6 @@ public class RegressionGenericLocator
 
 	public void USOrderDetails() {
 		try {
-			String currentWindow = driver.getWindowHandle();
 			Set<String> windows = driver.getWindowHandles();
 			for (String win : windows) {
 				driver.switchTo().window(win);
@@ -956,7 +942,6 @@ public class RegressionGenericLocator
 		String getData[] = paymentModeFromExcel.split("_");
 		String getOrderAmount[] = orderDetailsInfo.split("=");
 		try {
-			String parentWindow = driver.getWindowHandle();
 			Set<String> allWindows = driver.getWindowHandles();
 			for (String window : allWindows) {
 				driver.switchTo().window(window);
@@ -997,7 +982,6 @@ public class RegressionGenericLocator
 		try
 		{
 			String[] splitData = getData.split("-split-", 2);
-			String parentWindow1 = driver.getWindowHandle();
 			Set<String> allWindows1 = driver.getWindowHandles();
 			for (String window1 : allWindows1) 
 			{
@@ -1036,7 +1020,6 @@ public class RegressionGenericLocator
 		try {
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			String parentWindow2 = driver.getWindowHandle();
 			Set<String> allWindows = driver.getWindowHandles();
 			for (String windows : allWindows)
 			{
@@ -1127,7 +1110,6 @@ public class RegressionGenericLocator
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					}
 				}
-				String parentWindow = driver.getWindowHandle();
 				Set<String> allWindows = driver.getWindowHandles();
 				for(String window : allWindows)
 				{
@@ -1274,7 +1256,7 @@ public class RegressionGenericLocator
 							if(!parentWindow.equalsIgnoreCase(childWindow))
 							{
 								driver.switchTo().window(childWindow);
-								if (driver.getCurrentUrl().contains("x")||driver.getCurrentUrl().contains("intent"))
+								if (driver.getCurrentUrl().contains("x.com"))
 								{
 									driver.switchTo().window(childWindow);
 									System.out.println("twitter screen");
@@ -1339,7 +1321,6 @@ public class RegressionGenericLocator
 		ArrayList<String> checkProgramProcess = new ArrayList<String>();
 		try 
 		{
-			JavascriptExecutor js = (JavascriptExecutor) driver;
 			// js.executeScript("window.scrollBy(0,-150)");
 			String programText = driver
 					.findElement(By.cssSelector("div[class='CourseDescription_infoBoxText__w49c3'] a[href]"))
@@ -1352,7 +1333,6 @@ public class RegressionGenericLocator
 				if (programLocator.isDisplayed())
 				{
 					Thread.sleep(400);
-					JavascriptExecutor jse2 = (JavascriptExecutor) driver;
 					wait.until(ExpectedConditions.elementToBeClickable(
 							By.cssSelector("div[class='CourseDescription_infoBoxText__w49c3'] a")));
 					// jse2.executeScript("arguments[0].scrollIntoView()", programLocator);
@@ -1488,7 +1468,6 @@ public class RegressionGenericLocator
 			{
 				clickDashboard.click();
 				
-				String parentWindow = driver.getWindowHandle();
 				Set<String> windows = driver.getWindowHandles();
 				for(String window : windows)
 				{
@@ -1515,7 +1494,6 @@ public class RegressionGenericLocator
 			{
 				clickProfile.click();
 				
-				String parentWindow = driver.getWindowHandle();
 				Set<String> windows = driver.getWindowHandles();
 				for(String window : windows)
 				{
@@ -1541,7 +1519,6 @@ public class RegressionGenericLocator
 			{
 				clickAccount.click();
 				
-				String parentWindow = driver.getWindowHandle();
 				Set<String> windows = driver.getWindowHandles();
 				for(String window : windows)
 				{

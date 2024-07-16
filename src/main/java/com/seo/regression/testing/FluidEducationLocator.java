@@ -118,7 +118,7 @@ public class FluidEducationLocator
 				for(String windows : allWindows)
 				{
 					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("twitter"))
+					if(driver.getCurrentUrl().contains("x.com"))
 					{
 						driver.switchTo().window(windows);
 						System.out.println("twitter verified");
@@ -350,7 +350,7 @@ public class FluidEducationLocator
 				}
 				
 				WebElement urlLink = ListOfProgram.get(i).findElement(By.cssSelector(" a"));
-				String statusOfURL = microsoftCourseLocator.checkCourseCode(urlLink.getAttribute("href"));
+				String statusOfURL = microsoftCourseLocator.checkURLStatus(urlLink.getAttribute("href"));
 				if(!statusOfURL.contains("fail"))
 				{
 					String parentwindow = driver.getWindowHandle();

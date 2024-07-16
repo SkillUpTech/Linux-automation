@@ -24,11 +24,6 @@ public class HeaderSectionLocator
 	{
 		this.driver = driver;
 	}
-	public String getDriverDetails()
-	{
-		String driverName =	OpenWebsite.openSite(driver)+"/";
-		return driverName;
-	}
 	public String checkSkillupLogo() throws InterruptedException
 	{
 		String status = "fail";
@@ -84,7 +79,7 @@ public class HeaderSectionLocator
 				}
 			}
 			driver.switchTo().window(parentWindow);
-			if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
+			if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost+"/"))
 			{
 				status = "success";
 			}
@@ -120,7 +115,7 @@ public class HeaderSectionLocator
 				if(driver.getCurrentUrl().contains("enterprise"))
 				{
 					status = "success";
-					driver.get(getDriverDetails());
+					driver.get(OpenWebsite.setHost+"/");
 					break;
 				}
 			}
@@ -138,7 +133,7 @@ public class HeaderSectionLocator
 				break;
 			}
 		}
-		if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
+		if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost+"/"))
 		{
 			status = "success";
 		}
@@ -172,7 +167,7 @@ public class HeaderSectionLocator
 					{
 						System.out.println("In blog window, url changed as stage to blog");
 						status = "success";
-						driver.get(getDriverDetails());
+						driver.get(OpenWebsite.setHost+"/");
 					//	Thread.sleep(1000);
 						break;
 					}
@@ -199,7 +194,7 @@ public class HeaderSectionLocator
 	
 	}
 
-	public ArrayList<String> checkCategories(ArrayList<String> data)
+	public ArrayList<String> checkCategories()
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		System.out.println("categories validation started");
@@ -208,12 +203,11 @@ public class HeaderSectionLocator
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement  clickCourseDropdown = driver.findElement(By.cssSelector("ul[class='navbar-nav nav '] a#navbarDropdown"));
 			clickCourseDropdown.click();
-			//Thread.sleep(4000);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 			List<WebElement> selectCourse = driver.findElements(By.cssSelector("ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='MainCatE catcolumn divbox1']>ul[class='categorylist customscroll dropdown-submenu']>li"));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			for(int i = 0; i < selectCourse.size(); i++)
+			for(int i = 0; i <selectCourse.size(); i++)
 			{	
 				if(i>0)
 				{
@@ -228,10 +222,8 @@ public class HeaderSectionLocator
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				WebElement categoryElement = selectCourse.get(i).findElement(By.cssSelector(" a"));
 				js.executeScript("arguments[0].scrollIntoView();", categoryElement);
+			//	String categoryName = selectCourse.get(i).findElement(By.cssSelector(" a")).getText();
 				
-				if(categoryElement.isDisplayed())
-				{
-					//driver.findElement(By.cssSelector("div[class=' Header_category__mr_e4']")).click();
 					String getCatagoriesURL = selectCourse.get(i).findElement(By.cssSelector(" a")).getAttribute("href");
 					String urlLinkStatus = this.checkURLStatus(getCatagoriesURL);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
@@ -243,30 +235,28 @@ public class HeaderSectionLocator
 					}
 					else
 					{
-						status.add("pass");
-					}
-					String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
-					selectCourse.get(i).findElement(By.cssSelector(" a")).sendKeys(n);
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					String parentWindow = driver.getWindowHandle();
-					Set<String> windows = driver.getWindowHandles();
-					for(String allWindows : windows)
-					{
-						driver.switchTo().window(allWindows);
-						if(!parentWindow.equalsIgnoreCase(allWindows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+						String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
+						selectCourse.get(i).findElement(By.cssSelector(" a")).sendKeys(n);
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+						String parentWindow = driver.getWindowHandle();
+						Set<String> windows = driver.getWindowHandles();
+						for(String allWindows : windows)
 						{
 							driver.switchTo().window(allWindows);
-							System.out.println(driver.getCurrentUrl());
-							driver.close();
-							driver.switchTo().window(parentWindow);
-						}
-						else if(driver.getCurrentUrl().contains("data"))
-						{
-							driver.close();
+							if(!parentWindow.equalsIgnoreCase(allWindows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+							{
+								driver.switchTo().window(allWindows);
+								System.out.println(driver.getCurrentUrl());
+								driver.close();
+								driver.switchTo().window(parentWindow);
+							}
+							else if(driver.getCurrentUrl().contains("data"))
+							{
+								driver.close();
+							}
 						}
 					}
 				}
-			}
 		}
 		catch(Exception e)
 		{
@@ -276,15 +266,15 @@ public class HeaderSectionLocator
 		return status;
 	}
 
-	public ArrayList<String> checkPopularCourses(ArrayList<String> data)
+	public ArrayList<String> checkPopularCourses()
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
 			System.out.println("popular course validation started");
-			if(!driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost+"/"))
 			{
-				driver.get(getDriverDetails());
+				driver.get(OpenWebsite.setHost+"/");
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			}
 			else
@@ -310,33 +300,33 @@ public class HeaderSectionLocator
 					}
 				}
 				String popularCourseName = popularCourses.get(i).findElement(By.cssSelector(" p")).getText();
-				if( popularCourses.get(i).isDisplayed())
-				{
 					
 					String getPopularCourseURL = popularCourses.get(i).findElement(By.cssSelector(" a")).getAttribute("href");
 					String urlLinkStatus = this.checkURLStatus(getPopularCourseURL);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					if(urlLinkStatus.equalsIgnoreCase("fail"))
 					{
-						status.add(popularCourses.get(i).getText());
+						status.add(popularCourseName);
 					}
-					 String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
-					 popularCourses.get(i).findElement(By.cssSelector(" a")).sendKeys(n);
-					 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+					else
+					{
+						String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
+						popularCourses.get(i).findElement(By.cssSelector(" a")).sendKeys(n);
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-					 String parentWindow = driver.getWindowHandle();
-					 Set<String> windows = driver.getWindowHandles();
-					 for(String allWindows : windows)
-					 {
-						 if(!parentWindow.equalsIgnoreCase(allWindows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-						 {
-							 driver.switchTo().window(allWindows);
-							 System.out.println(driver.getCurrentUrl());
-							 driver.close();
-							 driver.switchTo().window(parentWindow);
-						 }
-					 }
-				}
+						String parentWindow = driver.getWindowHandle();
+						Set<String> windows = driver.getWindowHandles();
+						for(String allWindows : windows)
+						{
+							if(!parentWindow.equalsIgnoreCase(allWindows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+							{
+								driver.switchTo().window(allWindows);
+								System.out.println(driver.getCurrentUrl());
+								driver.close();
+								driver.switchTo().window(parentWindow);
+							}
+						}
+					}
 				}
 				
 		}
@@ -414,7 +404,7 @@ public class HeaderSectionLocator
 				if(driver.getCurrentUrl().contains("register"))
 				{
 					System.out.println("signup window");
-					driver.get(getDriverDetails());
+					driver.get(OpenWebsite.setHost+"/");
 				}	
 				break;
 			}
@@ -466,7 +456,7 @@ public class HeaderSectionLocator
 		}
 		return urlStatus;
 	}
-	public ArrayList<String> verifyLearningPartner(ArrayList<String> data)
+	public ArrayList<String> verifyLearningPartner()
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		try
@@ -493,37 +483,35 @@ public class HeaderSectionLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 					}
 				}
-				String learningPartnerName = learningPartners.get(i).getAttribute("href");
-					if(learningPartners.get(i).isDisplayed())
-					{
 						String getLearningPartnerURL = learningPartners.get(i).getAttribute("href");
 						String urlLinkStatus = this.checkURLStatus(getLearningPartnerURL);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						if(urlLinkStatus.equalsIgnoreCase("fail"))
 						{
-							status.add(data.get(i+1));
+							status.add(getLearningPartnerURL);
 						}
-						
-						String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
-						learningPartners.get(i).sendKeys(n);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-						String parentWindow = driver.getWindowHandle();
-						Set<String> childWnidow = driver.getWindowHandles();
-						for(String windows : childWnidow)
+						else
 						{
-							if(!parentWindow.equalsIgnoreCase(windows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+							String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
+							learningPartners.get(i).sendKeys(n);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+							String parentWindow = driver.getWindowHandle();
+							Set<String> childWnidow = driver.getWindowHandles();
+							for(String windows : childWnidow)
 							{
-								driver.switchTo().window(windows);
-								System.out.println(driver.getCurrentUrl());
-								driver.close();
-								driver.switchTo().window(parentWindow);
-								break;
+								if(!parentWindow.equalsIgnoreCase(windows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+								{
+									driver.switchTo().window(windows);
+									System.out.println(driver.getCurrentUrl());
+									driver.close();
+									driver.switchTo().window(parentWindow);
+									break;
+								}
 							}
 						}
 					}
-				}
 		}
 		catch(Exception e)
 		{

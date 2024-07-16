@@ -295,22 +295,58 @@ public class ExploreAllLocator
 					status.add("result");
 				}
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(500));
-				WebElement alertContent = baseLocatorForResult.findElement(By.cssSelector(" div[class*='CourseSection_alertContent'] h3"));
-				js.executeScript("arguments[0].scrollIntoView();", alertContent);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				
-				if(alertContent.isDisplayed())
-				{ 
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-					String getTextFromAlertContent = alertContent.getText();
-					System.out.println("help content : "+getTextFromAlertContent);
-					if(getTextFromAlertContent.contains("Help"))
-					status.add("pass");
-				}
-				else
+				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30)); // Adjust the timeout as needed
+				try
 				{
-					status.add("content");
+					 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+			            // Wait for the alert content to be present and visible
+			            WebElement alertContent = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[contains(text(),'Help us find the right course for you.')]")));
+
+			            // Scroll into view
+			            js.executeScript("arguments[0].scrollIntoView();", alertContent);
+
+			            // Re-check the visibility to ensure it's still there
+			            alertContent = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[contains(text(),'Help us find the right course for you.')]")));
+
+					
+					
+					if(alertContent.isDisplayed())
+					{
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+						String getTextFromAlertContent = alertContent.getText();
+						System.out.println("help content : "+getTextFromAlertContent);
+						if(getTextFromAlertContent.contains("Help"))
+						{
+							status.add("pass");
+						}
+					}
+					else
+					{
+						status.add("content");
+					}	
 				}
+				catch(Exception e)
+				{
+					try {
+		                WebElement alertContent = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[contains(text(),'Help us find the right course for you.')]")));
+		                js.executeScript("arguments[0].scrollIntoView();", alertContent);
+
+		                if (alertContent.isDisplayed()) {
+		                    String getTextFromAlertContent = alertContent.getText();
+		                    System.out.println("Help content: " + getTextFromAlertContent);
+		                    if (getTextFromAlertContent.contains("Help")) {
+		                        status.add("pass");
+		                    }
+		                } else {
+		                    status.add("content");
+		                }
+		            } catch (Exception ex) {
+		                ex.printStackTrace();
+		            }
+		        } 
+				
 				 
 				System.out.println("clear all icon is clicked");
 			}
@@ -333,6 +369,7 @@ public class ExploreAllLocator
 			try
 			{
 				String categoryName = "";
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 				WebElement baseLocatorForClearAll = driver.findElement(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
 				js.executeScript("arguments[0].scrollIntoView();", baseLocatorForClearAll);
 				List<WebElement> listOfCategories = baseLocatorForClearAll.findElements(By.cssSelector(" div[class='accordion']:nth-child(1) div[class='accordion-collapse collapse show'] div[class*='CourseSection_checkbox'] input"));
@@ -594,10 +631,12 @@ public class ExploreAllLocator
 					JavascriptExecutor jse2 = (JavascriptExecutor) driver;
 					jse2.executeScript("window.scrollBy(0, -document.body.scrollHeight)","");
 					
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-					WebElement baseLocator_ClearAll = driver.findElement(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
-					js.executeScript("arguments[0].scrollIntoView();", baseLocator_ClearAll);
-					WebElement click_ClearAll = baseLocator_ClearAll.findElement(By.cssSelector(" div[class*='CourseSection_filterSection'] div[class*='flex CourseSection_filterTop'] button"));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
+					
+					//WebElement baseLocator_ClearAll = driver.findElement(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
+					//js.executeScript("arguments[0].scrollIntoView();", baseLocator_ClearAll);
+					
+					WebElement click_ClearAll = driver.findElement(By.xpath("//section[contains(@class,'CourseSection_mainContent')]//div[contains(@class,'CourseSection_containerInnerFilter')]/div[3]//button[contains(text(),'Clear All')]"));
 					js.executeScript("arguments[0].scrollIntoView();", click_ClearAll);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 					
@@ -720,9 +759,9 @@ public class ExploreAllLocator
 					js.executeScript("window.scrollBy(0, -document.body.scrollHeight)","");
 					
 					//section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])
-					WebElement baseLocator_ClearAll = driver.findElement(By.cssSelector(" div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
-					js.executeScript("arguments[0].scrollIntoView();", baseLocator_ClearAll);
-					WebElement click_ClearAll = baseLocator_ClearAll.findElement(By.cssSelector(" div[class*='CourseSection_filterSection'] div[class*='flex CourseSection_filterTop'] button"));
+				//	WebElement baseLocator_ClearAll = driver.findElement(By.cssSelector("//section[contains(@class,'CourseSection_mainContent')]//div[contains(@class,'CourseSection_containerInnerFilter')]/div[3]//button[contains(text(),'Clear All')]"));
+				//	js.executeScript("arguments[0].scrollIntoView();", baseLocator_ClearAll);
+					WebElement click_ClearAll = driver.findElement(By.xpath("//section[contains(@class,'CourseSection_mainContent')]//div[contains(@class,'CourseSection_containerInnerFilter')]/div[3]//button[contains(text(),'Clear All')]"));
 					js.executeScript("arguments[0].scrollIntoView();", click_ClearAll);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 					
@@ -841,9 +880,9 @@ public class ExploreAllLocator
 					js.executeScript("window.scrollBy(0, -document.body.scrollHeight)","");
 					
 					
-					WebElement baseLocator_ClearAll = driver.findElement(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
-					js.executeScript("arguments[0].scrollIntoView(true);", baseLocator_ClearAll);
-					WebElement click_ClearAll = baseLocator_ClearAll.findElement(By.cssSelector(" div[class*='CourseSection_filterSection'] div[class*='flex CourseSection_filterTop'] button"));
+					//WebElement baseLocator_ClearAll = driver.findElement(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
+					//js.executeScript("arguments[0].scrollIntoView(true);", baseLocator_ClearAll);
+					WebElement click_ClearAll = driver.findElement(By.xpath("//section[contains(@class,'CourseSection_mainContent')]//div[contains(@class,'CourseSection_containerInnerFilter')]/div[3]//button[contains(text(),'Clear All')]"));
 					js.executeScript("arguments[0].scrollIntoView(true);", click_ClearAll);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 					

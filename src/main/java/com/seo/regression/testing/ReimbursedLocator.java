@@ -32,7 +32,7 @@ public class ReimbursedLocator
 		try
 		{
 			url = OpenWebsite.setURL+data;
-			String urlStatus = microsoftCourseLocator.checkCourseCode(url);
+			String urlStatus = microsoftCourseLocator.checkURLStatus(url);
 			if(!urlStatus.contains("fail"))
 			{
 				driver.switchTo().newWindow(WindowType.TAB);

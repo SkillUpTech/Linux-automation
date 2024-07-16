@@ -58,112 +58,96 @@ public class CategoryBannerLocator
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		boolean process = false;
+		boolean checkStatus = false;
 		try
 		{
 			for(int i = 1; i < data.size(); i++)
 			{
 				String urlStatus = this.checkURLStatus(OpenWebsite.setHost+data.get(i));
+				
 				if(!urlStatus.contains("fail"))
 				{
 					driver.get(OpenWebsite.setHost+data.get(i));
 					
 					List<WebElement> banners = driver.findElements(By.xpath("//ul[@class='slick-dots']/li/button"));
 					
-					for(int j = 0; j < banners.size(); j++)
+					for(int j = 1; j <= banners.size(); j++)
 					{
-						Thread.sleep(1000);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-						Thread.sleep(100);
-						int attempts = 0;
-						 while (attempts < 3) {
-						        try {
-						        	driver.findElement(By.xpath("//ul[@class='slick-dots']/li["+(j+1)+"]/button"));
-						            break;
-						        } catch (StaleElementReferenceException e) {
-						        	driver.findElement(By.xpath("//ul[@class='slick-dots']/li["+(j+1)+"]/button")); // re-locate the element
-						        }
-						        attempts++;
-						    }
 						
-						
-						if(driver.findElement(By.xpath("//ul[@class='slick-dots']/li["+(j+1)+"]/button")).isDisplayed())
+						if(driver.findElements(By.xpath("//ul[@class='slick-dots']/li["+(j)+"]/button")).size()>0)
 						{
-							WebElement checkActiveBanner = driver.findElement(By.xpath("//ul[@class='slick-dots']/li["+(j+1)+"]/button"));
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+							
+							WebElement checkActiveBanner = driver.findElement(By.xpath("//ul[@class='slick-dots']/li["+j+"]/button"));
 							
 							js.executeScript("arguments[0].scrollIntoView();", checkActiveBanner);
 							
-							if(process == true)
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+							
+							js.executeScript("arguments[0].click()", checkActiveBanner);
+							
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+							
+								
+							if(driver.findElements(By.xpath("//div[@class='slick-slide slick-active slick-current']//button[contains(text(),'Download Whitepaper')]")).size()>0)
 							{
-								js.executeScript("arguments[0].click()", checkActiveBanner);
-
-								WebElement clickButton = driver.findElement(By.xpath("//div[@class='slick-slide slick-active slick-current'][@data-index='1']//button[contains(text(),'Download Brochure')]"));
-								if(clickButton.getText().equalsIgnoreCase("Download Brochure"))
+								checkStatus = true;
+								Thread.sleep(1000);
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+								WebElement clickWhitepaper = driver.findElement(By.xpath("//div[@class='slick-slide slick-active slick-current']//button[contains(text(),'Download Whitepaper')]"));
+								js.executeScript("arguments[0].scrollIntoView();", clickWhitepaper);
+								js.executeScript("arguments[0].click()", clickWhitepaper);
+								String parent = driver.getWindowHandle();
+								Set<String> windows = driver.getWindowHandles();
+								for(String window : windows)
 								{
-									js.executeScript("arguments[0].click()", clickButton);
-									String parent = driver.getWindowHandle();
-									Set<String> windows = driver.getWindowHandles();
-									for(String window : windows)
+									driver.switchTo().window(window);
+									
+									if(driver.getCurrentUrl().contains("whitepaper"))
 									{
 										driver.switchTo().window(window);
-										if(driver.getCurrentUrl().contains("techmaster"))
-										{
-											driver.switchTo().window(window);
-											System.out.println("Broucher page : "+driver.getCurrentUrl());
-											status.add("pass");
-											Thread.sleep(1000);
-											driver.navigate().back();
-											Thread.sleep(1000);
-											driver.switchTo().window(parent);
-											Thread.sleep(1000);
-										}
-									}
-									driver.switchTo().window(parent);
-									Thread.sleep(1000);
-									break;
-								}
-							
-							}
-							else if(process == false)
-							{
-								List<WebElement> clickButton = driver.findElements(By.xpath("//button[contains(@class,'CareerUpdate_downloadButton')]"));
-								for(int k = 0; k < clickButton.size(); k++)
-								{
-									if(clickButton.get(k).getText().equalsIgnoreCase("Download Whitepaper"))
-									{
-										js.executeScript("arguments[0].click()", clickButton.get(k));
-										String parent = driver.getWindowHandle();
-										Set<String> windows = driver.getWindowHandles();
-										for(String window : windows)
-										{
-											driver.switchTo().window(window);
-											if(driver.getCurrentUrl().contains("whitepaper"))
-											{
-												driver.switchTo().window(window);
-												System.out.println("whitepaper page : "+driver.getCurrentUrl());
-												process = true;
-												status.add("pass");
-												Thread.sleep(500);
-												driver.navigate().back();
-												Thread.sleep(2000);
-												driver.switchTo().window(parent);
-												Thread.sleep(1000);
-											}
-										}
+										
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+										System.out.println("whitepaper page : "+driver.getCurrentUrl());
+										status.add("pass");
+										driver.navigate().back();
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 										driver.switchTo().window(parent);
-										Thread.sleep(1000);
-										break;
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 									}
-									
 								}
+									driver.switchTo().window(parent);
+							}
+							else if(driver.findElements(By.xpath("//div[@class='slick-slide slick-active slick-current']//button[contains(text(),'Download Brochure')]")).size()>0)
+							{
+								Thread.sleep(1000);
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+								WebElement clickBrochureButton = driver.findElement(By.xpath("//div[@class='slick-slide slick-active slick-current']//button[contains(text(),'Download Brochure')]"));
+								js.executeScript("arguments[0].scrollIntoView();", clickBrochureButton);
+								js.executeScript("arguments[0].click()", clickBrochureButton);
+								String parent = driver.getWindowHandle();
+								Set<String> windows = driver.getWindowHandles();
+								for(String window : windows)
+								{
+									driver.switchTo().window(window);
+									
+									if(driver.getCurrentUrl().contains("techmaster"))
+									{
+										driver.switchTo().window(window);
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+										System.out.println("Broucher page : "+driver.getCurrentUrl());
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+										status.add("pass");
+										driver.navigate().back();
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+										driver.switchTo().window(parent);
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+									}
+								}
+								driver.switchTo().window(parent);
 							}
 						}
-						Thread.sleep(1000);
-					}
-				}
-				else
-				{
-					System.out.println("issue in url"+data.get(i+1));
+					}	
 				}
 			}
 		}
