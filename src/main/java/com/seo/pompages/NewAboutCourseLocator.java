@@ -935,14 +935,11 @@ String addHosturl;
 						for(String handle : windows)
 						{
 							driver.switchTo().window(handle);
-							if(!handle.equals(parentWindow))
+							if(driver.getCurrentUrl().contains("linkedin"))
 							{
 								driver.switchTo().window(handle);
 								System.out.println("LinkedIn URL for Experts: "+driver.getCurrentUrl());
-								if(!driver.getCurrentUrl().equalsIgnoreCase(this.setHost+"/"))
-								{
-									driver.close();
-								}
+								driver.close();
 								driver.switchTo().window(parentWindow);
 							}
 						}
@@ -1251,8 +1248,10 @@ String addHosturl;
 		try
 		{
 			System.out.println("SEO Page Validation started");
-			String getpath = driver.getCurrentUrl();
-			getPathFromURL = getpath.replace(setHost, "");
+			String getCurrentURL = driver.getCurrentUrl();
+			URL getHostURL = new URL(getCurrentURL);
+			 String hostUrlInfo = getHostURL.getProtocol() + "://" + getHostURL.getHost();
+			getPathFromURL = getCurrentURL.replace(hostUrlInfo, "");
 		}
 		catch(Exception e)
 		{
