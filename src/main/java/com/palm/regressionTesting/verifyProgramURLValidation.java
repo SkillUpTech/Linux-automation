@@ -37,7 +37,7 @@ public class verifyProgramURLValidation implements Callable<String>
 		{
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
-		com.seo.regression.testing.OpenWebsite.openSite(driver);
+		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);

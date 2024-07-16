@@ -68,7 +68,7 @@ public class CourseLevelLocators
 												if(checkStartDate.size()>0)
 												{
 													js.executeScript("arguments[0].scrollIntoView();", checkStartDate.get(j));
-													if(checkStartDate.get(j).getText().contains("Starts on"))
+													if(checkStartDate.get(j).getText().contains("Starts on"))//self paced  level data validation
 													{
 														status.add(url);
 														System.out.println("starts on date presented for Self paced course");
@@ -123,7 +123,7 @@ public class CourseLevelLocators
 				{
 					WebElement checkCourseCardLevelVILT = driver.findElement(By.xpath("//div[contains(@class,'RegularCourseCard_courseHeading')]/ul/li[1]"));
 					js.executeScript("arguments[0].scrollIntoView();", checkCourseCardLevelVILT);
-					if(checkCourseCardLevelVILT.getText().contains("vILT"))
+					if(checkCourseCardLevelVILT.getText().contains("vILT")||checkCourseCardLevelVILT.getText().contains("Instructor-Led"))
 					{
 						System.out.println("VILT paced course card");
 						String parentWindow = driver.getWindowHandle();
@@ -145,8 +145,17 @@ public class CourseLevelLocators
 								if(driver.getCurrentUrl().contains("courses"))
 								{
 									driver.switchTo().window(window);
-									WebElement checkStartDate = driver.findElement(By.xpath("//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[@class='d-flex gap-2'][1]//h2"));
-									js.executeScript("arguments[0].scrollIntoView();", checkStartDate);
+									if(driver.findElements(By.xpath("//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[@class='d-flex gap-2'][1]//h2")).size()>0)
+									{
+										System.out.println("starts on date not presented for Blended course may be invite only vourse");
+										driver.close();
+										driver.switchTo().window(parentWindow);
+										break;
+									}
+									else
+									{
+										WebElement checkStartDate = driver.findElement(By.xpath("//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[@class='d-flex gap-2'][1]//h2"));
+										js.executeScript("arguments[0].scrollIntoView();", checkStartDate);
 										
 										if(!checkStartDate.getText().contains("Starts on"))
 										{
@@ -156,6 +165,7 @@ public class CourseLevelLocators
 											driver.switchTo().window(parentWindow);
 											break;
 										}
+									}
 									}
 								}
 							}
@@ -172,7 +182,71 @@ public class CourseLevelLocators
 					}
 				}
 
-			
+			List<WebElement> courseCardsBlended = driver.findElements(By.xpath("//section[contains(@class,'Courses_mainSection')]/div/div[@class='row'][2]//div[contains(@class,'LearningCatalog_browserCard')]"));
+			for(int i = 0; i < courseCardsBlended.size(); i++)
+			{
+				if(courseCardsBlended.size()>0)
+				{
+					WebElement checkCourseCardLevelBlended = driver.findElement(By.xpath("//div[contains(@class,'RegularCourseCard_courseHeading')]/ul/li[1]"));
+					js.executeScript("arguments[0].scrollIntoView();", checkCourseCardLevelBlended);
+					if(checkCourseCardLevelBlended.getText().contains("BLENDED"))
+					{
+						System.out.println("Blended  course card");
+						String parentWindow = driver.getWindowHandle();
+						WebElement BlendedcardLink = checkCourseCardLevelBlended.findElement(By.xpath(".//ancestor::a"));
+						String url = BlendedcardLink.getAttribute("href");
+						js.executeScript("arguments[0].scrollIntoView();", BlendedcardLink);
+						if(BlendedcardLink.isDisplayed())
+						{
+							String urlStatus = ibmPageLocator.checkURLStatus(url);
+							
+							if(!urlStatus.contains("fail"))
+							{
+							driver.switchTo().newWindow(WindowType.TAB);
+							driver.get(url);
+							Set<String> allWindow = driver.getWindowHandles();
+							for(String window : allWindow)
+							{
+								driver.switchTo().window(window);
+								if(driver.getCurrentUrl().contains("courses"))
+								{
+									driver.switchTo().window(window);
+									if(driver.findElements(By.xpath("//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[@class='d-flex gap-2'][1]//h2")).size()>0)
+									{
+										System.out.println("starts on date not presented for Blended course may be invite only vourse");
+										driver.close();
+										driver.switchTo().window(parentWindow);
+										break;
+									}
+									else
+									{
+										WebElement checkStartDate = driver.findElement(By.xpath("//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[@class='d-flex gap-2'][1]//h2"));
+										js.executeScript("arguments[0].scrollIntoView();", checkStartDate);
+										
+										if(!checkStartDate.getText().contains("Starts on")||checkStartDate.getText().contains("Starts on"))
+										{
+											System.out.println("starts on date not presented for Blended course");
+											status.add(url+" : starts on date not presented for Blended course");
+											driver.close();
+											driver.switchTo().window(parentWindow);
+											break;
+										}
+									}
+									}
+								}
+							}
+						}
+						else
+						{
+							System.out.println("url facing issue : "+url);
+							status.add(url+" : issue on url");
+							driver.close();
+							driver.switchTo().window(parentWindow);
+							break;
+						}
+						}
+					}
+				}
 		}
 		catch(Exception e)
 		{
@@ -340,7 +414,7 @@ public class CourseLevelLocators
 														}
 														
 													}
-													else if(checkLevel.getText().equalsIgnoreCase("vILT")||checkLevel.getText().equalsIgnoreCase("INSTRUCTOR"))
+													else if(checkLevel.getText().equalsIgnoreCase("vILT")||checkLevel.getText().equalsIgnoreCase("Instructor-Led"))
 													{
 														
 														if(driver.findElements(By.cssSelector("div[class*='CourseDescription_courseAboutTextSection']>h2")).size()>0)//VERIFYING starts on date is available or not

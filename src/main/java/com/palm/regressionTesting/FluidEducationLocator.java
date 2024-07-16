@@ -118,7 +118,7 @@ public class FluidEducationLocator
 				for(String windows : allWindows)
 				{
 					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("twitter"))
+					if(driver.getCurrentUrl().contains("x.com"))
 					{
 						driver.switchTo().window(windows);
 						System.out.println("twitter verified");
