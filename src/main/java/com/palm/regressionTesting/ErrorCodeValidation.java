@@ -20,7 +20,7 @@ public class ErrorCodeValidation implements Callable<String>
 	ErrorCodeLocator errorCodeLocator;
 	String sheetStatus = "Pass";
 	
-	public ErrorCodeValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver)
+	public ErrorCodeValidation(ArrayList<ArrayList<String>> sheetData)
 	{
 		this.sheetData = sheetData;
 	}
