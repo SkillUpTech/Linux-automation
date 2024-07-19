@@ -74,6 +74,10 @@ public class IBMPageLocator
 						processStatus.add(url);
 						break;
 					}
+					else
+					{
+						learningPartners.get(i).click();
+					}
 				}
 			}
 		}

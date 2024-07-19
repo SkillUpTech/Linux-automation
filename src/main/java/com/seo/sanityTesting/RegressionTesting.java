@@ -32,7 +32,7 @@ public class RegressionTesting
 	public static String ENV_TO_USE = "";
 	String getEnvironment = "";
 	WebDriver driver;
-	public static String  driverPath = "/usr/local/bin/chromedriver";
+	public static String  driverPath = "C:\\Users\\Hemamalini\\Downloads\\125driver\\chromedriver-win64\\chromedriver.exe";
 	
 	@BeforeTest
 	@Parameters({"browser","env"})
@@ -95,7 +95,7 @@ public class RegressionTesting
 	
 	public void startTesting()
 	{
-		String excelPath = "/home/edx-root/Downloads/sanityTesting.xlsx";
+		String excelPath = "D:\\Doc\\SanityTesting.xlsx";
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		try

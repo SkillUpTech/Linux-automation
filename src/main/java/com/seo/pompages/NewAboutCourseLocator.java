@@ -30,6 +30,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.regression.utility.TestUtil;
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.regression.testing.OpenWebsite;
+import com.seo.regression.testing.RegressionTesting;
 
 
 public class NewAboutCourseLocator
@@ -56,7 +57,7 @@ public class NewAboutCourseLocator
 	}
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+		System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
 		options.addArguments("--disable notifications");

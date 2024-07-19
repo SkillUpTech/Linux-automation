@@ -1,119 +1,30 @@
 package com.palm.sanityTesting;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class FooterSectionValidation
+import com.palm.regressionTesting.RegressionTesting;
+import com.regression.utility.TestUtil;
+
+public class FooterSectionValidation implements Callable<String>
 {
 	WebDriver driver;
 	ArrayList<ArrayList<String>> sheetData = null;
 	FooterSectionLocator footerSectionLocator;
 	String sheetStatus = "Pass";
-	public FooterSectionValidation(ArrayList<ArrayList<String>> sheetData , WebDriver driver) throws InterruptedException
+	public FooterSectionValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		this.driver = driver;
-		this.footerSectionLocator = new FooterSectionLocator(driver);
-		System.out.println("footer section process started");
 	}
 	
-	public String start() throws InterruptedException
-	{
-		try
-		{
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
-		for(int i = 0; i < this.sheetData.size(); i++)
-		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
-			{
-				case "skillupLogo":
-					checkSkillupLogo();
-					break;
-				case "twitter":
-					twitter();
-					break;
-				case "facebook":
-					facebook();
-					break;
-				case "linkedIn":
-					linkedIn();
-					break;
-				case "instagram":
-					instagram();
-					break;
-				case "contactUs":
-					contactUs();
-					break;
-				case "aboutSkillupOnline":
-					aboutSkillupOnline();
-					break;
-				case "business":
-					business();
-					break;
-				case "faq":
-					faq();
-					break;
-				case "privacyPolicy":
-					privacyPolicy();
-					break;
-				case "termsOfservice":
-					verifyTermsofService();
-					break;
-				case "blog":
-					verifyBlog(row);
-					break;
-				case "popularCategories":
-					verifyPopularCategories(row);
-					break;
-				case "popularCourses":
-					verifyPopularCourses(row);
-					break;
-				case "latestBlogs":
-					verifyLatestBlogs(row);
-					break;
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
-	}
 	String footerSectionURL ="success";
 	
 	public void checkSkillupLogo() throws InterruptedException
@@ -290,6 +201,127 @@ public class FooterSectionValidation
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(14).set(position, (cellValue + " - failed"));
 			}
 		}
+	}
+	public WebDriver openDriver(String browserName)
+	{
+		WebDriver driver = null;
+		if(browserName.equalsIgnoreCase("Chrome"))
+		{
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--disable notifications");
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		else if(browserName.equalsIgnoreCase("firefox"))
+		{
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
+			driver = new FirefoxDriver(); 
+			driver.manage().window().maximize();
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		return driver;
+	}
+	@Override
+	public String call() throws Exception {
+
+		try
+		{
+		driver = this.openDriver(com.palm.sanityTesting.RegressionTesting.nameOfBrowser);
+		com.palm.sanityTesting.OpenWebsite.openSite(driver);
+		this.footerSectionLocator = new FooterSectionLocator(driver);
+		String BaseWindow = driver.getWindowHandle();
+		for(int i = 0; i < this.sheetData.size(); i++)
+		{
+			ArrayList<String> row = this.sheetData.get(i);
+			String firstColumn = row.get(0);
+			switch(firstColumn)
+			{
+				case "skillupLogo":
+					checkSkillupLogo();
+					break;
+				case "twitter":
+					twitter();
+					break;
+				case "facebook":
+					facebook();
+					break;
+				case "linkedIn":
+					linkedIn();
+					break;
+				case "instagram":
+					instagram();
+					break;
+				case "contactUs":
+					contactUs();
+					break;
+				case "aboutSkillupOnline":
+					aboutSkillupOnline();
+					break;
+				case "business":
+					business();
+					break;
+				case "faq":
+					faq();
+					break;
+				case "privacyPolicy":
+					privacyPolicy();
+					break;
+				case "termsOfservice":
+					verifyTermsofService();
+					break;
+				case "blog":
+					verifyBlog(row);
+					break;
+				case "popularCategories":
+					verifyPopularCategories(row);
+					break;
+				case "popularCourses":
+					verifyPopularCourses(row);
+					break;
+				case "latestBlogs":
+					verifyLatestBlogs(row);
+					break;
+			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		driver.quit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+	
 	}
 
 

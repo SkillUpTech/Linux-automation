@@ -120,6 +120,10 @@ public class HomepageLocator
 					{
 						verifyPocess.add(partnerList.get(i).getText()+urlLinkStatus);
 					}
+					else
+					{
+						System.out.println("LearningPartners : "+partnerURL);
+					}
 			}
 		}
 		catch(Exception e)
@@ -148,6 +152,10 @@ public class HomepageLocator
 				
 				verifyPocess.add(status);
 			}
+			else
+			{
+				System.out.println("LearningCatalog : "+checkCourse);
+			}
 			
 		}
 		return verifyPocess;
@@ -168,6 +176,10 @@ public class HomepageLocator
 				{
 					verifyProcess.add(courseLink + urlStatus);
 				}
+				else
+				{
+					System.out.println("LearningHumanSkills : "+courseLink);
+				}
 			}
 		}
 		return verifyProcess;
@@ -187,6 +199,10 @@ public class HomepageLocator
 				if(urlLink.contains("fail"))
 				{
 					verifyPocess.add(getCourseLink+urlLink);
+				}
+				else
+				{
+					System.out.println("TopTechCategories : "+getCourseLink);
 				}
 			}
 		}

@@ -48,6 +48,10 @@ public class MicrosoftCourseLocator
 						processStatus.add(url);
 						break;
 					}
+					else
+					{
+						learningPartners.get(i).click();
+					}
 				}
 			}
 		}
@@ -95,7 +99,7 @@ public class MicrosoftCourseLocator
 	{
 		ArrayList<String> processStatus = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
 		
 		try
 		{

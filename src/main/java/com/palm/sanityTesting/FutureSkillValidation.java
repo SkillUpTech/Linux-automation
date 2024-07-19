@@ -16,30 +16,96 @@ import com.palm.regressionTesting.OpenWebsite;
 import com.palm.regressionTesting.RegressionTesting;
 import com.regression.utility.TestUtil;
 
-public class FutureSkillValidation
+public class FutureSkillValidation  implements Callable<String>
 {
 	ArrayList<ArrayList<String>> sheetData = null;
 	WebDriver driver;
 	FutureSkillLocator futureSkillLocator;
 	String sheetStatus = "Pass";
 
-	public FutureSkillValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver)
+	public FutureSkillValidation(ArrayList<ArrayList<String>> sheetData)
 	{
 		
 		this.sheetData = sheetData;
-		this.futureSkillLocator = new FutureSkillLocator(driver);
-		OpenWebsite.openSite(driver);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-		System.out.println("Onboarding Journey Process started");
+		
 	}
 
-	public String start() throws InterruptedException
+	
+	
+	public void launchSite(String url)
 	{
+		String status = futureSkillLocator.launchSite(url);
+		if(status.contains("fail"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(0).set(0, "url - failed");
+		}
+	}
+	public void findOutMore_Button()
+	{
+		String status = futureSkillLocator.findOutMore_Button();
+		if(status.contains("fail"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(1).set(0, "findOutMore_Button - failed");
+		}
+	}
+	public void learnmore_Button()
+	{
+		String status = futureSkillLocator.learnmore_Button();
+		if(status.contains("fail"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(2).set(0, "findOutMore_Button - failed");
+		}
+	}
+	public void Cards()
+	{
+		ArrayList<String> status = futureSkillLocator.Cards();
+		if(status.size()>0)
+		{
+			for(int i = 0; i < status.size(); i++)
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(1).add(i+1, (status.get(i) + "Cards - failed"));
+			}
+		}
+	}
+	public WebDriver openDriver(String browserName)
+	{
+		WebDriver driver = null;
+		if(browserName.equalsIgnoreCase("Chrome"))
+		{
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--disable notifications");
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		else if(browserName.equalsIgnoreCase("firefox"))
+		{
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
+			driver = new FirefoxDriver(); 
+			driver.manage().window().maximize();
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		return driver;
+	}
+	@Override
+	public String call() throws Exception
+	{
+
 		try
 		{
+		driver = this.openDriver(com.palm.sanityTesting.RegressionTesting.nameOfBrowser);
+		com.palm.sanityTesting.OpenWebsite.openSite(driver);
+		this.futureSkillLocator = new FutureSkillLocator(driver);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+		System.out.println("Future skill Process started");
 		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -87,52 +153,14 @@ public class FutureSkillValidation
 				}
 			}
 		}
+		driver.quit();
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		return sheetStatus;
-	}
 	
-	public void launchSite(String url)
-	{
-		String status = futureSkillLocator.launchSite(url);
-		if(status.contains("fail"))
-		{
-			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(0).set(0, "url - failed");
-		}
-	}
-	public void findOutMore_Button()
-	{
-		String status = futureSkillLocator.findOutMore_Button();
-		if(status.contains("fail"))
-		{
-			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(1).set(0, "findOutMore_Button - failed");
-		}
-	}
-	public void learnmore_Button()
-	{
-		String status = futureSkillLocator.learnmore_Button();
-		if(status.contains("fail"))
-		{
-			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(2).set(0, "findOutMore_Button - failed");
-		}
-	}
-	public void Cards()
-	{
-		ArrayList<String> status = futureSkillLocator.Cards();
-		if(status.size()>0)
-		{
-			for(int i = 0; i < status.size(); i++)
-			{
-				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(1).add(i+1, (status.get(i) + "Cards - failed"));
-			}
-		}
 	}
 	
 	

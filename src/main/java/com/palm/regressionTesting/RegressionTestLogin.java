@@ -48,66 +48,6 @@ public class RegressionTestLogin implements Callable<String>
 		}
 		return driver;
 	}
-	public String start() throws InterruptedException
-	{
-		try
-		{
-			
-			driver = this.openDriver(browser);
-			OpenWebsite.openSite(this.driver);
-			this.processLogin = new ProcessLogin(this.driver);
-			String BaseWindow = driver.getWindowHandle();
-			driver.switchTo().newWindow(WindowType.TAB);
-			for(int i = 0; i < this.sheetData.size(); i++)
-			{
-				ArrayList<String> row = this.sheetData.get(i);
-				String firstColumn = row.get(0);
-				switch(firstColumn)
-				{
-					case "InvalidUsername":
-						InvalidUsername();
-						break;
-					case "InvalidPassword":
-						InvalidPassword();
-						break;
-					case "InvalidUserNameAndPassword":
-						InvalidUserNameAndPassword();
-						break;
-					case "ValidCredentials":
-						ValidCredentials();
-						break;
-				}
-			}
-			Set<String> windows = driver.getWindowHandles();
-			for(String win : windows)
-			{
-				driver.switchTo().window(win);
-				if(!BaseWindow.equals(win))
-				{
-					driver.switchTo().window(win);
-					if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-					{
-						driver.switchTo().window(win);
-						driver.close();
-						driver.switchTo().window(BaseWindow);
-					}
-					else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-					{
-						driver.switchTo().window(win);
-						driver.close();
-						driver.switchTo().window(BaseWindow);
-					}
-				}
-				
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		return sheetStatus;
-	}
 	
 	public void InvalidUsername() throws InterruptedException
 	{
@@ -174,7 +114,7 @@ public class RegressionTestLogin implements Callable<String>
 		try
 		{
 			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
+			com.palm.regressionTesting.OpenWebsite.openSite(driver);
 			this.processLogin = new ProcessLogin(driver);
 			String BaseWindow = driver.getWindowHandle();
 			for(int i = 0; i < this.sheetData.size(); i++)

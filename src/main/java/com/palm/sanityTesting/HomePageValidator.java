@@ -1,27 +1,29 @@
 package com.palm.sanityTesting;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class HomePageValidator 
+import com.palm.regressionTesting.RegressionTesting;
+import com.regression.utility.TestUtil;
+
+public class HomePageValidator implements Callable<String>
 {
-	private String SHEET_NAME;
 	ArrayList<ArrayList<String>> sheetData;
 	WebDriver driver;
 	HomepageLocator homepageLocator;
-	String sheetStatus;
+	String sheetStatus = "Pass";
 	
-	public HomePageValidator(WebDriver driver, String sheetName, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public HomePageValidator(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
-		this.driver = driver;
-		this.SHEET_NAME = sheetName; 
 		this.sheetData = sheetData;
-		this.homepageLocator = new HomepageLocator(this.driver);
-		System.out.println("Homepage process started");
-		sheetStatus = "Pass";
 	}
 
 	public void homePage(WebDriver driver)
@@ -99,7 +101,29 @@ public class HomePageValidator
 		return sheetStatus;
 	}
 
-	
+	public WebDriver openDriver(String browserName)
+	{
+		WebDriver driver = null;
+		if(browserName.equalsIgnoreCase("Chrome"))
+		{
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--disable notifications");
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		else if(browserName.equalsIgnoreCase("firefox"))
+		{
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
+			driver = new FirefoxDriver(); 
+			driver.manage().window().maximize();
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		return driver;
+	}
 	public void verifyBanner(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		ArrayList<String> status = homepageLocator.checkSliderLink(dataFromExcel);
@@ -163,5 +187,71 @@ public class HomePageValidator
 					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(3).add(i+1, (statusOfTopTechCategories.get(i) + "topTechCategories - failed"));
 				}
 			}
+	}
+
+	@Override
+	public String call() throws Exception {
+
+		try
+		{
+		driver = this.openDriver(com.palm.sanityTesting.RegressionTesting.nameOfBrowser);
+		com.palm.sanityTesting.OpenWebsite.openSite(driver);
+		this.homepageLocator = new HomepageLocator(driver);
+		String BaseWindow = driver.getWindowHandle();
+		for(int i = 0; i < this.sheetData.size(); i++)
+		{
+			ArrayList<String> row = this.sheetData.get(i);
+			String firstColumn = row.get(0);
+			switch(firstColumn)
+			{
+			case "Banner":
+				verifyBanner(row);
+				break;
+			case"learningPartners":
+				verifyLearningPartners();
+				break;
+			case"humanSkills":
+				verifyHumanSkills();
+				break;
+			case"topTechCategories":
+				verifyTopTechCategories();
+				break;
+			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		driver.quit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+	
 	}
 }

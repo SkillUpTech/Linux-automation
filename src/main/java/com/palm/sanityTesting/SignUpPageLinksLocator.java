@@ -1,5 +1,6 @@
 package com.palm.sanityTesting;
 
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
@@ -43,12 +44,21 @@ public class SignUpPageLinksLocator
 					
 					WebElement clickSignup = driver.findElement(By.cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"));
 					js.executeScript("arguments[0].scrollIntoView();", clickSignup);
+					String signUPURL = clickSignup.getAttribute("href");
 					if(clickSignup.isDisplayed())
 					{
-						js.executeScript("arguments[0].click()", clickSignup);
-						if(driver.getCurrentUrl().contains("register"))
+						String statusOfURL = this.checkURLStatus(signUPURL);
+						if(statusOfURL.contains("fail"))
 						{
-							status = "pass";
+							status = statusOfURL;
+						}
+						else
+						{
+							js.executeScript("arguments[0].click()", clickSignup);
+							if(driver.getCurrentUrl().contains("register"))
+							{
+								status = "pass";
+							}
 						}
 					}
 				}
@@ -71,26 +81,36 @@ public class SignUpPageLinksLocator
 		try
 		{
 			WebElement facebook = driver.findElement(By.cssSelector("div[class='social-section']>a:nth-child(1)"));
-			js.executeScript("arguments[0].scrollIntoView();", facebook);
-			if(facebook.isDisplayed())
+			String statusOfURL = facebook.getAttribute("href");
+			if(statusOfURL.contains("fail"))
 			{
-				String parentWindow = driver.getWindowHandle();
-				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				facebook.sendKeys(selectLinkOpeninNewTab);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
+				status = statusOfURL;
+			}
+			else
+			{
+				
+				js.executeScript("arguments[0].scrollIntoView();", facebook);
+				
+				if(facebook.isDisplayed())
 				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("facebook"))
+					String parentWindow = driver.getWindowHandle();
+					String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+					facebook.sendKeys(selectLinkOpeninNewTab);
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
+					Set<String> allWindows = driver.getWindowHandles();
+					for(String windows : allWindows)
 					{
 						driver.switchTo().window(windows);
-						status = "pass";
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.navigate().back();
-						driver.switchTo().window(parentWindow);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						if(driver.getCurrentUrl().contains("facebook"))
+						{
+							driver.switchTo().window(windows);
+							status = "pass";
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+							driver.navigate().back();
+							driver.switchTo().window(parentWindow);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						}
 					}
 				}
 			}
@@ -110,29 +130,38 @@ public class SignUpPageLinksLocator
 		try
 		{
 			WebElement google = driver.findElement(By.cssSelector("div[class='social-section']>a:nth-child(2)"));
-			js.executeScript("arguments[0].scrollIntoView();", google);
-			if(google.isDisplayed())
+			String statusOfURL = google.getAttribute("href");
+			if(statusOfURL.contains("fail"))
 			{
-				String parentWindow = driver.getWindowHandle();
-				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				google.sendKeys(selectLinkOpeninNewTab);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
+				status = statusOfURL;
+			}
+			else
+			{
+				js.executeScript("arguments[0].scrollIntoView();", google);
+				if(google.isDisplayed())
 				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("google"))
+					String parentWindow = driver.getWindowHandle();
+					String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+					google.sendKeys(selectLinkOpeninNewTab);
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
+					Set<String> allWindows = driver.getWindowHandles();
+					for(String windows : allWindows)
 					{
 						driver.switchTo().window(windows);
-						status = "pass";
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.navigate().back();
-						driver.switchTo().window(parentWindow);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						if(driver.getCurrentUrl().contains("google"))
+						{
+							driver.switchTo().window(windows);
+							status = "pass";
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+							driver.navigate().back();
+							driver.switchTo().window(parentWindow);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						}
 					}
 				}
 			}
+			
 		}
 		catch(Exception e)
 		{
@@ -149,29 +178,38 @@ public class SignUpPageLinksLocator
 		try
 		{
 			WebElement linkedIn = driver.findElement(By.cssSelector("div[class='social-section']>a:nth-child(3)"));
-			js.executeScript("arguments[0].scrollIntoView();", linkedIn);
-			if(linkedIn.isDisplayed())
+			String statusOfURL = linkedIn.getAttribute("href");
+			if(statusOfURL.contains("fail"))
 			{
-				String parentWindow = driver.getWindowHandle();
-				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				linkedIn.sendKeys(selectLinkOpeninNewTab);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
+				status = statusOfURL;
+			}
+			else
+			{
+				js.executeScript("arguments[0].scrollIntoView();", linkedIn);
+				if(linkedIn.isDisplayed())
 				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("linkedin"))
+					String parentWindow = driver.getWindowHandle();
+					String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+					linkedIn.sendKeys(selectLinkOpeninNewTab);
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
+					Set<String> allWindows = driver.getWindowHandles();
+					for(String windows : allWindows)
 					{
 						driver.switchTo().window(windows);
-						status = "pass";
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.navigate().back();
-						driver.switchTo().window(parentWindow);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						if(driver.getCurrentUrl().contains("linkedin"))
+						{
+							driver.switchTo().window(windows);
+							status = "pass";
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+							driver.navigate().back();
+							driver.switchTo().window(parentWindow);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						}
 					}
 				}
 			}
+			
 		}
 		catch(Exception e)
 		{
@@ -188,29 +226,38 @@ public class SignUpPageLinksLocator
 		try
 		{
 			WebElement microsoftLink = driver.findElement(By.cssSelector("div[class='social-section']>a:nth-child(4)"));
-			js.executeScript("arguments[0].scrollIntoView();", microsoftLink);
-			if(microsoftLink.isDisplayed())
+			String statusOfURL = microsoftLink.getAttribute("href");
+			if(statusOfURL.contains("fail"))
 			{
-				String parentWindow = driver.getWindowHandle();
-				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				microsoftLink.sendKeys(selectLinkOpeninNewTab);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
+				status = statusOfURL;
+			}
+			else
+			{
+				js.executeScript("arguments[0].scrollIntoView();", microsoftLink);
+				if(microsoftLink.isDisplayed())
 				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("microsoftonline"))
+					String parentWindow = driver.getWindowHandle();
+					String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+					microsoftLink.sendKeys(selectLinkOpeninNewTab);
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
+					Set<String> allWindows = driver.getWindowHandles();
+					for(String windows : allWindows)
 					{
 						driver.switchTo().window(windows);
-						status = "pass";
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.navigate().back();
-						driver.switchTo().window(parentWindow);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						if(driver.getCurrentUrl().contains("microsoftonline"))
+						{
+							driver.switchTo().window(windows);
+							status = "pass";
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+							driver.navigate().back();
+							driver.switchTo().window(parentWindow);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						}
 					}
 				}
 			}
+			
 		}
 		catch(Exception e)
 		{
@@ -227,29 +274,38 @@ public class SignUpPageLinksLocator
 		try
 		{
 			WebElement clickLoginLink = driver.findElement(By.xpath("//a[contains(@href,'login') and contains(@class,'underline')]"));
-			js.executeScript("arguments[0].scrollIntoView();", clickLoginLink);
-			if(clickLoginLink.isDisplayed())
+			String statusOfURL = clickLoginLink.getAttribute("href");
+			if(statusOfURL.contains("fail"))
 			{
-				String parentWindow = driver.getWindowHandle();
-				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				clickLoginLink.sendKeys(selectLinkOpeninNewTab);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
+				status = statusOfURL;
+			}
+			else
+			{
+				js.executeScript("arguments[0].scrollIntoView();", clickLoginLink);
+				if(clickLoginLink.isDisplayed())
 				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("login"))
+					String parentWindow = driver.getWindowHandle();
+					String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+					clickLoginLink.sendKeys(selectLinkOpeninNewTab);
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
+					Set<String> allWindows = driver.getWindowHandles();
+					for(String windows : allWindows)
 					{
 						driver.switchTo().window(windows);
-						status = "pass";
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.navigate().back();
-						driver.switchTo().window(parentWindow);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						if(driver.getCurrentUrl().contains("login"))
+						{
+							driver.switchTo().window(windows);
+							status = "pass";
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+							driver.navigate().back();
+							driver.switchTo().window(parentWindow);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						}
 					}
 				}
 			}
+			
 		}
 		catch(Exception e)
 		{
@@ -265,57 +321,26 @@ public class SignUpPageLinksLocator
 		try
 		{
 			WebElement clickTermOfServiceLink = driver.findElement(By.xpath("//a[contains(@href,'tos') and contains(@class,'underline')]"));
-			js.executeScript("arguments[0].scrollIntoView();", clickTermOfServiceLink);
-			if(clickTermOfServiceLink.isDisplayed())
+			String statusOfURL = clickTermOfServiceLink.getAttribute("href");
+			if(statusOfURL.contains("fail"))
 			{
-				String parentWindow = driver.getWindowHandle();
-				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				clickTermOfServiceLink.sendKeys(selectLinkOpeninNewTab);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("tos"))
-					{
-						driver.switchTo().window(windows);
-						status = "pass";
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.navigate().back();
-						driver.switchTo().window(parentWindow);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-					}
-				}
+				status = statusOfURL;
 			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return status;
-	}
-	
-	public String checkPrivacyPolicyLink()
-	{
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			String status = "";
-			try
+			else
 			{
-				WebElement clickPrivacyPolicyLink = driver.findElement(By.xpath("//a[contains(@href,'privacy') and contains(@class,'underline')]"));
-				js.executeScript("arguments[0].scrollIntoView();", clickPrivacyPolicyLink);
-				if(clickPrivacyPolicyLink.isDisplayed())
+				js.executeScript("arguments[0].scrollIntoView();", clickTermOfServiceLink);
+				if(clickTermOfServiceLink.isDisplayed())
 				{
 					String parentWindow = driver.getWindowHandle();
 					String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-					clickPrivacyPolicyLink.sendKeys(selectLinkOpeninNewTab);
+					clickTermOfServiceLink.sendKeys(selectLinkOpeninNewTab);
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
 					Set<String> allWindows = driver.getWindowHandles();
 					for(String windows : allWindows)
 					{
 						driver.switchTo().window(windows);
-						if(driver.getCurrentUrl().contains("privacy"))
+						if(driver.getCurrentUrl().contains("tos"))
 						{
 							driver.switchTo().window(windows);
 							status = "pass";
@@ -326,6 +351,86 @@ public class SignUpPageLinksLocator
 						}
 					}
 				}
+			}
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	public String checkURLStatus(String data)
+	{
+		String status = "fail";
+			HttpURLConnection huc = null;
+			int respCode = 200;
+			String addHosturl = data;
+			try
+			{
+				huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
+				huc.setRequestMethod("HEAD");
+				huc.connect();
+				respCode = huc.getResponseCode();
+				System.out.println("status code : "+respCode + " " +addHosturl);
+				if(respCode > 200)
+				{
+					System.out.println("broken link : "+addHosturl);
+					System.out.println("response code : "+respCode);
+					status = "fail" + respCode;
+				}
+				else
+				{
+					System.out.println("unbroken link : "+" "+addHosturl+" "+respCode);
+					status = "success";
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			return status;
+	}
+	public String checkPrivacyPolicyLink()
+	{
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			String status = "";
+			try
+			{
+				WebElement clickPrivacyPolicyLink = driver.findElement(By.xpath("//a[contains(@href,'privacy') and contains(@class,'underline')]"));
+				String statusOfURL = clickPrivacyPolicyLink.getAttribute("href");
+				if(statusOfURL.contains("fail"))
+				{
+					status = statusOfURL;
+				}
+				else
+				{
+					js.executeScript("arguments[0].scrollIntoView();", clickPrivacyPolicyLink);
+					if(clickPrivacyPolicyLink.isDisplayed())
+					{
+						String parentWindow = driver.getWindowHandle();
+						String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						clickPrivacyPolicyLink.sendKeys(selectLinkOpeninNewTab);
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
+						Set<String> allWindows = driver.getWindowHandles();
+						for(String windows : allWindows)
+						{
+							driver.switchTo().window(windows);
+							if(driver.getCurrentUrl().contains("privacy"))
+							{
+								driver.switchTo().window(windows);
+								status = "pass";
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+								driver.navigate().back();
+								driver.switchTo().window(parentWindow);
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+							}
+						}
+					}
+				}
+				
 			}
 			catch(Exception e)
 			{

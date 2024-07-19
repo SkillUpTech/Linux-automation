@@ -1,88 +1,56 @@
 package com.palm.sanityTesting;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
+import com.regression.utility.TestUtil;
 import com.seo.regression.testing.RegressionTesting;
 import com.seo.sanityTesting.OpenWebsite;
 import com.seo.sanityTesting.PurchaseCourseLocator;
 
-public class PurchaseCourseValidation
+public class PurchaseCourseValidation implements Callable<String>
 {
 	
 	WebDriver driver;
 	ArrayList<ArrayList<String>> sheetData = null;
-	PurchaseCourseLocator purchaseCourseLocator;
+	com.palm.sanityTesting.PurchaseCourseLocator purchaseCourseLocator;
 	String sheetStatus = "Pass";
 	
-	public PurchaseCourseValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
+	public PurchaseCourseValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		this.driver = driver;
-		this.purchaseCourseLocator = new PurchaseCourseLocator(driver);
-		System.out.println("puchase course page process started");
+		
 	}
-	
-	public String start() throws InterruptedException
+	public WebDriver openDriver(String browserName)
 	{
-		try
+		WebDriver driver = null;
+		if(browserName.equalsIgnoreCase("Chrome"))
 		{
-			String BaseWindow = driver.getWindowHandle();
-			driver.switchTo().newWindow(WindowType.TAB);
-			OpenWebsite.openSite(this.driver);
-			for(int i = 0; i < this.sheetData.size(); i++)
-			{
-				ArrayList<String> row = this.sheetData.get(i);
-				String firstColumn = row.get(0);
-				switch(firstColumn)
-				{
-				case "url":
-					url(row.get(1));
-					break;
-				case "enrollment":
-					enrollment(row);
-					break;
-				case "chekProfileSection":
-					chekProfileSection(row);
-					break;
-				}
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--disable notifications");
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
 		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
+		else if(browserName.equalsIgnoreCase("firefox"))
 		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(com.palm.sanityTesting.OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(com.palm.sanityTesting.OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
+			driver = new FirefoxDriver(); 
+			driver.manage().window().maximize();
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
 		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
+		return driver;
 	}
 	public void url(String data)
 	{
@@ -148,5 +116,68 @@ public class PurchaseCourseValidation
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GLX").get(2).set(0, "chekProfileSection - failed");
 		}
+	}
+	@Override
+	public String call() throws Exception {
+
+		try
+		{
+			driver = this.openDriver(com.palm.sanityTesting.RegressionTesting.nameOfBrowser);
+			com.palm.sanityTesting.OpenWebsite.openSite(driver);
+			this.purchaseCourseLocator = new com.palm.sanityTesting.PurchaseCourseLocator(driver);
+			System.out.println("puchase course page process started");
+			String BaseWindow = driver.getWindowHandle();
+			for(int i = 0; i < this.sheetData.size(); i++)
+			{
+				ArrayList<String> row = this.sheetData.get(i);
+				String firstColumn = row.get(0);
+				switch(firstColumn)
+				{
+				case "url":
+					url(row.get(1));
+					break;
+				case "enrollment":
+					enrollment(row);
+					break;
+				case "chekProfileSection":
+					chekProfileSection(row);
+					break;
+				}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(com.palm.sanityTesting.OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(com.palm.sanityTesting.OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		driver.quit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+	
 	}
 }

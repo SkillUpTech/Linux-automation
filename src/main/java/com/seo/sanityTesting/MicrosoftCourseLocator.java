@@ -48,6 +48,10 @@ public class MicrosoftCourseLocator
 						processStatus.add(url);
 						break;
 					}
+					else
+					{
+						learningPartners.get(i).click();
+					}
 				}
 			}
 		}

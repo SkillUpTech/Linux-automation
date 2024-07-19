@@ -13,6 +13,8 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.palm.regressionTesting.OpenWebsite;
+
 public class CategoryBannerLocator
 {
 	WebDriver driver;
@@ -63,11 +65,11 @@ public class CategoryBannerLocator
 		{
 			for(int i = 1; i < data.size(); i++)
 			{
-				String urlStatus = this.checkURLStatus(OpenWebsite.setHost+data.get(i));
+				String urlStatus = this.checkURLStatus(com.palm.sanityTesting.OpenWebsite.setHost+data.get(i));
 				
 				if(!urlStatus.contains("fail"))
 				{
-					driver.get(OpenWebsite.setHost+data.get(i));
+					driver.get(com.palm.sanityTesting.OpenWebsite.setHost+data.get(i));
 					
 					List<WebElement> banners = driver.findElements(By.xpath("//ul[@class='slick-dots']/li/button"));
 					
@@ -110,7 +112,9 @@ public class CategoryBannerLocator
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 										System.out.println("whitepaper page : "+driver.getCurrentUrl());
 										status.add("pass");
+										Thread.sleep(1000);
 										driver.navigate().back();
+										Thread.sleep(1000);
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 										driver.switchTo().window(parent);
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
@@ -138,6 +142,7 @@ public class CategoryBannerLocator
 										System.out.println("Broucher page : "+driver.getCurrentUrl());
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 										status.add("pass");
+										Thread.sleep(1000);
 										driver.navigate().back();
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 										driver.switchTo().window(parent);

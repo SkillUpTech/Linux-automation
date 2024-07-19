@@ -34,20 +34,23 @@ public class RegressionTesting
 	String startTime = "";
 	String endTime = "";
 	String duration = "";
-	
+	public static String nameOfBrowser = "";
+	public String nameOfEnvironment = "";
 	public static LinkedHashMap<String, ArrayList<ArrayList<String>>> EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP;
 	private HashMap<String, String> sheetsResult = new HashMap<String, String>();
 	
 	public static String ENV_TO_USE = "";
 	String getEnvironment = "";
 	WebDriver driver;
-	public static String  driverPath = "/usr/local/bin/chromedriver";
+	public static String  driverPath = "C:\\Users\\Hemamalini\\Downloads\\125driver\\chromedriver-win64\\chromedriver.exe";
 	
 	@BeforeTest
 	@Parameters({"browser","env"})
 	public void setup(String browserName, String env) throws Exception
 	{
 		System.out.println("welcome");
+		nameOfBrowser = browserName;
+		nameOfEnvironment = env;
 	    if (browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
@@ -107,7 +110,7 @@ public class RegressionTesting
 		ExecutorService service = Executors.newFixedThreadPool(5);
 		
 		CompletionService<String> completionService = new ExecutorCompletionService<>(service);
-		String excelPath = "/home/edx-root/Desktop/testing/sanityTesting.xlsx";
+		String excelPath = "D:\\Doc\\SanityTesting.xlsx";
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		try
@@ -138,61 +141,60 @@ public class RegressionTesting
 						{
 							
 							case "Login":
-								taskMap.put(sheetName,  new RegressionTestLogin(sheetData));
+								taskMap.put(sheetName,  new com.palm.sanityTesting.RegressionTestLogin(sheetData));
 								break;
 							case "URLValidation":
-								sheetStatus = new ErrorCodeValidation(sheetData, driver).start();
+								taskMap.put(sheetName,  new ErrorCodeValidation(sheetData));
 								break;
 							case"SignUp":
-								sheetStatus = new SignUpValidation(sheetData, driver).start();
+								taskMap.put(sheetName,  new SignUpValidation(sheetData));
 								break;
 							case"FooterSection":
-								sheetStatus = new FooterSectionValidation(sheetData, driver).start();
+								taskMap.put(sheetName,  new FooterSectionValidation(sheetData));
 								break;
 							case"HeaderSection":
-								sheetStatus = new HeaderSectionValidation(sheetData, driver).start();
+								taskMap.put(sheetName,  new HeaderSectionValidation(sheetData));
 								break;
 							case"HomePage":
-								sheetStatus = new HomePageValidator(driver, sheetName, sheetData).start();
-								break;
+								taskMap.put(sheetName,  new HomePageValidator(sheetData));
 							case "MicrosoftPage":
-								sheetStatus =new MicrosoftCourseValidation(sheetData, driver).start();
+								taskMap.put(sheetName,  new MicrosoftCourseValidation(sheetData));
 								break;
 							case "PLU":
-								sheetStatus = new PLUValidation(sheetData, driver).start();
+								taskMap.put(sheetName,  new PLUValidation(sheetData));
 								break;
 							case "LoginPageLinks":
-								sheetStatus = new LoginPageLinksValidation(sheetData, driver).start();
+								taskMap.put(sheetName,  new LoginPageLinksValidation(sheetData));
 								break;
 							 case "IBM":
-								 sheetStatus = new IBMPageValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName,  new IBMPageValidation(sheetData));
 								 break;
 							 case "Fluideducation":
-								 sheetStatus = new FluidEducationValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName,  new FluidEducationValidation(sheetData));
 								 break;
 							 case "GLX":
-								 sheetStatus = new GLXValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName,  new GLXValidation(sheetData));
 								 break;
 							 case "SignUpPageLinks":
-								 sheetStatus = new SignUpPageLinksValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName,  new SignUpPageLinksValidation(sheetData));
 								 break;
 							 case "HeaderFeature":
-								 sheetStatus = new HeaderFeatureValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName,  new HeaderFeatureValidation(sheetData));
 								 break;
 							 case "ReimbursedProcess":
-								 sheetStatus = new ReimbursedValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName,  new ReimbursedValidation(sheetData));
 								 break;
 							 case "OnboardingJourney":
-								 sheetStatus = new OnboardingValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName,  new OnboardingValidation(sheetData));
 								 break;
 							 case "FutureSkill":
-								 sheetStatus = new FutureSkillValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName,  new FutureSkillValidation(sheetData));
 								 break;
 							 case "CategoryBanner":
-								 sheetStatus = new CategoryBannerValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName,  new CategoryBannerValidation(sheetData));
 								 break;
 							 case "purchaseCourse":
-								 sheetStatus = new PurchaseCourseValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName,  new PurchaseCourseValidation(sheetData));
 								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");

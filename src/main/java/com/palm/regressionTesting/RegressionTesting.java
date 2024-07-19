@@ -1,3 +1,4 @@
+
 package com.palm.regressionTesting;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.devtools.v124.database.model.Error;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeTest;
@@ -49,7 +51,7 @@ public class RegressionTesting
 	WebDriver driver;
 	String sheetStatus = "";
 	String sheetName = "";
-	public static String  driverPath = "/usr/local/bin/chromedriver";
+	public static String  driverPath = "C:\\Users\\Hemamalini\\Downloads\\125driver\\chromedriver-win64\\chromedriver.exe";
 	@BeforeTest
 	@Parameters({"browser","env"})
 	public void setup(String browserName, String env) throws Exception
@@ -110,7 +112,7 @@ public class RegressionTesting
 		
 		CompletionService<String> completionService = new ExecutorCompletionService<>(service);
 		
-		String excelPath = "/home/edx-root/Desktop/testing/RegressionTesting.xlsx";
+		String excelPath = "D:\\Doc\\RegressionTesting.xlsx";
 		
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
 		
@@ -274,8 +276,8 @@ public class RegressionTesting
 								 taskMap.put(sheetName, new com.palm.regressionTesting.verifyProgramURLValidation(sheetData));
 								 break;
 							 case "URLValidation":
-								 taskMap.put(sheetName, new com.palm.regressionTesting.ErrorCodeValidation(sheetData));
-								 break;
+									 taskMap.put(sheetName, new com.palm.regressionTesting.ErrorCodeValidation(sheetData));
+									 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}

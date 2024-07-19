@@ -23,6 +23,27 @@ public class PLULocators
 
 		ArrayList<String> processStatus = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebElement  clickCourseDropdown = driver.findElement(By.cssSelector("a#navbarDropdown div[class=' Header_category__mr_e4']"));
+		clickCourseDropdown.click();
+		List<WebElement> learningPartners = driver.findElements(By.cssSelector("ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='LearningPartners catcolumn divbox2'] ul[class='learning-Partners']>li>a"));
+		for(int i = 0; i < learningPartners.size();i++)
+		{
+			String getLearningPartnerURL = learningPartners.get(i).getAttribute("href");
+			if(getLearningPartnerURL.contains("pacific"))
+			{
+				String url = this.checkURLStatus(getLearningPartnerURL);
+				if(url.contains("fail"))
+				{
+					processStatus.add(url);
+					break;
+				}
+				else
+				{
+					learningPartners.get(i).click();
+					break;
+				}
+			}
+		}
 		try
 		{
 			js.executeScript("window.scrollBy(0, 600)", "");

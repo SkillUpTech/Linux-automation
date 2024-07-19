@@ -33,7 +33,6 @@ public class FluidEducationLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		if(driver.getCurrentUrl().contains("skillup"))
 		{
-			driver.switchTo().newWindow(WindowType.TAB);
 			driver.get(OpenWebsite.setURL+"/fluideducation");
 		}
 		try

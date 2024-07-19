@@ -16,12 +16,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 public class GLXLocator {
-	MicrosoftCourseLocator microsoftCourseLocator;
 	WebDriver driver;
 	public GLXLocator(WebDriver driver)
 	{
 		this.driver = driver;
-		this.microsoftCourseLocator = new MicrosoftCourseLocator(this.driver);
 	}
 	
 	public String facebookProcess()
@@ -197,7 +195,7 @@ public class GLXLocator {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0, 3000)", "");
 			driver.switchTo().defaultContent();
-			List<WebElement> ListOfProgram = driver.findElements(By.cssSelector("section[class*='DiscountSection_DataScienceAiCour'] div[class*='container-fluid DiscountSection_containerInner']>div[class='row']:nth-child(2) div[class*='DiscountSection_programcardDiv']"));
+			List<WebElement> ListOfProgram = driver.findElements(By.cssSelector("section[class*='DiscountSection_DataScienceAiCour'] div[class*='container-fluid DiscountSection_containerInner']>div[class='row']:nth-child(2) div[class*='DiscountSection_programcardDiv'] a"));
 			for(int i = 0; i < ListOfProgram.size(); i++)
 			{
 				
@@ -207,6 +205,10 @@ public class GLXLocator {
 				if(status.contains("fail"))
 				{
 					processStatus.add(status);
+				}
+				else
+				{
+					System.out.println(url);
 				}
 				
 			}

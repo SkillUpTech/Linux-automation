@@ -3,6 +3,7 @@ package com.palm.sanityTesting;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -12,12 +13,13 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.Test;
 
+import com.palm.regressionTesting.CategoryBannerLocator;
 import com.palm.regressionTesting.OpenWebsite;
 import com.palm.regressionTesting.ProcessLogin;
 import com.palm.regressionTesting.RegressionTesting;
 import com.regression.utility.TestUtil;
 
-public class RegressionTestLogin
+public class RegressionTestLogin implements Callable<String>
 {
 	WebDriver driver;
 	String result = "failed";
@@ -51,66 +53,6 @@ public class RegressionTestLogin
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
 		}
 		return driver;
-	}
-	public String start() throws InterruptedException
-	{
-		try
-		{
-			
-			driver = this.openDriver(browser);
-			OpenWebsite.openSite(this.driver);
-			this.processLogin = new ProcessLogin(this.driver);
-			String BaseWindow = driver.getWindowHandle();
-			driver.switchTo().newWindow(WindowType.TAB);
-			for(int i = 0; i < this.sheetData.size(); i++)
-			{
-				ArrayList<String> row = this.sheetData.get(i);
-				String firstColumn = row.get(0);
-				switch(firstColumn)
-				{
-					case "InvalidUsername":
-						InvalidUsername();
-						break;
-					case "InvalidPassword":
-						InvalidPassword();
-						break;
-					case "InvalidUserNameAndPassword":
-						InvalidUserNameAndPassword();
-						break;
-					case "ValidCredentials":
-						ValidCredentials();
-						break;
-				}
-			}
-			Set<String> windows = driver.getWindowHandles();
-			for(String win : windows)
-			{
-				driver.switchTo().window(win);
-				if(!BaseWindow.equals(win))
-				{
-					driver.switchTo().window(win);
-					if(driver.getCurrentUrl().equalsIgnoreCase(com.palm.sanityTesting.OpenWebsite.setURL+"/"))
-					{
-						driver.switchTo().window(win);
-						driver.close();
-						driver.switchTo().window(BaseWindow);
-					}
-					else if(!driver.getCurrentUrl().equalsIgnoreCase(com.palm.sanityTesting.OpenWebsite.setURL+"/"))
-					{
-						driver.switchTo().window(win);
-						driver.close();
-						driver.switchTo().window(BaseWindow);
-					}
-				}
-				
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		return sheetStatus;
 	}
 	
 	public void InvalidUsername() throws InterruptedException
@@ -169,5 +111,68 @@ public class RegressionTestLogin
 	private void checkLogout()throws InterruptedException
 	{
 		this.processLogin.logOutFunction();
+	}
+	@Override
+	public String call() throws Exception
+	{
+		try {
+			driver = this.openDriver(com.palm.sanityTesting.RegressionTesting.nameOfBrowser);
+			com.palm.sanityTesting.OpenWebsite.openSite(driver);
+		this.processLogin = new ProcessLogin(this.driver);
+		String BaseWindow = driver.getWindowHandle();
+		for(int i = 0; i < this.sheetData.size(); i++)
+		{
+			ArrayList<String> row = this.sheetData.get(i);
+			String firstColumn = row.get(0);
+			switch(firstColumn)
+			{
+			case "InvalidUsername":
+				InvalidUsername();
+				break;
+			case "InvalidPassword":
+				InvalidPassword();
+				break;
+			case "InvalidUserNameAndPassword":
+				InvalidUserNameAndPassword();
+				break;
+			case "ValidCredentials":
+				ValidCredentials();
+				break;
+		}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(com.palm.sanityTesting.OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(com.palm.sanityTesting.OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		driver.quit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
 	}
 }

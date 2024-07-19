@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.regression.utility.*;
+import com.seo.regression.testing.RegressionTesting;
 
 public class OpenWebsite
 {
@@ -81,17 +82,7 @@ public class OpenWebsite
 	
 	public static String openSite(WebDriver driver)
 	{
-		try {
-			try {
-				setURL = setEnvironment(RegressionTesting.ENV_TO_USE);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		setURL = setEnvironment(com.palm.regressionTesting.RegressionTesting.ENV_TO_USE);
 		driver.get(setURL);
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
