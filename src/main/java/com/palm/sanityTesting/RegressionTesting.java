@@ -23,9 +23,8 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.palm.regressionTesting.RegressionTestLogin;
-import com.regression.utility.ProcessExcel;
-import com.regression.utility.Utils;
+import com.palm.utility.ProcessExcel;
+import com.palm.utility.Utils;
 
 public class RegressionTesting 
 {
@@ -42,10 +41,10 @@ public class RegressionTesting
 	public static String ENV_TO_USE = "";
 	String getEnvironment = "";
 	WebDriver driver;
-	public static String  driverPath = "C:\\Users\\Hemamalini\\Downloads\\125driver\\chromedriver-win64\\chromedriver.exe";
+	public static String  driverPath = "/usr/local/bin/chromedriver";
 	
 	@BeforeTest
-	@Parameters({"browser","env"})
+	@Parameters({"browser","Denvironment"})
 	public void setup(String browserName, String env) throws Exception
 	{
 		System.out.println("welcome");

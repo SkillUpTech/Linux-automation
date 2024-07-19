@@ -18,7 +18,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.devtools.v124.database.model.Error;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeTest;
@@ -26,10 +25,8 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 
-import com.regression.utility.ProcessExcel;
-import com.regression.utility.Utils;
-import com.seo.regression.testing.ErrorCodeValidation;
-import com.seo.regression.testing.NewAboutCourseValidator;
+import com.palm.utility.ProcessExcel;
+import com.palm.utility.Utils;
 
 
 public class RegressionTesting 
@@ -51,9 +48,9 @@ public class RegressionTesting
 	WebDriver driver;
 	String sheetStatus = "";
 	String sheetName = "";
-	public static String  driverPath = "C:\\Users\\Hemamalini\\Downloads\\125driver\\chromedriver-win64\\chromedriver.exe";
+	public static String  driverPath = "/usr/local/bin/chromedriver";
 	@BeforeTest
-	@Parameters({"browser","env"})
+	@Parameters({"browser","Denvironment"})
 	public void setup(String browserName, String env) throws Exception
 	{
 		System.out.println("welcome");
@@ -112,7 +109,7 @@ public class RegressionTesting
 		
 		CompletionService<String> completionService = new ExecutorCompletionService<>(service);
 		
-		String excelPath = "D:\\Doc\\RegressionTesting.xlsx";
+		String excelPath = "/home/edx-root/Downloads/RegressionTesting_New.xlsx";
 		
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
 		

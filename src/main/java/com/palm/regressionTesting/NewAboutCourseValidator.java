@@ -15,10 +15,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import com.regression.utility.TestUtil;
-import com.regression.utility.Utils;
-import com.seo.pompages.NewAboutCourseLocator;
-
+import com.palm.utility.TestUtil;
+import com.palm.utility.Utils;
 public class NewAboutCourseValidator implements Callable<String>
 {
 

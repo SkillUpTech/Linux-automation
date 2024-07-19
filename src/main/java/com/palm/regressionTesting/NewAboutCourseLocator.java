@@ -1,5 +1,4 @@
-
-package com.seo.pompages;
+package com.palm.regressionTesting;
 
 import java.io.File;
 import java.net.HttpURLConnection;
