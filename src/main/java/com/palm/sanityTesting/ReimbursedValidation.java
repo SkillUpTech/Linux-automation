@@ -12,7 +12,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.palm.regressionTesting.RegressionTesting;
-import com.regression.utility.TestUtil;
+import com.palm.utility.TestUtil;
 
 public class ReimbursedValidation implements Callable<String>
 {

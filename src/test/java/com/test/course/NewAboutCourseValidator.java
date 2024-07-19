@@ -11,7 +11,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.pompages.NewAboutCourseLocator;
-import com.regression.utility.Utils;
+import com.palm.utility.Utils;
 
 public class NewAboutCourseValidator 
 {

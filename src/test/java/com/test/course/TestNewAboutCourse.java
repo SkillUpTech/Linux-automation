@@ -16,8 +16,8 @@ import org.testng.asserts.SoftAssert;
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.pompages.NewAboutCourseLocator;
 import com.seo.regression.testing.OpenWebsite;
-import com.regression.utility.ProcessExcel;
-import com.regression.utility.Utils;
+import com.palm.utility.ProcessExcel;
+import com.palm.utility.Utils;
 
 public class TestNewAboutCourse
 {

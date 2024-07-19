@@ -17,7 +17,7 @@ import com.palm.regressionTesting.CategoryBannerLocator;
 import com.palm.regressionTesting.OpenWebsite;
 import com.palm.regressionTesting.ProcessLogin;
 import com.palm.regressionTesting.RegressionTesting;
-import com.regression.utility.TestUtil;
+import com.palm.utility.TestUtil;
 
 public class RegressionTestLogin implements Callable<String>
 {

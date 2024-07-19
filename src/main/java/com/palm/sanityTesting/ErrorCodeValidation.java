@@ -14,7 +14,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import com.palm.regressionTesting.OpenWebsite;
 import com.palm.regressionTesting.ProcessLogin;
 import com.palm.regressionTesting.RegressionTesting;
-import com.regression.utility.TestUtil;
+import com.palm.utility.TestUtil;
 
 public class ErrorCodeValidation implements Callable<String>
 {

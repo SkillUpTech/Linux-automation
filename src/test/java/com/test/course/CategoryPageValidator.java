@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.pompages.CategoryPageLocators;
-import com.regression.utility.Utils;
+import com.palm.utility.Utils;
 
 public class CategoryPageValidator
 {

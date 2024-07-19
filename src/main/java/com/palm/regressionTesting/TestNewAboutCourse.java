@@ -17,9 +17,9 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.asserts.SoftAssert;
 
-import com.regression.utility.ProcessExcel;
-import com.regression.utility.TestUtil;
-import com.regression.utility.Utils;
+import com.palm.utility.ProcessExcel;
+import com.palm.utility.TestUtil;
+import com.palm.utility.Utils;
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.pompages.NewAboutCourseLocator;
 

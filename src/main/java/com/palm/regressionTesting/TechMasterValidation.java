@@ -14,7 +14,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import com.palm.regressionTesting.GLXLocator;
 import com.palm.regressionTesting.OpenWebsite;
 import com.palm.regressionTesting.RegressionTesting;
-import com.regression.utility.TestUtil;
+import com.palm.utility.TestUtil;
 
 public class TechMasterValidation implements Callable<String>
 {
