@@ -20,8 +20,6 @@ import org.testng.asserts.SoftAssert;
 import com.palm.utility.ProcessExcel;
 import com.palm.utility.TestUtil;
 import com.palm.utility.Utils;
-import com.seo.dataProvider.ConfigFileReader;
-import com.seo.pompages.NewAboutCourseLocator;
 
 public class TestNewAboutCourse
 {

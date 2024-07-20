@@ -10,7 +10,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.palm.utility.TestUtil;
-import com.seo.regression.testing.RegressionTesting;
 
 public class HeaderSectionValidation implements Callable<String>
 {

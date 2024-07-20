@@ -12,9 +12,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.palm.utility.TestUtil;
-import com.seo.regression.testing.RegressionTesting;
-import com.seo.sanityTesting.OpenWebsite;
-import com.seo.sanityTesting.PurchaseCourseLocator;
 
 public class PurchaseCourseValidation implements Callable<String>
 {
