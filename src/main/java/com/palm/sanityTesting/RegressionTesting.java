@@ -295,6 +295,10 @@ public class RegressionTesting
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "qa_US_result_" + formattedDateTime + ".xlsx");
 			}
+			else if(/* !driver.getCurrentUrl().contains("prod")|| */ENV_TO_USE.contains("prod"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "prod_US_result_" + formattedDateTime + ".xlsx");
+			}
 		}
 	}
 	
