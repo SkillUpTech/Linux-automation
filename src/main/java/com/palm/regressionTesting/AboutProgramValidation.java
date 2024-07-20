@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 import org.openqa.selenium.WebDriver;
 
 import com.palm.utility.Utils;
-import com.seo.pompages.NewAboutCourseLocator;
 
 public class AboutProgramValidation
 {

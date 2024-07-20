@@ -9,7 +9,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.palm.utility.*;
-import com.seo.regression.testing.RegressionTesting;
 
 public class OpenWebsite
 {
