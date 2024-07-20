@@ -109,7 +109,7 @@ public class RegressionTesting
 		ExecutorService service = Executors.newFixedThreadPool(5);
 		
 		CompletionService<String> completionService = new ExecutorCompletionService<>(service);
-		String excelPath = "D:\\Doc\\SanityTesting.xlsx";
+		String excelPath = "/home/edx-root/Desktop/testing/sanityTesting_New.xlsx";
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		try

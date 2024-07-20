@@ -5,7 +5,7 @@
 		<parameter name = "browser" value = "chrome"/>
 		<parameter name = "Denvironment" value = "{$Denvironment}"/>
 		<classes>
-			<class name="com.seo.sanity.testing.RegressionTesting"/>
+			<class name="com.palm.sanityTesting.RegressionTesting"/>
 		</classes>
      </test> <!-- Test -->
 </suite> <!-- Suite -->
